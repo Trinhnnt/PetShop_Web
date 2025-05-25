@@ -1,0 +1,1367 @@
+﻿/* Reset cơ bản hoặc sử dụng normalize.css nếu có */
+body, h1, h2, h3, p, table, th, td, form, input, button, a, label, span, div {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif; /* Áp dụng font Montserrat */
+}
+
+body {
+    background-color: #f7fafc; /* Màu nền xám rất nhạt, gần trắng */
+    color: #1f2937; /* Màu chữ chính - xám đậm/đen */
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.page-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.order-confirmation-container {
+    max-width: 700px; /* Có thể thu nhỏ một chút cho giống template */
+    width: 100%;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Shadow nhẹ nhàng hơn */
+    overflow: hidden;
+}
+
+.confirmation-header {
+    /* Header của template này không có màu nền, thay vào đó là icon lớn */
+    padding: 40px 25px 20px 25px; /* Tăng padding top cho không gian icon */
+    text-align: center;
+    border-bottom: 1px solid #e5e7eb; /* Đường kẻ mỏng phân cách header */
+}
+
+/* Thêm một div cho icon checkmark (bạn sẽ cần thêm div này vào HTML) */
+.header-icon {
+    margin-bottom: 20px;
+}
+
+    .header-icon svg { /* Ví dụ sử dụng SVG inline hoặc img */
+        width: 64px; /* Kích thước icon */
+        height: 64px;
+        color: #22c55e; /* Màu xanh lá chủ đạo cho icon */
+    }
+/* Hoặc nếu dùng thẻ img:
+.header-icon img {
+    width: 64px;
+    height: 64px;
+}
+*/
+
+.confirmation-header .shop-logo {
+    font-size: 22px;
+    font-weight: 600;
+    color: #374151; /* Màu xám đậm cho logo */
+    margin-bottom: 20px; /* Tăng khoảng cách nếu có logo */
+    display: block; /* Để căn giữa nếu là text */
+}
+
+.confirmation-header h1 {
+    font-size: 24px; /* Nhỏ hơn một chút */
+    font-weight: 700;
+    color: #111827; /* Màu đen đậm hơn cho tiêu đề chính */
+    margin-bottom: 8px;
+}
+
+.confirmation-header p {
+    font-size: 15px;
+    color: #6b7280; /* Màu xám cho mô tả */
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5;
+}
+
+.confirmation-content {
+    padding: 25px 30px 30px 30px;
+}
+
+.order-meta {
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    /* Có thể bỏ border-bottom nếu muốn thoáng hơn như template */
+}
+
+    .order-meta p {
+        font-size: 14px; /* Nhỏ hơn chút */
+        margin-bottom: 6px;
+        color: #4b5563; /* Xám đậm vừa */
+    }
+
+    .order-meta strong {
+        color: #1f2937; /* Xám đen cho giá trị */
+        font-weight: 500; /* Vừa phải */
+    }
+
+.section-title {
+    font-size: 16px; /* Nhỏ hơn */
+    color: #111827; /* Đen */
+    font-weight: 600; /* Đậm vừa */
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e5e7eb; /* Đường kẻ mảnh hơn */
+    /* display: inline-block; */ /* Bỏ để title chiếm cả hàng */
+}
+
+.customer-info, .shipping-address-section, .order-summary-section {
+    margin-bottom: 25px; /* Giảm khoảng cách section */
+}
+
+    .customer-info p, .shipping-address-section p {
+        margin-bottom: 8px;
+        font-size: 14px;
+        color: #374151; /* Xám đậm */
+    }
+
+    .customer-info strong, .shipping-address-section strong {
+        display: inline-block;
+        width: auto; /* Cho label tự động co dãn */
+        margin-right: 8px; /* Khoảng cách giữa label và value */
+        font-weight: 500;
+        color: #6b7280; /* Xám cho label */
+    }
+
+
+.products-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+    .products-table th, .products-table td {
+        padding: 10px 0; /* Chỉ padding top/bottom, không padding left/right để text tự căn */
+        border-bottom: 1px solid #f3f4f6; /* Border rất nhạt */
+        text-align: left;
+        font-size: 14px;
+    }
+
+    .products-table tr:last-child td {
+        border-bottom: none; /* Bỏ border cho dòng cuối cùng của sản phẩm */
+    }
+
+    .products-table th {
+        background-color: transparent; /* Bỏ màu nền header bảng */
+        font-weight: 500; /* Giảm độ đậm */
+        color: #6b7280; /* Màu xám cho header bảng */
+        text-transform: none; /* Không viết hoa */
+        font-size: 13px;
+        padding-bottom: 8px; /* Thêm padding dưới cho header */
+    }
+
+    .products-table .product-name {
+        width: 60%; /* Tăng cho tên sản phẩm */
+        font-weight: 500;
+        color: #1f2937; /* Màu chữ đậm hơn cho tên SP */
+    }
+
+    .products-table .product-qty {
+        width: 15%;
+        text-align: center;
+        color: #374151;
+    }
+
+    .products-table .product-price {
+        width: 25%; /* Giảm cho giá */
+        text-align: right;
+        font-weight: 500;
+        color: #1f2937;
+    }
+
+.summary-table {
+    width: 100%;
+    margin-top: 15px;
+}
+
+    .summary-table td {
+        padding: 6px 0; /* Giảm padding */
+        font-size: 14px;
+    }
+
+    .summary-table .label {
+        text-align: left; /* Căn trái label */
+        padding-right: 0;
+        color: #6b7280; /* Xám cho label */
+        font-weight: 400; /* Mảnh hơn */
+    }
+
+    .summary-table .value {
+        text-align: right;
+        font-weight: 500; /* Đậm vừa cho giá trị */
+        color: #1f2937;
+    }
+
+    .summary-table .grand-total {
+        padding-top: 12px;
+        border-top: 1px solid #e5e7eb; /* Đường kẻ mảnh */
+    }
+
+        .summary-table .grand-total .label,
+        .summary-table .grand-total .value {
+            font-size: 16px; /* Tăng font cho tổng cuối */
+            font-weight: 600; /* Đậm hơn */
+        }
+
+        .summary-table .grand-total .value {
+            color: #16a34a; /* Màu xanh lá đậm hơn cho tổng tiền (gần với #22c55e nhưng đậm hơn chút) */
+        }
+
+
+.delivery-address-form .form-group {
+    margin-bottom: 18px; /* Giảm nhẹ */
+}
+
+.delivery-address-form label {
+    display: block;
+    font-weight: 500; /* Giảm độ đậm */
+    margin-bottom: 6px; /* Giảm margin */
+    font-size: 14px;
+    color: #374151; /* Xám đậm */
+}
+
+.delivery-address-form input[type="text"] {
+    width: 100%;
+    padding: 10px 12px; /* Giảm padding */
+    border: 1px solid #d1d5db; /* Màu border xám nhạt (Tailwind gray-300) */
+    border-radius: 6px; /* Bo góc nhiều hơn chút */
+    font-size: 14px;
+    font-family: 'Montserrat', sans-serif;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+    .delivery-address-form input[type="text"]:focus {
+        border-color: #22c55e; /* Màu xanh lá khi focus */
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(34, 197, 94, 0.25); /* Shadow màu xanh lá */
+    }
+
+
+.delivery-address-form .error-message {
+    color: #ef4444; /* Màu đỏ tươi hơn cho lỗi (Tailwind red-500) */
+    font-size: 13px;
+    margin-top: 5px;
+    display: block;
+}
+
+.delivery-address-form input.error {
+    border-color: #ef4444 !important;
+}
+
+.confirmation-actions {
+    text-align: center;
+    padding: 25px 30px 20px 30px; /* Tăng padding top */
+    border-top: 1px solid #e5e7eb;
+    margin-top: 20px;
+}
+
+.btn-submit-order, .btn-continue-shopping {
+    background-color: #22c55e; /* Màu xanh lá chủ đạo (Tailwind green-500) */
+    color: #fff;
+    padding: 12px 25px; /* Giữ nguyên hoặc điều chỉnh */
+    border: none;
+    border-radius: 6px; /* Bo góc nhiều hơn */
+    font-size: 15px;
+    font-weight: 500; /* Đậm vừa */
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+    text-decoration: none;
+    display: block; /* Cho nút chiếm cả hàng */
+    width: 100%; /* Cho nút chiếm cả hàng */
+    margin: 0 0 10px 0; /* Chỉ margin bottom */
+}
+
+    .btn-submit-order:hover {
+        background-color: #16a34a; /* Màu xanh lá đậm hơn khi hover (Tailwind green-600) */
+        transform: translateY(-1px);
+    }
+
+.btn-continue-shopping {
+    background-color: transparent; /* Nền trong suốt */
+    color: #22c55e; /* Chữ màu xanh lá */
+    border: 1px solid #22c55e; /* Border màu xanh lá */
+    font-weight: 500;
+}
+
+    .btn-continue-shopping:hover {
+        background-color: rgba(34, 197, 94, 0.05); /* Nền hơi xanh khi hover */
+        color: #16a34a;
+        border-color: #16a34a;
+        transform: translateY(-1px);
+    }
+
+/* Hiệu ứng rung khi có lỗi */
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-5px);
+    }
+
+    20%, 40%, 60%, 80% {
+        transform: translateX(5px);
+    }
+}
+
+.shake {
+    animation: shake 0.6s;
+}
+/* =============================================== */
+/* CSS cho Trang Thông Báo Trạng Thái Đơn Hàng   */
+/* (Thêm vào cuối file order-confirmation.css)    */
+/* =============================================== */
+
+.order-status-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Căn giữa card theo chiều dọc */
+    width: 100%;
+    padding: 20px; /* Khoảng cách an toàn trên mobile */
+    min-height: calc(100vh - 80px); /* Trừ đi padding của body để căn giữa tốt hơn */
+}
+
+.order-status-card {
+    background-color: #fff;
+    border-radius: 12px; /* Bo góc nhiều hơn */
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    max-width: 520px; /* Thu nhỏ hơn nữa cho trang thông báo */
+    width: 100%;
+    text-align: center;
+    overflow: hidden; /* Để header bo góc đúng */
+}
+
+.status-card-header {
+    padding: 30px 20px 25px 20px;
+    position: relative;
+}
+
+    .status-card-header.header-success {
+        background: linear-gradient(135deg, #22c55e, #16a34a); /* Gradient xanh lá */
+    }
+
+    .status-card-header.header-error {
+        background: linear-gradient(135deg, #ef4444, #dc2626); /* Gradient đỏ */
+    }
+
+.status-icon {
+    width: 80px; /* Kích thước icon lớn hơn */
+    height: 80px;
+    margin: 0 auto 15px auto; /* Căn giữa icon */
+    color: #fff; /* Màu icon trắng trên nền gradient */
+}
+
+    .status-icon svg {
+        width: 100%;
+        height: 100%;
+    }
+
+.status-card-body {
+    padding: 25px 30px 30px 30px;
+}
+
+    .status-card-body h1 {
+        font-size: 26px; /* Kích thước tiêu đề */
+        font-weight: 700;
+        color: #1f2937; /* Màu chữ đậm */
+        margin-bottom: 15px;
+    }
+
+.status-message,
+.order-id-message,
+.additional-info,
+.error-detail {
+    font-size: 15px;
+    color: #4b5563; /* Xám đậm vừa */
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+    .order-id-message .highlight-id {
+        font-weight: 600;
+        color: #16a34a; /* Màu xanh lá cho ID */
+        background-color: #f0fdf4; /* Nền nhạt cho ID */
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+
+.status-card-header.header-error .order-id-message .highlight-id { /* Nếu lỗi mà vẫn có ID (ít khả năng) */
+    color: #dc2626;
+    background-color: #fef2f2;
+}
+
+
+.error-detail {
+    color: #b91c1c; /* Đỏ đậm cho chi tiết lỗi */
+    font-weight: 500;
+    background-color: #fee2e2; /* Nền đỏ nhạt */
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-top: 5px;
+    display: inline-block; /* Để background vừa với text */
+    max-width: 100%;
+    word-wrap: break-word;
+}
+
+.status-actions {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e5e7eb; /* Đường kẻ phân cách nhẹ */
+}
+
+.btn-action { /* Class chung cho các nút trên trang này */
+    display: block; /* Cho nút chiếm cả hàng */
+    width: 100%;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 12px 20px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+    margin-bottom: 12px; /* Khoảng cách giữa các nút nếu có nhiều */
+    cursor: pointer;
+    border: 1px solid transparent; /* Border mặc định trong suốt */
+}
+
+    .btn-action:last-child {
+        margin-bottom: 0;
+    }
+
+.btn-primary-custom { /* Style lại từ .btn-submit-order */
+    background-color: #22c55e;
+    color: #fff;
+    border-color: #22c55e;
+}
+
+    .btn-primary-custom:hover {
+        background-color: #16a34a;
+        border-color: #16a34a;
+        transform: translateY(-1px);
+    }
+
+.btn-secondary-custom { /* Style lại từ .btn-continue-shopping */
+    background-color: transparent;
+    color: #22c55e;
+    border: 1px solid #22c55e;
+}
+
+    .btn-secondary-custom:hover {
+        background-color: #f0fdf4; /* Nền xanh lá rất nhạt khi hover */
+        color: #16a34a;
+        border-color: #16a34a;
+        transform: translateY(-1px);
+    }
+
+.status-card-header.header-error .btn-primary-custom { /* Nút chính khi lỗi, ví dụ "Thử lại" */
+    background-color: #ef4444;
+    border-color: #ef4444;
+}
+
+    .status-card-header.header-error .btn-primary-custom:hover {
+        background-color: #dc2626;
+        border-color: #dc2626;
+    }
+
+.status-card-header.header-error .btn-secondary-custom {
+    color: #ef4444;
+    border-color: #ef4444;
+}
+
+    .status-card-header.header-error .btn-secondary-custom:hover {
+        background-color: #fef2f2;
+        color: #dc2626;
+        border-color: #dc2626;
+    }
+
+/* Footer đơn giản cho card */
+.status-card-footer {
+    background-color: #f9fafb; /* Nền xám rất nhạt */
+    padding: 15px 20px;
+    text-align: center;
+    border-top: 1px solid #e5e7eb;
+}
+
+    .status-card-footer p {
+        font-size: 13px;
+        color: #6b7280; /* Xám cho footer text */
+        margin: 0;
+    }
+/* =============================================== */
+/* CSS cho Trang Chi Tiết Hóa Đơn (CTHD)         */
+/* (Thêm vào cuối file order-confirmation.css)    */
+/* =============================================== */
+
+.invoice-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Canh trên cùng */
+    width: 100%;
+    padding: 20px;
+    /* min-height đã có trong body của order-confirmation-layout */
+}
+
+.invoice-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+    max-width: 800px; /* Rộng hơn trang thông báo trạng thái */
+    width: 100%;
+    margin: 0 auto; /* Căn giữa nếu trang hẹp hơn max-width */
+}
+
+.invoice-header {
+    background: linear-gradient(135deg, #22c55e, #16a34a); /* Gradient xanh lá */
+    color: #fff;
+    padding: 30px 35px;
+    text-align: center;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+    .invoice-header .shop-logo-invoice {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .invoice-header h1 {
+        font-size: 22px;
+        font-weight: 600;
+        margin: 0 0 5px 0;
+    }
+
+    .invoice-header p {
+        font-size: 14px;
+        opacity: 0.9;
+        margin: 0;
+    }
+
+.invoice-meta-info {
+    padding: 20px 35px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    flex-wrap: wrap; /* Cho phép xuống dòng trên mobile */
+    gap: 15px 25px; /* Khoảng cách giữa các item */
+}
+
+    .invoice-meta-info .meta-item {
+        font-size: 14px;
+        color: #4b5563;
+        /* flex: 1 1 200px; */ /* Cho các item co dãn */
+    }
+
+        .invoice-meta-info .meta-item span {
+            display: block; /* Hoặc inline-block và margin-right */
+            color: #6b7280;
+            margin-bottom: 2px;
+        }
+
+        .invoice-meta-info .meta-item strong {
+            color: #1f2937;
+            font-weight: 500;
+        }
+    /* CSS cho các trạng thái đơn hàng khác nhau */
+    .invoice-meta-info .status-1 {
+        color: #fbbf24;
+        font-weight: bold;
+    }
+    /* Chờ xác nhận - Vàng */
+    .invoice-meta-info .status-2 {
+        color: #3b82f6;
+        font-weight: bold;
+    }
+    /* Đã xác nhận - Xanh dương */
+    .invoice-meta-info .status-3 {
+        color: #8b5cf6;
+        font-weight: bold;
+    }
+    /* Đang giao - Tím */
+    .invoice-meta-info .status-4 {
+        color: #16a34a;
+        font-weight: bold;
+    }
+    /* Đã giao/Hoàn thành - Xanh lá */
+    .invoice-meta-info .status-5 {
+        color: #ef4444;
+        font-weight: bold;
+    }
+    /* Đã hủy - Đỏ */
+    .invoice-meta-info .status-0 {
+        color: #9ca3af;
+        font-weight: bold;
+    }
+/* Mặc định/Không xác định - Xám */
+
+
+.invoice-details,
+.invoice-summary,
+.invoice-shipping-billing,
+.invoice-actions,
+.invoice-footer {
+    padding: 20px 35px;
+}
+
+.section-title-invoice {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.products-table-invoice {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .products-table-invoice th,
+    .products-table-invoice td {
+        padding: 10px 5px; /* Giảm padding ngang */
+        font-size: 14px;
+        text-align: left;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+        .products-table-invoice th:first-child,
+        .products-table-invoice td:first-child {
+            padding-left: 0;
+        }
+
+        .products-table-invoice th:last-child,
+        .products-table-invoice td:last-child {
+            padding-right: 0;
+        }
+
+
+    .products-table-invoice th {
+        color: #6b7280;
+        font-weight: 500;
+        text-transform: none;
+    }
+
+    .products-table-invoice .product-item-name {
+        color: #1f2937;
+        font-weight: 500;
+    }
+
+    .products-table-invoice .product-item-variant {
+        font-size: 12px;
+        color: #6b7280;
+    }
+
+
+    .products-table-invoice .text-center {
+        text-align: center;
+    }
+
+    .products-table-invoice .text-right {
+        text-align: right;
+    }
+
+.invoice-summary {
+    margin-top: 10px; /* Khoảng cách với bảng sản phẩm */
+    padding-top: 20px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+    .summary-row:last-child {
+        margin-bottom: 0;
+    }
+
+.summary-label {
+    color: #6b7280;
+}
+
+.summary-value {
+    color: #1f2937;
+    font-weight: 500;
+}
+
+.summary-row.total-row .summary-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.summary-row.total-row .grand-total-invoice {
+    font-size: 18px;
+    font-weight: 700;
+    color: #16a34a; /* Màu xanh lá cho tổng tiền */
+}
+
+.invoice-shipping-billing {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding-top: 25px;
+    border-top: 1px solid #e5e7eb;
+    margin-top: 20px;
+}
+
+.address-column, .notes-column {
+    flex: 1;
+    min-width: 250px; /* Đảm bảo không quá hẹp */
+}
+
+    .address-column p, .notes-column p {
+        font-size: 14px;
+        color: #374151;
+        margin-bottom: 5px;
+        line-height: 1.5;
+    }
+
+    .address-column .column-title, .notes-column .column-title {
+        font-size: 15px;
+        font-weight: 600;
+        color: #111827;
+        margin-bottom: 10px;
+    }
+
+.invoice-actions {
+    text-align: center;
+    padding-top: 25px;
+    border-top: 1px solid #e5e7eb;
+    margin-top: 20px;
+}
+    /* Sử dụng lại class .btn-action, .btn-primary-custom, .btn-secondary-custom từ CSS trang trạng thái */
+    .invoice-actions .btn-action {
+        display: inline-block; /* Cho nút nằm trên 1 hàng nếu đủ chỗ */
+        width: auto; /* Tự động co dãn */
+        padding: 10px 25px; /* Điều chỉnh padding nút */
+        margin: 0 5px;
+    }
+
+
+.invoice-footer {
+    background-color: #f9fafb;
+    text-align: center;
+    padding: 20px 35px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-top: 1px solid #e5e7eb;
+}
+
+    .invoice-footer p {
+        font-size: 13px;
+        color: #6b7280;
+        margin-bottom: 5px;
+        line-height: 1.5;
+    }
+
+        .invoice-footer p:last-child {
+            margin-bottom: 0;
+        }
+
+/* Mainmenu area (nếu bạn vẫn dùng layout có menu) */
+.mainmenu-area {
+    background-color: #1f2937; /* Xám đậm cho menu */
+    border-bottom: 3px solid #22c55e; /* Border xanh lá */
+}
+
+    .mainmenu-area .nav > li > a {
+        color: #e5e7eb; /* Chữ xám nhạt */
+        font-weight: 500;
+        padding: 15px 20px;
+        text-transform: uppercase;
+        font-size: 13px;
+    }
+
+        .mainmenu-area .nav > li.active > a,
+        .mainmenu-area .nav > li > a:hover {
+            background-color: #22c55e; /* Nền xanh lá khi active/hover */
+            color: #fff;
+        }
+
+/* Bỏ style mặc định của table trong email-container cũ nếu không dùng cấu trúc đó nữa */
+table.email-container {
+    display: none;
+}
+/* ... CSS đã có ... */
+
+/* CSS cho Trang Lịch Sử Đơn Hàng (LichSuHD.cshtml) */
+
+/* Tiêu đề trang nếu dùng layout không có mainmenu-area và product-big-title-area */
+.page-title-standalone {
+    background-color: #f8f9fa; /* Nền xám nhạt */
+    padding: 20px 0;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+    .page-title-standalone h2 {
+        font-size: 24px;
+        font-weight: 600;
+        color: #16a34a; /* Màu xanh lá */
+        text-align: center;
+        margin: 0;
+    }
+
+.invoice-header.simple-page-header {
+    background: none;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 20px 30px;
+    text-align: left;
+}
+
+    .invoice-header.simple-page-header h1 {
+        font-size: 22px;
+        color: #111827;
+        font-weight: 600;
+    }
+
+
+.history-table {
+    margin-top: 10px;
+}
+
+    .history-table th, .history-table td {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        vertical-align: middle; /* Căn giữa theo chiều dọc */
+        font-size: 13.5px; /* Chỉnh font cho bảng */
+    }
+
+    .history-table th {
+        font-weight: 500; /* Giảm độ đậm của header bảng */
+        background-color: #f9fafb; /* Nền rất nhạt cho header */
+    }
+
+    .history-table td strong { /* Cho mã ĐH */
+        font-weight: 600;
+        color: #16a34a; /* Màu xanh lá */
+    }
+
+.status-badge {
+    padding: 5px 10px; /* Tăng padding */
+    border-radius: 15px; /* Bo tròn hơn */
+    font-size: 11.5px; /* Nhỏ hơn chút */
+    font-weight: 500; /* Vừa phải */
+    color: #fff;
+    min-width: 110px;
+    display: inline-block;
+    text-align: center;
+    text-transform: uppercase; /* Viết hoa trạng thái */
+    letter-spacing: 0.5px;
+}
+
+    /* Màu cho từng trạng thái (MaTT) - bạn cần đảm bảo MaTT và TenTrangThai trong Model.HoaDon */
+    .status-badge.status-0 {
+        background-color: #6b7280;
+    }
+    /* Chờ thanh toán (nếu có) hoặc trạng thái mới */
+    .status-badge.status-1 {
+        background-color: #f59e0b;
+    }
+    /* Chờ xác nhận - Amber */
+    .status-badge.status-2 {
+        background-color: #3b82f6;
+    }
+    /* Đã xác nhận - Blue */
+    .status-badge.status-3 {
+        background-color: #8b5cf6;
+    }
+    /* Đang giao - Violet */
+    .status-badge.status-4 {
+        background-color: #16a34a;
+    }
+    /* Hoàn thành/Đã giao - Green */
+    .status-badge.status-5 {
+        background-color: #ef4444;
+    }
+/* Đã hủy - Red */
+
+
+.payment-status {
+    font-size: 12px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+    .payment-status.status-unpaid {
+        background-color: #fef3c7; /* Nền vàng nhạt */
+        color: #b45309; /* Chữ vàng đậm */
+    }
+
+    .payment-status.status-paid {
+        background-color: #dcfce7; /* Nền xanh lá nhạt */
+        color: #166534; /* Chữ xanh lá đậm */
+    }
+
+.action-buttons .btn-action-table {
+    font-size: 12.5px;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 6px 12px; /* Chỉnh padding nút nhỏ hơn */
+    border: 1px solid transparent;
+    border-radius: 5px;
+    transition: all 0.2s ease-in-out;
+    margin: 0 3px; /* Khoảng cách giữa các nút */
+    min-width: 70px; /* Chiều rộng tối thiểu */
+    text-align: center;
+}
+
+    .action-buttons .btn-action-table i.fa {
+        margin-right: 4px;
+    }
+
+.action-buttons .btn-view {
+    background-color: #22c55e; /* Xanh lá */
+    color: white;
+    border-color: #22c55e;
+}
+
+    .action-buttons .btn-view:hover {
+        background-color: #16a34a;
+        border-color: #16a34a;
+    }
+
+.action-buttons .btn-cancel {
+    background-color: #ef4444; /* Đỏ */
+    color: white;
+    border-color: #ef4444;
+}
+
+    .action-buttons .btn-cancel:hover {
+        background-color: #dc2626;
+        border-color: #dc2626;
+    }
+
+.table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto; /* Cho phép cuộn ngang */
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Pagination Styles (Nếu bạn thêm Pager) */
+.pagination-container {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    border-radius: .25rem;
+}
+
+.page-item .page-link {
+    position: relative;
+    display: block;
+    padding: .5rem .75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #22c55e; /* Màu xanh lá */
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    text-decoration: none;
+}
+
+.page-item:first-child .page-link {
+    margin-left: 0;
+    border-top-left-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+}
+
+.page-item:last-child .page-link {
+    border-top-right-radius: .25rem;
+    border-bottom-right-radius: .25rem;
+}
+
+.page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: #22c55e; /* Nền xanh lá khi active */
+    border-color: #22c55e;
+}
+
+.page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+    cursor: auto;
+    background-color: #fff;
+    border-color: #dee2e6;
+}
+
+.page-item .page-link:hover {
+    z-index: 2;
+    color: #16a34a;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.empty-history {
+    text-align: center;
+    padding: 40px 20px;
+    color: #6b7280;
+}
+
+    .empty-history .empty-icon {
+        font-size: 48px; /* Icon to hơn */
+        color: #d1d5db; /* Màu xám nhạt */
+        margin-bottom: 20px;
+    }
+
+    .empty-history p {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+/* ----- Đảm bảo các màu này đã được định nghĩa đúng ----- */
+
+/* Main Menu Area (Nếu bạn giữ lại và dùng _Layout.cshtml) */
+.mainmenu-area {
+    background-color: #2c3e50; /* Xám đậm hoặc một màu tối khác */
+    border-bottom: 3px solid #22c55e; /* Border xanh lá */
+}
+
+    .mainmenu-area .nav > li > a {
+        color: #ecf0f1; /* Chữ xám rất nhạt */
+        font-weight: 500;
+        padding: 15px 20px;
+        text-transform: uppercase;
+        font-size: 13px;
+    }
+
+        .mainmenu-area .nav > li.active > a,
+        .mainmenu-area .nav > li > a:hover {
+            background-color: #22c55e; /* Nền xanh lá khi active/hover */
+            color: #fff;
+        }
+
+/* Product Big Title Area (Nếu bạn giữ lại và dùng _Layout.cshtml) */
+.product-big-title-area {
+    background: #f8f9fa; /* Nền xám rất nhạt */
+    padding: 25px 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+    .product-big-title-area .product-bit-title h2 {
+        font-size: 28px;
+        font-weight: 600;
+        color: #16a34a; /* Chữ tiêu đề màu xanh lá đậm */
+        margin: 0;
+    }
+
+/* Container và Card chung (đã có từ trước) */
+.invoice-page-container {
+    /* display: flex; ... */
+    /* padding: 20px; ... */
+}
+
+.invoice-card {
+    /* background-color: #fff; ... */
+    /* max-width: 1000px; ... */
+}
+
+.invoice-header { /* Header của card nếu dùng _OrderConfirmationLayout.cshtml */
+    /* background: linear-gradient(135deg, #22c55e, #16a34a); ... */
+}
+
+.invoice-details {
+    /* padding: 25px 30px; ... */
+}
+
+.invoice-footer {
+    /* background-color: #f9fafb; ... */
+}
+
+/* Bảng Lịch Sử */
+.products-table-invoice.history-table {
+    margin-top: 10px;
+    border: 1px solid #e5e7eb; /* Thêm border cho bảng */
+}
+
+    .products-table-invoice.history-table th,
+    .products-table-invoice.history-table td {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        vertical-align: middle;
+        font-size: 13.5px;
+        border-left: 1px solid #e5e7eb; /* Đường kẻ dọc */
+    }
+
+        .products-table-invoice.history-table th:first-child,
+        .products-table-invoice.history-table td:first-child {
+            border-left: none;
+        }
+
+    .products-table-invoice.history-table th {
+        font-weight: 500;
+        background-color: #f9fafb;
+        color: #374151; /* Màu chữ header bảng */
+    }
+
+    .products-table-invoice.history-table td strong { /* Mã ĐH */
+        font-weight: 600;
+        color: #16a34a; /* Màu xanh lá đậm */
+    }
+
+/* Trạng thái đơn hàng (status-badge) - Đảm bảo các màu này đúng */
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 11.5px;
+    font-weight: 500;
+    color: #fff;
+    min-width: 110px;
+    display: inline-block;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+    .status-badge.status-0 {
+        background-color: #6b7280;
+        color: white;
+    }
+    /* Mặc định/Không xác định - Xám */
+    .status-badge.status-1 {
+        background-color: #f59e0b;
+        color: white;
+    }
+    /* Chờ xác nhận/Chưa duyệt - Vàng Cam */
+    .status-badge.status-2 {
+        background-color: #3b82f6;
+        color: white;
+    }
+    /* Đã xác nhận/Đã duyệt - Xanh dương */
+    .status-badge.status-3 {
+        background-color: #8b5cf6;
+        color: white;
+    }
+    /* Đang giao - Tím */
+    .status-badge.status-4 {
+        background-color: #16a34a;
+        color: white;
+    }
+    /* Hoàn thành - Xanh lá đậm */
+    .status-badge.status-5 {
+        background-color: #ef4444;
+        color: white;
+    }
+/* Đã hủy - Đỏ */
+
+/* Trạng thái thanh toán */
+.payment-status {
+    font-size: 12px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+    .payment-status.status-unpaid {
+        background-color: #fef3c7; /* Nền vàng nhạt */
+        color: #b45309; /* Chữ vàng đậm */
+    }
+
+    .payment-status.status-paid {
+        background-color: #dcfce7; /* Nền xanh lá nhạt */
+        color: #166534; /* Chữ xanh lá đậm */
+    }
+
+/* Nút hành động trong bảng */
+.action-buttons .btn-action-table {
+    font-size: 12.5px;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 6px 12px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    transition: all 0.2s ease-in-out;
+    margin: 0 3px;
+    min-width: 70px;
+    text-align: center;
+    color: white; /* Chữ trắng cho các nút có nền màu */
+}
+
+    .action-buttons .btn-action-table i.fa {
+        margin-right: 4px;
+    }
+
+.action-buttons .btn-view {
+    background-color: #22c55e; /* Xanh lá */
+    border-color: #22c55e;
+}
+
+    .action-buttons .btn-view:hover {
+        background-color: #16a34a;
+        border-color: #16a34a;
+    }
+
+.action-buttons .btn-cancel {
+    background-color: #ef4444; /* Đỏ */
+    border-color: #ef4444;
+}
+
+    .action-buttons .btn-cancel:hover {
+        background-color: #dc2626;
+        border-color: #dc2626;
+    }
+
+.action-buttons .btn-reorder {
+    background-color: #0ea5e9; /* Xanh dương sáng cho "Đặt lại" */
+    border-color: #0ea5e9;
+}
+
+    .action-buttons .btn-reorder:hover {
+        background-color: #0284c7;
+        border-color: #0284c7;
+    }
+
+
+.btn-primary-custom { /* (Nút "Bắt đầu mua sắm") */
+    background-color: #22c55e;
+    color: #fff;
+    border-color: #22c55e;
+}
+
+    .btn-primary-custom:hover {
+        background-color: #16a34a;
+        border-color: #16a34a;
+    }
+
+.mainmenu-area {
+    background-color: #166534; /* Nền xanh lá đậm (thay vì #1f2937 hoặc #333) */
+    border-bottom: 3px solid #22c55e; /* Border xanh lá tươi hơn */
+    font-family: 'Montserrat', sans-serif; /* Đảm bảo font chữ nhất quán */
+}
+
+    .mainmenu-area .container {
+        /* max-width: 1170px; */ /* Hoặc giá trị container bạn hay dùng */
+        /* margin: 0 auto; */ /* Đã có sẵn trong bootstrap container */
+    }
+
+    .mainmenu-area .navbar-header .navbar-toggle {
+        border-color: #22c55e; /* Màu xanh lá cho border nút toggle */
+        margin-top: 12px;
+        margin-bottom: 12px;
+    }
+
+        .mainmenu-area .navbar-header .navbar-toggle .icon-bar {
+            background-color: #ffffff; /* Icon bar màu trắng trên nền xanh */
+        }
+
+        .mainmenu-area .navbar-header .navbar-toggle:hover,
+        .mainmenu-area .navbar-header .navbar-toggle:focus {
+            background-color: #155724; /* Nền xanh lá đậm hơn chút khi hover nút toggle */
+        }
+
+    .mainmenu-area .nav > li > a {
+        color: #d1fae5; /* Chữ màu xanh lá rất nhạt (gần trắng) */
+        font-weight: 500; /* Hoặc 600 nếu muốn đậm hơn */
+        padding: 15px 20px;
+        text-transform: uppercase;
+        font-size: 13px;
+        transition: background-color 0.3s ease, color 0.3s ease; /* Hiệu ứng chuyển màu mượt */
+    }
+
+        .mainmenu-area .nav > li > a:hover,
+        .mainmenu-area .nav > li > a:focus {
+            background-color: #22c55e; /* Nền xanh lá tươi khi hover/focus */
+            color: #ffffff !important; /* Chữ trắng hoàn toàn */
+        }
+
+    .mainmenu-area .nav > li.active > a {
+        background-color: #22c55e; /* Nền xanh lá tươi cho mục active */
+        color: #ffffff !important; /* Chữ trắng hoàn toàn */
+        position: relative; /* Để tạo hiệu ứng gạch chân nếu muốn */
+    }
+
+        /* Tùy chọn: Thêm gạch chân cho mục active (giống nhiều menu hiện đại) */
+        .mainmenu-area .nav > li.active > a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px; /* Độ dày gạch chân */
+            background-color: #ffffff; /* Màu trắng cho gạch chân trên nền xanh */
+        }
+
+/* CSS cho product-big-title-area (nếu bạn muốn nó cũng có tông xanh lá) */
+.product-big-title-area {
+    background: #f0fdf4; /* Nền xanh lá rất rất nhạt */
+    padding: 25px 0;
+    border-bottom: 1px solid #a7f3d0; /* Border xanh lá nhạt */
+}
+
+.product-bit-title h2 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #16a34a; /* Chữ tiêu đề màu xanh lá đậm */
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+/* Container cho menu dọc */
+.account-menu-vertical {
+    border: 1px solid #ddd; /* Viền nhẹ giống hình */
+    border-radius: 4px;
+    background-color: #fff;
+    margin-bottom: 20px; /* Khoảng cách với các phần tử khác */
+}
+
+    .account-menu-vertical ul {
+        list-style: none; /* Bỏ dấu chấm mặc định của list */
+        padding: 0;
+        margin: 0;
+    }
+
+        .account-menu-vertical ul li {
+            border-bottom: 1px solid #eee; /* Đường kẻ phân cách giữa các mục */
+        }
+
+            .account-menu-vertical ul li:last-child {
+                border-bottom: none; /* Bỏ đường kẻ ở mục cuối cùng */
+            }
+
+            .account-menu-vertical ul li a {
+                display: block; /* Khiến toàn bộ khu vực li có thể click được */
+                padding: 12px 15px; /* Padding cho text */
+                text-decoration: none; /* Bỏ gạch chân link */
+                color: #333; /* Màu chữ mặc định */
+                font-size: 14px;
+                transition: background-color 0.3s ease, color 0.3s ease; /* Hiệu ứng chuyển động mượt mà */
+            }
+
+                .account-menu-vertical ul li a i {
+                    margin-right: 10px; /* Khoảng cách giữa icon và text */
+                    color: #666; /* Màu icon mặc định */
+                }
+
+                /* Hover state */
+                .account-menu-vertical ul li a:hover,
+                .account-menu-vertical ul li.active-menu a {
+                    background-color: #28a745; /* Màu xanh lá cây cho active/hover */
+                    color: #fff; /* Màu chữ trắng khi active/hover */
+                }
+
+                    .account-menu-vertical ul li a:hover i,
+                    .account-menu-vertical ul li.active-menu a i {
+                        color: #fff; /* Màu icon trắng khi active/hover */
+                    }
+
+    /* Kiểu cho đường HR */
+    .account-menu-vertical hr {
+        border-top: 1px solid #eee;
+        margin: 5px 0;
+    }

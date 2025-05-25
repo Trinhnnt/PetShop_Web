@@ -1,0 +1,151 @@
+@{
+    ViewData["Title"] = "Chi Tiết Hóa Đơn #" + ViewBag.HD?.MaHD; // Lấy MaHD từ ViewBag
+    Layout = "~/Views/Shared/_OrderConfirmationLayout.cshtml"; // Sử dụng layout đã tạo
+
+    HoaDon HD = ViewBag.HD as HoaDon;
+    List<CTHD> listcthd = ViewBag.CTHD as List<CTHD> ?? new List<CTHD>();
+    KhachHang KH = ViewBag.KhachHang as KhachHang; // Giả sử bạn có thông tin khách hàng
+
+    long tongTienSanPham = 0;
+    foreach (var item in listcthd)
+    {
+        if (item != null && item.ThanhTien.HasValue)
+        {
+            tongTienSanPham += item.ThanhTien.Value;
+        }
+    }
+ 
+
+}
+
+
+<div class="mainmenu-area">
+    <div class="container">
+        <div class="row">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+                    <li><a href="@Url.Action("ThongTinTK", "TaiKhoan")">Thông tin cá nhân</a></li>
+                    <li class="active"><a href="@Url.Action("LichSuHD", "HoaDon")">Lịch sử hóa đơn</a></li>
+                    <li><a href="@Url.Action("DSSPMua", "DSSPMua")">Sản phẩm đã mua</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="invoice-page-container">
+    <div class="invoice-card">
+        <div class="invoice-header">
+            <div class="shop-logo-invoice">SOASHOP</div>
+            <h1>Hóa Đơn Mua Hàng</h1>
+            <p>Cảm ơn bạn đã mua sắm tại cửa hàng của chúng tôi!</p>
+        </div>
+
+        <div class="invoice-meta-info">
+            <div class="meta-item">
+                <span>Mã Hóa Đơn:</span>
+              
+            </div>
+            <div class="meta-item">
+                <span>Ngày Lập:</span>
+                <strong>@(HD?.NgayLapHD.ToString("dd/MM/yyyy HH:mm") ?? "N/A")</strong>
+            </div>
+            @if (KH != null)
+            {
+                <div class="meta-item">
+                    <span>Khách Hàng:</span>
+                    <strong>@KH.TenKH</strong>
+                </div>
+                if (!string.IsNullOrEmpty(KH.Email))
+                {
+                    <div class="meta-item">
+                        <span>Email:</span>
+                        <strong>@KH.Email</strong>
+                    </div>
+                }
+                if (!string.IsNullOrEmpty(KH.SDT))
+                {
+                    <div class="meta-item">
+                        <span>Điện thoại:</span>
+                        <strong>@KH.SDT</strong>
+                    </div>
+                }
+            }
+            <div class="meta-item">
+                <span>Trạng thái:</span>
+             
+            </div>
+        </div>
+
+        <div class="invoice-details">
+            <h2 class="section-title-invoice">Chi Tiết Sản Phẩm</h2>
+            <table class="products-table-invoice">
+                <thead>
+                    <tr>
+                        <th>Sản phẩm</th>
+                        <th class="text-center">Số lượng</th>
+                        <th class="text-right">Đơn giá</th>
+                        <th class="text-right">Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in listcthd)
+                    {
+                        if (item != null)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="product-item-name">@item.TenSP</div>
+                                   
+                                </td>
+                                <td class="text-center">@item.SoLuong</td>
+                                <td class="text-right">@string.Format("{0:N0} đ", item.Gia)</td>
+                                <td class="text-right">@string.Format("{0:N0} đ", item.ThanhTien ?? 0)</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="invoice-summary">
+            <div class="summary-row">
+                <span class="summary-label">Tổng tiền sản phẩm:</span>
+                <span class="summary-value">@string.Format("{0:N0} đ", tongTienSanPham)</span>
+            </div>
+          
+            <div class="summary-row total-row">
+                <span class="summary-label">Tổng cộng thanh toán:</span>
+              
+            </div>
+        </div>
+
+        <div class="invoice-shipping-billing">
+            <div class="address-column">
+                <h3 class="column-title">Địa Chỉ Giao Hàng</h3>
+               
+                <p>@HD?.DiaChiGH</p>
+               
+            </div>
+           
+        </div>
+
+        <div class="invoice-actions">
+            <a href="@Url.Action("LichSuHD", "HoaDon")" class="btn-action btn-secondary-custom">Quay Lại Lịch Sử</a>
+            @* <button onclick="window.print()" class="btn-action btn-primary-custom">In Hóa Đơn</button> *@
+        </div>
+
+        <div class="invoice-footer">
+            <p>Nếu có bất kỳ thắc mắc nào về hóa đơn, vui lòng liên hệ bộ phận hỗ trợ của SOASHOP.</p>
+            <p>&copy; @DateTime.Now.Year SOASHOP - Chuyên cung cấp các sản phẩm cho thú cưng.</p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,73 @@
+﻿@{
+    ViewData["Title"] = ViewBag.Count == 1 ? "Đặt Hàng Thành Công" : "Đặt Hàng Không Thành Công";
+    Layout = "~/Views/Shared/_OrderConfirmationLayout.cshtml"; // Sử dụng layout đã tạo
+
+    bool success = ViewBag.Count == 1;
+    string maDonHang = ViewBag.MaDonHang as string;
+    string errorMessage = ViewBag.ErrorMessage as string;
+}
+
+<div class="order-status-page-container">
+    <div class="order-status-card">
+        <div class="status-card-header @(success ? "header-success" : "header-error")">
+            <div class="status-icon">
+                @if (success)
+                {
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                }
+                else
+                {
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                    </svg>
+                }
+            </div>
+        </div>
+
+        <div class="status-card-body">
+            <h1>@(success ? "Đặt hàng thành công!" : "Rất tiếc, đã có lỗi xảy ra!")</h1>
+
+            @if (success)
+            {
+                <p class="status-message">Cảm ơn bạn đã tin tưởng và mua sắm tại <strong>SOASHOP</strong>.</p>
+                if (!string.IsNullOrEmpty(maDonHang))
+                {
+                    <p class="order-id-message">Mã đơn hàng của bạn là: <span class="highlight-id">@maDonHang</span></p>
+                }
+                <p class="additional-info">Một email xác nhận chi tiết đơn hàng đã được gửi đến địa chỉ email của bạn (nếu bạn đã cung cấp).</p>
+                <p class="additional-info">Chúng tôi sẽ xử lý đơn hàng và giao đến bạn trong thời gian sớm nhất.</p>
+            }
+            else
+            {
+                <p class="status-message">Quá trình xử lý đơn hàng của bạn đã gặp sự cố.</p>
+                if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    <p class="error-detail">Chi tiết lỗi: @errorMessage</p>
+                }
+                <p class="additional-info">Vui lòng thử lại sau hoặc liên hệ với bộ phận hỗ trợ của chúng tôi để được trợ giúp.</p>
+            }
+
+            <div class="status-actions">
+                <a href="@Url.Action("Index", "Home")" class="btn-action btn-primary-custom">Tiếp Tục Mua Sắm</a>
+                @if (success && !string.IsNullOrEmpty(maDonHang))
+                {
+                    // Ví dụ: Link đến trang chi tiết đơn hàng nếu có
+                    // <a href="@Url.Action("Details", "OrderHistory", new { id = maDonHang })" class="btn-action btn-secondary-custom">Xem Đơn Hàng</a>
+                }
+                else if (!success)
+                {
+                    <a href="@Url.Action("Cart", "GioHang")" class="btn-action btn-secondary-custom">Quay Lại Giỏ Hàng</a>
+                }
+            </div>
+        </div>
+        <div class="status-card-footer">
+            <p>&copy; @DateTime.Now.Year SOASHOP - Đồng hành cùng thú cưng của bạn.</p>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+@* Không có script cụ thể cho trang này, nhưng section vẫn cần để layout không báo lỗi *@
+}

@@ -1,0 +1,447 @@
+@{
+    ViewData["Title"] = "Giỏ hàng";
+    List<object> ListSP = ViewData["ListSP"] as List<object>;
+    List<KhuyenMai> ListKM = ViewData["ListKM"] as List<KhuyenMai>;
+    long SoLuong = 0;
+    long Gia = 0;
+    long ThanhTien = 0;
+    long TongTien = 0;
+}
+
+<style>
+    /* Màu sắc chính */
+    :root {
+        --primary-color: #3a6ea5;
+        --secondary-color: #f8f9fa;
+        --accent-color: #6c757d;
+        --border-color: #e9ecef;
+        --success-color: #28a745;
+        --text-color: #343a40;
+        --light-text: #6c757d;
+        --total-header-bg: #2c3e50;
+    }
+
+    /* Cải thiện thanh menu */
+    .mainmenu-area {
+        background-color: var(--primary-color);
+        padding: 15px 0;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .navbar-nav li a {
+        color: white !important;
+        font-weight: 500;
+        padding: 12px 18px;
+        transition: all 0.3s ease;
+    }
+
+        .navbar-nav li a:hover {
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 4px;
+        }
+
+    /* Tiêu đề trang */
+    .product-big-title-area {
+        background-color: var(--secondary-color);
+        padding: 40px 0;
+        margin-bottom: 30px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .product-bit-title h2 {
+        font-size: 32px;
+        font-weight: 600;
+        color: var(--primary-color);
+        margin: 0;
+    }
+
+    /* Bảng giỏ hàng */
+    .shop_table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0,0,0,0.05);
+        margin-bottom: 40px;
+    }
+
+        /* Tiêu đề bảng với màu gradient */
+        .shop_table thead {
+            background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+        }
+
+        .shop_table th {
+            padding: 18px 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 16px;
+            color: #212529;
+        }
+
+        .shop_table td {
+            padding: 20px 15px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+            font-size: 15px;
+        }
+
+        .shop_table tbody tr:hover {
+            background-color: rgba(0,0,0,0.01);
+        }
+
+        .shop_table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+    /* Hình ảnh sản phẩm */
+    .product-thumbnail img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 6px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+
+        .product-thumbnail img:hover {
+            transform: scale(1.05);
+        }
+
+    /* Tên sản phẩm */
+    .product-name a {
+        color: var(--text-color);
+        font-weight: 500;
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+
+        .product-name a:hover {
+            color: var(--primary-color);
+        }
+
+    /* Giá và số lượng */
+    .product-price .amount,
+    .product-subtotal .amount {
+        font-weight: 600;
+        color: var(--text-color);
+    }
+
+    .quantity input {
+        width: 70px;
+        height: 45px;
+        padding: 5px 10px;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        text-align: center;
+        font-size: 16px;
+    }
+
+    /* Nút xóa */
+    .product-remove a {
+        display: inline-block;
+        width: 32px;
+        height: 32px;
+        line-height: 30px;
+        text-align: center;
+        border-radius: 50%;
+        background-color: #f8f9fa;
+        color: #dc3545;
+        font-size: 18px;
+        font-weight: bold;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+        .product-remove a:hover {
+            background-color: #dc3545;
+            color: white;
+        }
+
+    /* Phần khuyến mãi và tổng tiền */
+    .actions {
+        background-color: var(--secondary-color) !important;
+        padding: 25px !important;
+    }
+
+    .coupon {
+        margin-bottom: 20px;
+    }
+
+        .coupon label {
+            font-weight: 600;
+            color: var(--text-color);
+            font-size: 16px;
+        }
+
+        .coupon select {
+            padding: 10px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            min-width: 350px;
+            font-size: 14px;
+        }
+
+    /* Bảng tổng tiền */
+    .cart_totals {
+        margin-bottom: 25px;
+    }
+
+        .cart_totals table {
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .cart_totals th,
+        .cart_totals td {
+            padding: 15px;
+        }
+
+        /* Thanh tiêu đề tổng tiền với gradient */
+        .cart_totals th {
+            font-weight: 600;
+            color: #212529;
+            background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+            font-size: 16px;
+        }
+
+        .cart_totals td {
+            background-color: white;
+        }
+
+        .cart_totals .amount {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 18px;
+        }
+
+    /* Nút xác nhận */
+    .checkout-button {
+        background: linear-gradient(135deg, #28a745 0%, #218838 100%) !important;
+        color: white !important;
+        border: none;
+        padding: 14px 28px !important;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        float: right;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+        .checkout-button:hover {
+            background: linear-gradient(135deg, #218838 0%, #1e7e34 100%) !important;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            transform: translateY(-1px);
+        }
+</style>
+
+<div class="mainmenu-area">
+    <div class="container">
+        <div class="row">
+            <div class="navbar-header">
+                <button type="button"
+                        class="navbar-toggle"
+                        data-toggle="collapse"
+                        data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/Home/Index">Trang chủ</a></li>
+                    <li>
+                        <a href="/SanPham/Products">Sản phẩm</a>
+                    </li>
+                    <li>
+                        <a href="/TinTuc/DanhSachTinTuc">Tin tức</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End mainmenu area -->
+
+<div class="product-big-title-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-bit-title text-center">
+                    <h2>Giỏ hàng</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Page title area -->
+
+<div class="single-product-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-content-right">
+                    <div class="woocommerce">
+                        <form method="post" action="/HoaDon/XacNhanHD">
+                            <table cellspacing="0"
+                                   class="shop_table cart">
+                                <thead>
+                                    <tr>
+                                        <th class="product-thumbnail">
+                                            Hình ảnh
+                                        </th>
+                                        <th class="product-name">
+                                            Sản phẩm
+                                        </th>
+                                        <th class="product-price">
+                                            Giá
+                                        </th>
+                                        <th class="product-quantity">
+                                            Số lượng
+                                        </th>
+                                        <th class="product-subtotal">
+                                            Tổng tiền
+                                        </th>
+                                        <th class="product-remove">
+                                            Xóa
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var ctsp in ListSP)
+                                    {
+                                        <tr class="cart_item">
+                                            <td class="product-thumbnail">
+                                                <input name="MaTTSP[]" style="display : none" value="@ctsp.GetType().GetProperty("MaTTSP").GetValue(ctsp, null).ToString()" />
+                                                <a href="/SanPham/ChiTietSP?t=@ctsp.GetType().GetProperty("MaTTSP").GetValue(ctsp, null).ToString()&l=@ctsp.GetType().GetProperty("MaLoaiSP").GetValue(ctsp, null).ToString()">
+                                                    <img width="145"
+                                                         height="145"
+                                                         alt="poster_1_up"
+                                                         class="shop_thumbnail"
+                                                         src="@ctsp.GetType().GetProperty("HinhAnh").GetValue(ctsp, null).ToString()" />
+                                                </a>
+                                            </td>
+
+                                            <td class="product-name">
+                                                <a href="/SanPham/ChiTietSP?t=@ctsp.GetType().GetProperty("MaTTSP").GetValue(ctsp, null).ToString()&l=@ctsp.GetType().GetProperty("MaLoaiSP").GetValue(ctsp, null).ToString()">
+                                                    @ctsp.GetType().GetProperty("TenSP").GetValue(ctsp, null).ToString()
+                                                </a>
+                                                <div class="product-specs">
+                                                    <small>
+                                                        Màu: @ctsp.GetType().GetProperty("MauSac").GetValue(ctsp, null).ToString() |
+                                                        Độ tuổi: @ctsp.GetType().GetProperty("DoTuoi").GetValue(ctsp, null).ToString() |
+                                                        Xuất xứ: @ctsp.GetType().GetProperty("XuatXu").GetValue(ctsp, null).ToString()
+                                                    </small>
+                                                </div>
+                                                <input name="TenSP[]" style="display : none"
+                                                       value="@ctsp.GetType().GetProperty("TenSP").GetValue(ctsp, null).ToString()-
+                                                               @ctsp.GetType().GetProperty("MauSac").GetValue(ctsp, null).ToString()-
+                                                               @ctsp.GetType().GetProperty("DoTuoi").GetValue(ctsp, null).ToString()-
+                                                               @ctsp.GetType().GetProperty("XuatXu").GetValue(ctsp, null).ToString()" />
+                                            </td>
+
+                                            @*----Gia-----*@
+                                            <td class="product-price">
+                                                @{
+                                                    if (long.Parse(ctsp.GetType().GetProperty("GiaKM").GetValue(ctsp, null).ToString()) > 0)
+                                                    {
+                                                        Gia = long.Parse(ctsp.GetType().GetProperty("GiaKM").GetValue(ctsp, null).ToString());
+                                                    }
+                                                    else
+                                                    {
+                                                        Gia = long.Parse(ctsp.GetType().GetProperty("Gia").GetValue(ctsp, null).ToString());
+                                                    }
+                                                }
+                                                <span class="amount">
+                                                    @string.Format("{0:0,0 đ}", Gia)
+                                                </span>
+                                                <input name="Gia[]" style="display : none" value="@Gia" />
+                                            </td>
+
+                                            <td class="product-quantity">
+                                                <div class="quantity buttons_added">
+                                                    @{
+                                                        SoLuong = long.Parse(ctsp.GetType().GetProperty("SoLuong").GetValue(ctsp, null).ToString());
+                                                    }
+                                                    <input type="number"
+                                                           size="4"
+                                                           class="input-text qty text"
+                                                           title="Qty"
+                                                           value="@ctsp.GetType().GetProperty("SoLuong").GetValue(ctsp, null).ToString()"
+                                                           min="0"
+                                                           step="1" name="SoLuong[]" />
+                                                </div>
+                                            </td>
+
+                                            <td class="product-subtotal">
+                                                @{
+                                                    ThanhTien = Gia * SoLuong;
+                                                    TongTien += ThanhTien;
+                                                }
+
+                                                <input name="ThanhTien[]" style="display : none" value="@ThanhTien" />
+                                                <span class="amount">@string.Format("{0:0,0 đ}", ThanhTien)</span>
+                                            </td>
+                                            <td class="product-remove">
+                                                <a title="Xóa sản phẩm này"
+                                                   class="remove"
+                                                   href="/GioHang/DeleteCart?id=@ctsp.GetType().GetProperty("MaTTSP").GetValue(ctsp, null).ToString()&kh=@ctsp.GetType().GetProperty("MaKH").GetValue(ctsp, null).ToString()">×</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td class="actions" colspan="6">
+                                            <div class="coupon">
+                                                <label for="coupon_code">Khuyến mãi:</label>
+                                                <select name="MaKM"
+                                                        id="">
+                                                    @foreach (var km in ListKM)
+                                                    {
+                                                        <option value="@km.MaKM">
+                                                            Giảm @km.SoPTKM % - Từ @km.TuNgay.ToString("dd-MM-yyyy") - Đến @km.DenNgay.ToString("dd-MM-yyyy") - Cho đơn từ : @string.Format("{0:0,0 đ}", km.TTienToiThieu)
+                                                        </option>
+
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="cart-collaterals">
+                                                <div class="cart_totals">
+                                                    <table cellspacing="0">
+                                                        <tbody>
+                                                            <tr class="cart-subtotal">
+                                                                <th>Tổng tiền sản phẩm</th>
+                                                                <td>
+                                                                    <span class="amount">@string.Format("{0:0,0 đ}", TongTien)</span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <input type="submit"
+                                                   value="Xác nhận đơn hàng"
+                                                   name="proceed"
+                                                   class="checkout-button button alt wc-forward" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

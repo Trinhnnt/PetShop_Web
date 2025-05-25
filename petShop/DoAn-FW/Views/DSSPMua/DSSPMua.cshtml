@@ -1,0 +1,134 @@
+﻿@model List<object>
+@{
+    ViewData["Title"] = "Danh sách sản phẩm Mua";
+    List<object> ListSP = ViewData["ListSP"] as List<object>;
+    long SoLuong = 0;
+    long Gia = 0;
+}
+
+<div class="mainmenu-area">
+    <div class="container">
+        <div class="row">
+            <div class="navbar-header">
+                <button type="button"
+                        class="navbar-toggle"
+                        data-toggle="collapse"
+                        data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/Home/Index">Trang chủ</a>
+                    </li>
+                    <li>
+                        <a href="/TaiKhoan/ThongTinTK">Thông tin cá nhân</a>
+                    </li>
+                    <li>
+                        <a href="/HoaDon/LichSuHD">
+                            Quản lý đơn hàng cá nhân
+                        </a>
+                    </li>
+                    <li class="active"><a href="/DSSPMua/DSSPMua">Sản phẩm đã mua</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End mainmenu area -->
+
+<div class="product-big-title-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-bit-title text-center">
+                    <h2>Sản phẩm đã Mua</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Page title area -->
+
+<div class="single-product-area">
+    <div class="zigzag-bottom"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-content-right">
+                    <div class="woocommerce">
+                        <form method="post" action="/HoaDon/XacNhanHD">
+                            <table cellspacing="0" class="shop_table cart">
+                                <thead>
+                                    <tr>
+                                        <th class="product-thumbnail">Hình ảnh</th>
+                                        <th class="product-name">Sản phẩm</th>
+                                        <th class="product-price">Giá</th>
+                                        <th class="product-quantity">Số lượng</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var ctsp in ListSP)
+                                    {
+                                        <tr class="cart_item">
+                                            <td class="product-thumbnail">
+                                                <input name="MaTTSP[]" type="hidden" value="@ctsp.GetType().GetProperty("MaTTSP").GetValue(ctsp, null)" />
+                                                <a href="/SanPham/ChiTietSP?t=@ctsp.GetType().GetProperty("MaTTSP").GetValue(ctsp, null)&l=@ctsp.GetType().GetProperty("MaLoaiSP").GetValue(ctsp, null)">
+                                                    <img width="145" height="145" alt="Product Image"
+                                                         src="@ctsp.GetType().GetProperty("HinhAnh").GetValue(ctsp, null)" />
+                                                </a>
+                                            </td>
+
+                                            <td class="product-name">
+                                                <a href="/SanPham/ChiTietSP?t=@ctsp.GetType().GetProperty("MaTTSP").GetValue(ctsp, null)&l=@ctsp.GetType().GetProperty("MaLoaiSP").GetValue(ctsp, null)">
+                                                    @ctsp.GetType().GetProperty("TenSP").GetValue(ctsp, null)
+                                                </a>
+                                                <input name="TenSP[]" type="hidden"
+                                                       value="@ctsp.GetType().GetProperty("TenSP").GetValue(ctsp, null) + " -" +
+                                                @ctsp.GetType().GetProperty("MauSac").GetValue(ctsp, null) + "-" +
+                                                @ctsp.GetType().GetProperty("DoTuoi").GetValue(ctsp, null) + "-" +
+                                                @ctsp.GetType().GetProperty("XuatXu").GetValue(ctsp, null) />
+
+                                            </td>
+
+                                            <td class="product-price">
+                                                @* Lấy giá và kiểm tra giá khuyến mãi *@
+                                                @{
+                                                    if (long.TryParse(ctsp.GetType().GetProperty("GiaKM")?.GetValue(ctsp, null)?.ToString(), out long giaKM) && giaKM > 0)
+                                                    {
+                                                        Gia = giaKM;
+                                                    }
+                                                    else
+                                                    {
+                                                        Gia = long.TryParse(ctsp.GetType().GetProperty("Gia")?.GetValue(ctsp, null)?.ToString(), out long gia) ? gia : 0;
+                                                    }
+                                                }
+                                                <span class="amount">@string.Format("{0:0,0 đ}", Gia)</span>
+                                                <input name="Gia[]" type="hidden" value="@Gia" />
+                                            </td>
+
+                                            <td class="product-quantity">
+                                                <div class="quantity buttons_added">
+                                                    @{
+                                                        SoLuong = long.TryParse(ctsp.GetType().GetProperty("SoLuong")?.GetValue(ctsp, null)?.ToString(), out long soLuong) ? soLuong : 0;
+                                                    }
+                                                    <input type="number" size="4" class="input-text qty text"
+                                                           title="Qty" value="@SoLuong" min="0" step="1" name="SoLuong[]" />
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

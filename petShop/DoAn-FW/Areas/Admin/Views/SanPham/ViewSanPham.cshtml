@@ -1,0 +1,413 @@
+﻿
+@using Web_projectframeword_admin.Models;
+@model SanPham
+@{
+    List<LoaiSanPham> ListLoaiSP = new List<LoaiSanPham>();
+    ListLoaiSP = ViewBag.DSLSP as List<LoaiSanPham>;
+    List<ThuongHieu> ListTH = new List<ThuongHieu>();
+    ListTH = ViewBag.DSTH as List<ThuongHieu>;
+}
+
+
+<div class="content-wrapper" style="min-height: 639px;">
+    <form action="/Admin/SanPham/UpdateSanPham" method="post">
+        <section class="content-header">
+            <h1>
+                <i class="glyphicon glyphicon-phone"></i>Cập nhật sản phẩm
+            </h1>
+            <div class="breadcrumb">
+                <a class="btn btn-primary btn-sm" href="/Admin/SanPham/UpdateSanPham" role="button">
+                    <span class="glyphicon glyphicon-floppy-save"></span>
+                    <input type="submit" name="submit" value="Update" />
+                </a>
+                <a class="btn btn-primary btn-sm" href="/Admin/SanPham/LietKeSanPham" role="button">
+                    <span class="glyphicon glyphicon-remove do_nos"></span>Thoát
+                </a>
+            </div>
+        </section>
+        <section class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box" id="view">
+                        <div class="box-header with-border">
+                            <div class="box-body">
+                                <div class="col-md-8" style="border-right: ridge;">
+                                    <div class="form-group">
+
+                                        <label for="tenSP">Tên sản phẩm</label>
+                                        <input type="text" class="form-control" name="TENSP" style="width:100%" placeholder="Tên sản phẩm" value="@Model.TenSP">
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-6" style="padding-left: 0px;">
+                                                <div class="form-group">
+                                                    <Label for="maloaiSP">Loại sản phẩm</Label>
+                                                    <select name="MALOAISP" class="form-control">
+                                                        @{
+                                                            if (Model.MaLoaiSP == 1)
+                                                            {
+                                                                <option value="MALOAISP">[--Chọn loại sản phẩm--]</option>
+                                                                <option value="1" selected>Thức ăn cho chó</option>
+                                                                <option value="2">Thức ăn cho mèo</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="MALOAISP">[--Chọn loại sản phẩm--]</option>
+                                                                <option value="1">Thức ăn cho chó</option>
+                                                                <option value="2" selected>Thức ăn cho mèo</option>
+                                                            }
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" style="padding-right: 0px;">
+                                                <div class="form-group">
+                                                    <Label>Thương hiệu</Label>
+                                                    <select name="MATH" class="form-control">
+                                                        @{
+                                                            if (Model.MaTH == 1)
+                                                            {
+                                                                <option value="MATH">[--Chọn thương hiệu--]</option>
+                                                                <option value="1" selected>Royal Canin</option>
+                                                                <option value="2">Pedigree</option>
+                                                                <option value="3">Whiskas</option>
+                                                                <option value="4">Furminator</option>
+                                                                <option value="5">Catsan</option>
+                                                                <option value="6">Ferplast</option>
+                                                                <option value="7">Whimzees</option>
+                                                                <option value="8">Kong</option>
+                                                                <option value="9">Bio-Groom</option>
+                                                                <option value="10">Tetra</option>
+                                                            }
+                                                            else if (Model.MaTH == 2)
+                                                            {
+                                                                <option value="MATH">[--Chọn thương hiệu--]</option>
+                                                                <option value="1">Royal Canin</option>
+                                                                <option value="2" selected>Pedigree</option>
+                                                                <option value="3">Whiskas</option>
+                                                                <option value="4">Furminator</option>
+                                                                <option value="5">Catsan</option>
+                                                                <option value="6">Ferplast</option>
+                                                                <option value="7">Whimzees</option>
+                                                                <option value="8">Kong</option>
+                                                                <option value="9">Bio-Groom</option>
+                                                                <option value="10">Tetra</option>
+                                                            }
+                                                            else if (Model.MaTH == 3)
+                                                            {
+                                                                <option value="MATH">[--Chọn thương hiệu--]</option>
+                                                                <option value="1">Royal Canin</option>
+                                                                <option value="2">Pedigree</option>
+                                                                <option value="3" selected>Whiskas</option>
+                                                                <option value="4">Furminator</option>
+                                                                <option value="5">Catsan</option>
+                                                                <option value="6">Ferplast</option>
+                                                                <option value="7">Whimzees</option>
+                                                                <option value="8">Kong</option>
+                                                                <option value="9">Bio-Groom</option>
+                                                                <option value="10">Tetra</option>
+                                                            }
+                                                            else if (Model.MaTH == 4)
+                                                            {
+                                                                <option value="MATH">[--Chọn thương hiệu--]</option>
+                                                                <option value="1">Royal Canin</option>
+                                                                <option value="2">Pedigree</option>
+                                                                <option value="3">Whiskas</option>
+                                                                <option value="4" selected>Furminator</option>
+                                                                <option value="5">Catsan</option>
+                                                                <option value="6">Ferplast</option>
+                                                                <option value="7">Whimzees</option>
+                                                                <option value="8">Kong</option>
+                                                                <option value="9">Bio-Groom</option>
+                                                                <option value="10">Tetra</option>
+                                                            }
+                                                            else if (Model.MaTH == 5)
+                                                            {
+                                                                <option value="MATH">[--Chọn thương hiệu--]</option>
+                                                                <option value="1">Royal Canin</option>
+                                                                <option value="2">Pedigree</option>
+                                                                <option value="3">Whiskas</option>
+                                                                <option value="4">Furminator</option>
+                                                                <option value="5" selected>Catsan</option>
+                                                                <option value="6">Ferplast</option>
+                                                                <option value="7">Whimzees</option>
+                                                                <option value="8">Kong</option>
+                                                                <option value="9">Bio-Groom</option>
+                                                                <option value="10">Tetra</option>
+                                                            }
+                                                            else if (Model.MaTH == 6)
+                                                            {
+                                                                <option value="MATH">[--Chọn thương hiệu--]</option>
+                                                                <option value="1">Royal Canin</option>
+                                                                <option value="2">Pedigree</option>
+                                                                <option value="3">Whiskas</option>
+                                                                <option value="4">Furminator</option>
+                                                                <option value="5">Catsan</option>
+                                                                <option value="6" selected>Ferplast</option>
+                                                                <option value="7">Whimzees</option>
+                                                                <option value="8">Kong</option>
+                                                                <option value="9">Bio-Groom</option>
+                                                                <option value="10">Tetra</option>
+
+                                                            }
+                                                            else if (Model.MaTH == 7)
+                                                            {
+                                                                <option value="MATH">[--Chọn thương hiệu--]</option>
+                                                                <option value="1">Royal Canin</option>
+                                                                <option value="2">Pedigree</option>
+                                                                <option value="3">Whiskas</option>
+                                                                <option value="4">Furminator</option>
+                                                                <option value="5">Catsan</option>
+                                                                <option value="6">Ferplast</option>
+                                                                <option value="7" selected>Whimzees</option>
+                                                                <option value="8">Kong</option>
+                                                                <option value="9">Bio-Groom</option>
+                                                                <option value="10">Tetra</option>
+                                                            }
+                                                            else if (Model.MaTH == 8)
+                                                            {
+                                                                <option value="MATH">[--Chọn thương hiệu--]</option>
+                                                                <option value="1">Royal Canin</option>
+                                                                <option value="2">Pedigree</option>
+                                                                <option value="3">Whiskas</option>
+                                                                <option value="4">Furminator</option>
+                                                                <option value="5">Catsan</option>
+                                                                <option value="6">Ferplast</option>
+                                                                <option value="7">Whimzees</option>
+                                                                <option value="8" selected>Kong</option>
+                                                                <option value="9">Bio-Groom</option>
+                                                                <option value="10">Tetra</option>
+                                                            }
+                                                            else if (Model.MaTH == 9)
+                                                            {
+                                                                <option value="MATH">[--Chọn thương hiệu--]</option>
+                                                                <option value="1">Royal Canin</option>
+                                                                <option value="2">Pedigree</option>
+                                                                <option value="3">Whiskas</option>
+                                                                <option value="4">Furminator</option>
+                                                                <option value="5">Catsan</option>
+                                                                <option value="6">Ferplast</option>
+                                                                <option value="7">Whimzees</option>
+                                                                <option value="8">Kong</option>
+                                                                <option value="9" selected>Bio-Groom</option>
+                                                                <option value="10">Tetra</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="MATH">[--Chọn thương hiệu--]</option>
+                                                                <option value="1">Royal Canin</option>
+                                                                <option value="2">Pedigree</option>
+                                                                <option value="3">Whiskas</option>
+                                                                <option value="4">Furminator</option>
+                                                                <option value="5">Catsan</option>
+                                                                <option value="6">Ferplast</option>
+                                                                <option value="7">Whimzees</option>
+                                                                <option value="8">Kong</option>
+                                                                <option value="9">Bio-Groom</option>
+                                                                <option value="10" selected>Tetra</option>
+                                                            }
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+
+                                        <label for="hinhAnh">Hình ảnh sản phẩm</label>
+                                        <input type="text" class="form-control" name="HINHANH" style="width:100%" placeholder="đường link hình ảnh" value="@Model.HinhAnh" required>
+
+                                    </div>
+                                    <div class="row">
+                                        <span style="color: red; font-weight: 700; font-size: 18px;">Thông tin sản phẩm</span>
+                                        <div class="col-md-12" style="border-top:ridge; padding-top: 10px;">
+                                            <div class="col-md-6" style="padding-left: 0px;">
+                                                <div class="form-group">
+
+                                                    <label for="gia">Giá</label>
+                                                    <input name="GIA" class="form-control" type="number" value="@Model.Gia" min="0" step="5000">
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" style="padding-right: 0px;">
+                                                <div class="form-group">
+
+                                                    <label for="giaKM">Giá khuyến mãi</label>
+                                                    <input name="GIAKM" class="form-control" type="number" value="@Model.GiaKM" min="0" step="5000">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="col-md-6" style="padding-left: 0px;">
+                                                <div class="form-group">
+                                                    <label for="ram">Mã sản phẩm</label>
+                                                    <input readonly name="MATTSP" class="form-control" type="number" value="@Model.MaTTSP" min="0" max="256" step="1">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" style="padding-right: 0px;">
+
+                                                <label for="soLuong">Số lượng</label>
+                                                <input name="SOLUONG" class="form-control" type="number" value="@Model.SoLuong" min="0" step="1">
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="col-md-6" style="padding-left: 0px;">
+                                                <div class="form-group">
+
+                                                    <label for="mauSac">Màu sắc</label>
+                                                    <input name="MauSac" class="form-control" type="number" value="@Model.MauSac" min="0" max="256" step="1">
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" style="padding-right: 0px;">
+                                                <div class="form-group">
+
+                                                    <label for="khoiLuong">Khối lượng</label>
+                                                    <input name="KhoiLuong" class="form-control" type="number" value="@Model.KhoiLuong" min="0" max="1028" step="1">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="col-md-6" style="padding-left: 0px;">
+                                                <div class="form-group">
+
+                                                    <label for="doTuoi">Độ tuổi</label>
+                                                    <input name="DoTuoi" class="form-control" type="number" value="@Model.DoTuoi" min="0" max="100000" step="1">
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" style="padding-right: 0px;">
+                                                <div class="form-group">
+
+                                                    <label for="xuatXu">Xuất xứ</label>
+                                                    <input name="XuatXu" class="form-control" type="number" value="@Model.XuatXu" min="0" max="100" step="0.1">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="col-md-6" style="padding-left: 0px;">
+                                                <div class="form-group">
+
+                                                    <label for="kichThuoc">Kích thước</label>
+                                                    <input name="KichThuoc" class="form-control" type="text" value="@Model.KichThuoc">
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" style="padding-right: 0px;">
+                                                <div class="form-group">
+
+                                                    <label for="thanhPhan">Thành phần</label>
+                                                    <input name="ThanhPhan" class="form-control" type="text" value="@Model.ThanhPhan">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="col-md-6" style="padding-left: 0px;">
+                                                <div class="form-group">
+
+                                                    <label for="congDung">Công dụng</label>
+                                                    <input name="CongDung" class="form-control" type="text" value="@Model.CongDung">
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" style="padding-right: 0px;">
+                                                <div class="form-group">
+
+                                                    <label for="huongDanSD">Hướng dẫn sử dụng</label>
+                                                    <input name="HuongDanSD" class="form-control" type="text" value="@Model.HuongDanSD">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    </form>
+    <div class="col-md-4">
+        <span style="color: red; font-weight: 700; font-size: 18;">Loại sản phẩm</span>
+        <div class="col-md-12" style="border:ridge; padding-top: 10px;">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered" style="font-size: 14;">
+                    <thead>
+                        <tr>
+                            <th class="text-center">ID</th>
+                            <th>Tên Loại sản phẩm</th>
+                            <th class="text-center">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ int i = 0;}
+                        @foreach (var item in ListLoaiSP)
+                        {
+                            
+                            i++;
+                            <tr>
+                                <th class="text-center" style="font-weight: 300;">@i</th>
+                                <th style="font-weight: 300;">@item.TENLOAISP</th>
+                                <th class="text-center">
+                                    <a class="btn btn-danger btn-xs" onclick="return confirm('Xác nhận xóa Loại sản phẩm này ?')" href="/Admin/SanPham/DeleteLoaiSP?Id=@item.TENLOAISP" role="button">
+                                        <span class="glyphicon glyphicon-trash"></span>Xóa
+                                    </a>
+                                </th>
+                            </tr>                          
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <form action="/Admin/SanPham/InsertLoaiSP" method="get">
+                <input type="text" name="TENLOAISP">
+                <button class="btn btn-primary btn-sm">
+                    <span class="glyphicon glyphicon-plus"></span>Thêm
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-4" style="margin-top: 10;">
+        <span style="color: red; font-weight: 700; font-size: 18;">Thương hiệu</span>
+        <div class="col-md-12" style="border:ridge; padding-top: 10px;">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered" style="font-size: 14;">
+                    <thead>
+                        <tr>
+                            <th class="text-center">ID</th>
+                            <th>Tên Thương hiệu</th>
+                            <th class="text-center">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ int j = 0;}
+                        @foreach (var item in ListTH)
+                        {
+                            j++;
+                            <tr>
+                                <th class="text-center" style="font-weight: 300;">@j</th>
+                                <th style="font-weight: 300;">@item.TENTH</th>
+                                <th class="text-center">
+                                    <a class="btn btn-danger btn-xs" onclick="return confirm('Xác nhận xóa Loại sản phẩm này ?')" href="/Admin/SanPham/DeleteTH?Id=@item.TENTH" role="button">
+                                        <span class="glyphicon glyphicon-trash"></span>Xóa
+                                    </a>
+                                </th>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <form action="/Admin/SanPham/InsertTH" method="get">
+                <input type="text" name="TENTH">
+                <button class="btn btn-primary btn-sm">
+                    <span class="glyphicon glyphicon-plus"></span>Thêm
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+}
+
+
+

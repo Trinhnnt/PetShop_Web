@@ -1,0 +1,454 @@
+﻿@{
+    ViewData["Title"] = "Đăng nhập";
+}
+@* Import Roboto font *@
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+    body,
+    .login-box,
+    .form-control,
+    .form-group label,
+    .form-header,
+    button,
+    .btn,
+    input,
+    p,
+    h1, h2, h3, h4, h5, h6,
+    div,
+    a {
+        font-family: 'Roboto', sans-serif;
+    }
+    /* Màu sắc chính */
+    :root {
+        --primary-color: #3a6ea5;
+        --secondary-color: #f8f9fa;
+        --accent-color: #6c757d;
+        --border-color: #e9ecef;
+        --success-color: #28a745;
+        --text-color: #343a40;
+        --light-text: #6c757d;
+        --total-header-bg: #2c3e50;
+    }
+
+    /* Cải thiện thanh menu */
+    .mainmenu-area {
+        background-color: var(--primary-color);
+        padding: 15px 0;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .navbar-nav li a {
+        color: white !important;
+        font-weight: 500;
+        padding: 12px 18px;
+        transition: all 0.3s ease;
+        font-size: 15px; /* Đảm bảo kích thước font giống nhau */
+        line-height: 20px; /* Đảm bảo chiều cao dòng giống nhau */
+    }
+
+        .navbar-nav li a:hover {
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 4px;
+        }
+
+    /* Điều chỉnh kích thước icon-bar trong button toggle */
+    .navbar-toggle .icon-bar {
+        width: 22px;
+        height: 2px;
+        background-color: white;
+        display: block;
+        margin: 4px 0;
+    }
+
+    /* Đảm bảo padding của navbar-toggle giống nhau */
+    .navbar-toggle {
+        padding: 9px 10px;
+        margin-top: 8px;
+        margin-right: 15px;
+        margin-bottom: 8px;
+        background-color: transparent;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+</style>
+
+<div class="mainmenu-area">
+    <div class="container">
+        <div class="row">
+            <div class="navbar-header">
+                <button type="button"
+                        class="navbar-toggle"
+                        data-toggle="collapse"
+                        data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/Home/Index">Trang chủ</a></li>
+                    <li>
+                        <a href="/SanPham/Products">Sản phẩm</a>
+                    </li>
+                    <li>
+                        <a href="/TinTuc/DanhSachTinTuc">Tin tức</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End mainmenu area -->
+</div>
+<!-- End mainmenu area -->
+
+<div class="product-big-title-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-bit-title text-center">
+                    <h2>Đăng nhập để tham gia mua sắm tại SOASHOP</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Page title area -->
+
+<div class="single-product-area">
+    <div class="zigzag-bottom"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="login-box">
+                    <div class="login-icon">
+                        <i class="fa fa-user-circle"></i>
+                    </div>
+                    <h2 class="form-header">Đăng nhập</h2>
+                    <p class="login-subtitle">Chào mừng bạn đến với SOASHOP</p>
+                    <hr class="elegant-hr" />
+                    @if (ViewBag.check != null)
+                    {
+                        <div class="alert alert-danger">
+                            <i class="fa fa-exclamation-circle"></i> @ViewBag.check
+                        </div>
+                    }
+                    <form action="/TaiKhoan/KTDangNhap" method="post" class="dangnhap">
+                        <div class="form-group">
+                            <div class="floating-label-group">
+                                <input type="email"
+                                       class="form-control"
+                                       id="email"
+                                       name="email"
+                                       placeholder=" "
+                                       required />
+                                <label class="floating-label" for="email"><i class="fa fa-envelope"></i> Email</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="floating-label-group">
+                                <input type="password"
+                                       class="form-control"
+                                       id="pwd"
+                                       name="pwd"
+                                       placeholder=" "
+                                       required />
+                                <label class="floating-label" for="pwd"><i class="fa fa-lock"></i> Mật khẩu</label>
+                            </div>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" /> Ghi nhớ đăng nhập
+                            </label>
+                            <a href="#" class="forgot-password">Quên mật khẩu?</a>
+                        </div>
+                        <div class="btn-container">
+                            <button type="submit" class="btn btn-login">
+                                <i class="fa fa-sign-in"></i> Đăng nhập
+                            </button>
+                        </div>
+                    </form>
+                    <div class="register-now">
+                        <p>Chưa có tài khoản?</p>
+                        <a href="/TaiKhoan/DangKi" class="btn-register-link">Đăng ký ngay</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Container Background */
+    .single-product-area {
+        background: #f8f9fa;
+        padding: 60px 0;
+        text-align: center;
+    }
+
+    /* Login Box Styles with Luxurious Background */
+    .login-box {
+        background: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        padding: 40px 50px;
+        margin-bottom: 40px;
+        border-top: 5px solid #5d78ff;
+        max-width: 800px;
+        width: 100%;
+        margin: auto;
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+
+        .login-box:hover {
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+        }
+
+    /* Login Icon */
+    .login-icon {
+        font-size: 60px;
+        color: #5d78ff;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    /* Form Header */
+    .form-header {
+        color: #2c3e50;
+        font-size: 32px;
+        margin-bottom: 10px;
+        font-weight: 700;
+        text-align: center;
+    }
+
+    .login-subtitle {
+        color: #7f8c8d;
+        font-size: 16px;
+        margin-bottom: 25px;
+        text-align: center;
+    }
+
+    /* Elegant Horizontal Rule */
+    .elegant-hr {
+        border: 0;
+        height: 1px;
+        background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(93, 120, 255, 0.5), rgba(0, 0, 0, 0));
+        margin: 30px auto;
+        width: 80%;
+    }
+
+    /* Title Area */
+    .product-big-title-area {
+        margin-bottom: 30px;
+    }
+
+    .product-bit-title {
+        background: none; /* Removed background */
+        padding: 20px 0;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+        .product-bit-title h2 {
+            color: #3a7bd5; /* Changed text color since bg is removed */
+            font-weight: 700;
+            font-size: 28px;
+            margin: 0;
+            text-shadow: none; /* Removed text shadow */
+        }
+
+    /* Form Elements */
+    .form-group {
+        margin-bottom: 25px;
+        text-align: center;
+        width: 100%;
+    }
+
+    /* Floating label styling */
+    .floating-label-group {
+        position: relative;
+        display: inline-block;
+        width: 350px;
+    }
+
+    .floating-label {
+        position: absolute;
+        top: 8px;
+        left: 15px;
+        font-size: 16px;
+        color: #5d78ff;
+        pointer-events: none;
+        transition: all 0.2s ease;
+        background-color: white;
+        padding: 0 5px;
+        border-radius: 4px;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        border: 2px solid #e1e5ea;
+        padding: 15px 15px 15px 15px;
+        background: #f9fafc;
+        height: 55px;
+        font-size: 16px;
+        width: 100%;
+        min-width: 350px;
+        display: inline-block;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: #5d78ff;
+            box-shadow: 0 0 0 0.2rem rgba(93, 120, 255, 0.25);
+            background: #ffffff;
+        }
+
+            .form-control:focus + .floating-label,
+            .form-control:not(:placeholder-shown) + .floating-label {
+                top: -10px;
+                left: 10px;
+                font-size: 13px;
+                opacity: 1;
+                background: white;
+                padding: 0 5px;
+            }
+
+    /* Checkbox and Forgot Password */
+    .checkbox {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        width: 100%;
+        min-width: 350px;
+        text-align: center;
+        display: inline-flex;
+    }
+
+        .checkbox label {
+            color: #7f8c8d;
+            font-weight: normal;
+        }
+
+    .forgot-password {
+        color: #5d78ff;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+    /* Button Styles */
+    .btn-container {
+        margin-top: 30px;
+        text-align: center;
+        width: 100%;
+    }
+
+    .btn-login {
+        background: linear-gradient(45deg, #3a7bd5, #00d2ff);
+        border: none;
+        border-radius: 50px;
+        padding: 16px 30px;
+        color: white;
+        font-weight: 700;
+        font-size: 18px;
+        letter-spacing: 1px;
+        min-width: 250px;
+        text-align: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0, 161, 255, 0.3);
+        display: inline-block;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .btn-login:hover {
+            background: linear-gradient(45deg, #2a6ac5, #00b2df);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 161, 255, 0.4);
+        }
+
+        .btn-login i {
+            margin-right: 10px;
+        }
+    /* Register Link */
+    .register-now {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+        text-align: center;
+    }
+
+        .register-now p {
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+
+    .btn-register-link {
+        color: #ffffff;
+        background: linear-gradient(45deg, #5d78ff, #8095ff);
+        padding: 10px 25px;
+        border-radius: 30px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(93, 120, 255, 0.3);
+    }
+
+        .btn-register-link:hover {
+            background: linear-gradient(45deg, #4a65e0, #6d84ff);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(93, 120, 255, 0.4);
+            text-decoration: none;
+        }
+
+    /* Remove decorative element */
+    .zigzag-bottom {
+        display: none;
+    }
+
+    /* Alert Styling */
+    .alert-danger {
+        background-color: #fff5f7;
+        color: #ff3860;
+        border-left: 4px solid #ff3860;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-weight: 500;
+        text-align: center;
+        width: 100%;
+        display: inline-block;
+    }
+
+        .alert-danger i {
+            margin-right: 8px;
+        }
+
+    /* Form styling to ensure center alignment */
+    form.dangnhap {
+        width: 100%;
+        text-align: center;
+    }
+
+    .dangnhap .form-group,
+    .dangnhap .checkbox,
+    .dangnhap .btn-container {
+        display: inline-block;
+        width: 350px;
+        text-align: center;
+    }
+</style>
+
+<!-- Add Font Awesome for icons if not already included -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">

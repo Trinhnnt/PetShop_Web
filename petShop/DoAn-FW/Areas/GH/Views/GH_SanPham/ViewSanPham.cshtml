@@ -1,0 +1,194 @@
+﻿@using Web_projectframeword_admin.Models;
+@model SanPham
+@{
+    List<LoaiSanPham> ListLoaiSP = new List<LoaiSanPham>();
+    ListLoaiSP = ViewBag.DSLSP as List<LoaiSanPham>;
+    List<ThuongHieu> ListTH = new List<ThuongHieu>();
+    ListTH = ViewBag.DSTH as List<ThuongHieu>;
+}
+
+<div class="content-wrapper" style="min-height: 639px;">
+    <form action="/Admin/SanPham/UpdateSanPham" method="post" enctype="multipart/form-data">
+        <section class="content-header">
+            <h1>
+                <i class="glyphicon glyphicon-list-alt"></i> Cập nhật sản phẩm thú cưng
+            </h1>
+            <div class="breadcrumb">
+                <button type="submit" class="btn btn-primary btn-sm">
+                    <span class="glyphicon glyphicon-floppy-save"></span>
+                    Lưu
+                </button>
+                <a class="btn btn-primary btn-sm" href="/Admin/SanPham/LietKeSanPham" role="button">
+                    <span class="glyphicon glyphicon-remove do_nos"></span>Thoát
+                </a>
+            </div>
+        </section>
+        <section class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box" id="view">
+                        <div class="box-header with-border">
+                            <div class="box-body">
+                                <div class="col-md-8" style="border-right: ridge;">
+                                    <div class="form-group">
+                                        <input type="hidden" name="MaTTSP" value="@Model.MaTTSP" />
+
+                                        <label for="TenSP">Tên sản phẩm</label>
+                                        <input type="text" class="form-control" name="TenSP" style="width:100%" placeholder="Tên sản phẩm" value="@Model.TenSP">
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-6" style="padding-left: 0px;">
+                                                <div class="form-group">
+                                                    <Label for="MaLoaiSP">Loại sản phẩm</Label>
+                                                    <select name="MaLoaiSP" class="form-control">
+                                                        <option value="">--Chọn loại sản phẩm--</option>
+                                                        @foreach (var item in ListLoaiSP)
+                                                        {
+                                                            if (item.MALOAISP == Model.MaLoaiSP)
+                                                            {
+                                                                <option value="@item.MALOAISP" selected>@item.TENLOAISP</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@item.MALOAISP">@item.TENLOAISP</option>
+                                                            }
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" style="padding-right: 0px;">
+                                                <div class="form-group">
+                                                    <Label for="MaTH">Thương hiệu</Label>
+                                                    <select name="MaTH" class="form-control">
+                                                        <option value="">--Chọn thương hiệu--</option>
+                                                        @foreach (var item in ListTH)
+                                                        {
+                                                            if (item.MATH == Model.MaTH)
+                                                            {
+                                                                <option value="@item.MATH" selected>@item.TENTH</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@item.MATH">@item.TENTH</option>
+                                                            }
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-6" style="padding-left: 0px;">
+                                                <div class="form-group">
+                                                    <label for="Gia">Giá bán</label>
+                                                    <input type="number" class="form-control" name="Gia" style="width:100%" placeholder="Giá bán" value="@Model.Gia">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" style="padding-right: 0px;">
+                                                <div class="form-group">
+                                                    <label for="GiaKM">Giá khuyến mãi</label>
+                                                    <input type="number" class="form-control" name="GiaKM" style="width:100%" placeholder="Giá khuyến mãi" value="@Model.GiaKM">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-6" style="padding-left: 0px;">
+                                                <div class="form-group">
+                                                    <label for="SoLuong">Số lượng</label>
+                                                    <input type="number" class="form-control" name="SoLuong" style="width:100%" placeholder="Số lượng" value="@Model.SoLuong">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" style="padding-right: 0px;">
+                                                <div class="form-group">
+                                                    <label for="KhoiLuong">Khối lượng (kg)</label>
+                                                    <input type="number" class="form-control" name="KhoiLuong" min="0" max="100" step="0.1" style="width:100%" placeholder="Khối lượng" value="@Model.KhoiLuong">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-6" style="padding-left: 0px;">
+                                                <div class="form-group">
+                                                    <label for="MauSac">Màu sắc</label>
+                                                    <input type="text" class="form-control" name="MauSac" style="width:100%" placeholder="Màu sắc" value="@Model.MauSac">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" style="padding-right: 0px;">
+                                                <div class="form-group">
+                                                    <label for="KichThuoc">Kích thước</label>
+                                                    <input type="text" class="form-control" name="KichThuoc" style="width:100%" placeholder="Kích thước" value="@Model.KichThuoc">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-6" style="padding-left: 0px;">
+                                                <div class="form-group">
+                                                    <label for="DoTuoi">Độ tuổi phù hợp</label>
+                                                    <input type="text" class="form-control" name="DoTuoi" style="width:100%" placeholder="Độ tuổi phù hợp" value="@Model.DoTuoi">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" style="padding-right: 0px;">
+                                                <div class="form-group">
+                                                    <label for="XuatXu">Xuất xứ</label>
+                                                    <input type="text" class="form-control" name="XuatXu" style="width:100%" placeholder="Xuất xứ" value="@Model.XuatXu">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="ThanhPhan">Thành phần</label>
+                                        <textarea class="form-control" name="ThanhPhan" style="width:100%; height:80px;" placeholder="Thành phần sản phẩm">@Model.ThanhPhan</textarea>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="CongDung">Công dụng</label>
+                                        <textarea class="form-control" name="CongDung" style="width:100%; height:80px;" placeholder="Công dụng sản phẩm">@Model.CongDung</textarea>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="HuongDanSD">Hướng dẫn sử dụng</label>
+                                        <textarea class="form-control" name="HuongDanSD" style="width:100%; height:80px;" placeholder="Hướng dẫn sử dụng">@Model.HuongDanSD</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Hình ảnh</label>
+                                        <input type="file" id="image_list" name="HinhAnh" style="width: 100%" />
+                                        <div class="row" style="margin-top: 10px;">
+                                            <div class="col-md-12">
+                                                @if (!string.IsNullOrEmpty(Model.HinhAnh))
+                                                {
+                                                    <img src="~/images/products/@Model.HinhAnh" alt="Hình ảnh sản phẩm" class="img-responsive" style="max-width: 100%;" />
+                                                }
+                                                else
+                                                {
+                                                    <img src="~/images/products/no-image.png" alt="Không có hình ảnh" class="img-responsive" style="max-width: 100%;" />
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </form>
+</div>

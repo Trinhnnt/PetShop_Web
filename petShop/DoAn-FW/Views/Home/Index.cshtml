@@ -1,0 +1,557 @@
+@{
+    ViewData["Title"] = "Trang Chủ";
+    List<object> ListSP = ViewBag.ListSP;
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+
+<style>
+    /* Reset và Base styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
+    /* Product Slide Item Styles */
+    .product-slide-item {
+        position: relative;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+        .product-slide-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .product-slide-item .slide-link {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .product-slide-item .slide-info h4 {
+            color: #333;
+            transition: color 0.3s ease;
+        }
+
+        .product-slide-item:hover .slide-info h4 {
+            color: #007bff;
+        }
+
+    /* Products Grid Styles */
+    .products-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+        padding: 20px 0;
+    }
+
+    .product-item {
+        background: white;
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+        cursor: pointer;
+    }
+
+        .product-item:hover {
+            transform: translateY(-5px);
+        }
+
+    .product-image {
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+
+        .product-image img {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+    .product-title {
+        margin-bottom: 10px;
+    }
+
+        .product-title a {
+            color: #333;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+    .product-specs {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 15px;
+    }
+
+    .spec-pill {
+        background: #f0f0f0;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        color: #666;
+    }
+
+    .price-cart-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .product-price {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .original-price {
+        text-decoration: line-through;
+        color: #999;
+        font-size: 14px;
+    }
+
+    .sale-price {
+        color: #e74c3c;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .cart-button {
+        background: #5cb85c;
+        color: white;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.3s ease;
+    }
+
+        .cart-button:hover {
+            background: #4cae4c;
+            color: white;
+        }
+
+    /* Slider Area Styles */
+    .slider-area {
+        margin-bottom: 30px;
+    }
+
+    .block-slider4 img {
+        width: 100%;
+        height: auto;
+    }
+
+    /* Product Slider Section */
+    .product-slider-section {
+        padding: 40px 0;
+        background: #f8f9fa;
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+        font-size: 24px;
+        font-weight: bold;
+        position: relative;
+        padding-bottom: 15px;
+    }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: #007bff;
+        }
+
+    /* Slide Styles */
+    .slide-image {
+        height: 180px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+
+        .slide-image img {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+    .slide-info {
+        text-align: center;
+    }
+
+        .slide-info h4 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            height: 40px;
+            overflow: hidden;
+            color: #333;
+        }
+
+    .slide-price {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .slide-original-price {
+        text-decoration: line-through;
+        color: #999;
+        font-size: 14px;
+    }
+
+    .slide-sale-price {
+        color: #e74c3c;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    /* Brand Section Styles */
+    .brand-section {
+        padding: 30px 0;
+        background: #fff;
+        margin: 20px 0;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .brand-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 120px;
+        padding: 15px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+
+        .brand-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .brand-item img {
+            max-width: 180px;
+            max-height: 100px;
+            object-fit: contain;
+            filter: grayscale(100%);
+            transition: all 0.3s ease;
+        }
+
+        .brand-item:hover img {
+            filter: grayscale(0%);
+        }
+
+    /* Owl Carousel Navigation */
+    .owl-nav button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255,255,255,0.9) !important;
+        width: 40px;
+        height: 40px;
+        border-radius: 50% !important;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .owl-prev {
+        left: -20px;
+    }
+
+    .owl-next {
+        right: -20px;
+    }
+
+    .owl-nav button span {
+        font-size: 24px;
+        line-height: 1;
+    }
+
+    .owl-dots {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .owl-dot span {
+        width: 10px;
+        height: 10px;
+        margin: 5px;
+        background: #D6D6D6;
+        display: block;
+        transition: opacity .2s ease;
+        border-radius: 30px;
+    }
+
+    .owl-dot.active span {
+        background: #869791;
+    }
+</style>
+<!-- Mainmenu Area -->
+<div class="mainmenu-area">
+    <div class="container">
+        <div class="row">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/Home/Index">Trang chủ</a></li>
+                    <li><a href="/SanPham/Products">Sản phẩm</a></li>
+                    <li><a href="/TinTuc/DanhSachTinTuc">Tin tức</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Slider -->
+<div class="slider-area">
+    <div class="block-slider block-slider4">
+        <ul class="" id="bxslider-home4">
+            <li>
+                <img src="~/img/pet-slide1.png" alt="Slide">
+                <div class="caption-group">
+                    <h2 class="caption title">Thức ăn <span class="primary">Royal <strong>Canin</strong></span></h2>
+                    <h4 class="caption subtitle">Dinh dưỡng cao cấp</h4>
+                    <a class="caption button-radius" href="#"><span class="icon"></span>Mua ngay</a>
+                </div>
+            </li>
+            <li>
+                <img src="~/img/pet-slide2.png" alt="Slide">
+                <div class="caption-group">
+                    <h2 class="caption title">Mua 1 tặng 1 <span class="primary">giảm <strong>50%</strong></span></h2>
+                    <h4 class="caption subtitle">Đồ chơi & phụ kiện thú cưng.*</h4>
+                    <a class="caption button-radius" href="#"><span class="icon"></span>Mua ngay</a>
+                </div>
+            </li>
+            <li>
+                <img src="~/img/pet-slide3.png" alt="Slide">
+                <div class="caption-group">
+                    <h2 class="caption title">Giường <span class="primary">thú cưng <strong>cao cấp</strong></span></h2>
+                    <h4 class="caption subtitle">Nhiều kích thước</h4>
+                    <a class="caption button-radius" href="#"><span class="icon"></span>Mua ngay</a>
+                </div>
+            </li>
+            <li>
+                <img src="~/img/pet-slide4.png" alt="Slide">
+                <div class="caption-group">
+                    <h2 class="caption title">Dịch vụ <span class="primary">Spa <strong>thú cưng</strong></span></h2>
+                    <h4 class="caption subtitle">& Cắt tỉa lông</h4>
+                    <a class="caption button-radius" href="#"><span class="icon"></span>Đặt lịch</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<!-- Products Grid -->
+<div class="maincontent-area">
+    <div class="zigzag-bottom"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="latest-product">
+                    <h2 class="section-title">Sản phẩm mới nhất</h2>
+                    <div class="products-container">
+                        @foreach (var item in ListSP)
+                        {
+                            <div class="product-item" onclick="window.location.href='/SanPham/ChiTietSP?t=@item.GetType().GetProperty("MaTTSP").GetValue(item,null).ToString()&l=@item.GetType().GetProperty("MaLoaiSP").GetValue(item,null).ToString()'">
+                                <div class="product-image">
+                                    <img src="@item.GetType().GetProperty("HinhAnh").GetValue(item,null)" alt="">
+                                </div>
+                                <div class="product-title">
+                                    <a href="/SanPham/ChiTietSP?t=@item.GetType().GetProperty("MaTTSP").GetValue(item,null).ToString()&l=@item.GetType().GetProperty("MaLoaiSP").GetValue(item,null).ToString()">
+                                        @item.GetType().GetProperty("TenSP").GetValue(item, null).ToString()
+                                    </a>
+                                </div>
+                                <div class="product-specs">
+                                    <span class="spec-pill">@item.GetType().GetProperty("MauSac").GetValue(item, null).ToString()</span>
+                                    <span class="spec-pill">@item.GetType().GetProperty("DoTuoi").GetValue(item, null).ToString()</span>
+                                    <span class="spec-pill">@item.GetType().GetProperty("XuatXu").GetValue(item, null).ToString()</span>
+                                </div>
+                                <div class="price-cart-container">
+                                    <div class="product-price">
+                                        @if (int.Parse(item.GetType().GetProperty("GiaKM").GetValue(item, null).ToString()) > 0)
+                                        {
+                                            <span class="original-price">@string.Format("{0:0,0 đ}", item.GetType().GetProperty("Gia").GetValue(item, null))</span>
+                                            <span class="sale-price">@string.Format("{0:0,0 đ}", item.GetType().GetProperty("GiaKM").GetValue(item, null))</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="sale-price">@string.Format("{0:0,0 đ}", item.GetType().GetProperty("Gia").GetValue(item, null))</span>
+                                        }
+                                    </div>
+                                    <a href="/GioHang/InsertCart3?id=@item.GetType().GetProperty("MaTTSP").GetValue(item,null).ToString()"
+                                       class="cart-button" onclick="event.stopPropagation();">
+                                        <i class="fa fa-shopping-cart"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Product Slider -->
+<div class="product-slider-section">
+    <div class="container">
+        <h2 class="section-title">Sản phẩm nổi bật</h2>
+        <div class="owl-carousel product-slider">
+            @foreach (var item in ListSP)
+            {
+                <div class="product-slide-item">
+                    <a href="/SanPham/ChiTietSP?t=@item.GetType().GetProperty("MaTTSP").GetValue(item,null).ToString()&l=@item.GetType().GetProperty("MaLoaiSP").GetValue(item,null).ToString()"
+                       class="slide-link"></a>
+                    <div class="slide-image">
+                        <img src="@item.GetType().GetProperty("HinhAnh").GetValue(item,null)" alt="">
+                    </div>
+                    <div class="slide-info">
+                        <h4>@item.GetType().GetProperty("TenSP").GetValue(item, null).ToString()</h4>
+                        <div class="slide-price">
+                            @if (int.Parse(item.GetType().GetProperty("GiaKM").GetValue(item, null).ToString()) > 0)
+                            {
+                                <span class="slide-original-price">@string.Format("{0:0,0 đ}", item.GetType().GetProperty("Gia").GetValue(item, null))</span>
+                                <span class="slide-sale-price">@string.Format("{0:0,0 đ}", item.GetType().GetProperty("GiaKM").GetValue(item, null))</span>
+                            }
+                            else
+                            {
+                                <span class="slide-sale-price">@string.Format("{0:0,0 đ}", item.GetType().GetProperty("Gia").GetValue(item, null))</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Brands Area -->
+<div class="brands-area">
+    <div class="container">
+        <div class="brand-section">
+            <h2 class="section-title">Thương hiệu</h2>
+            <div class="owl-carousel brand-carousel owl-theme">
+                <!-- Samsung -->
+                <a href="https://www.samsung.com/vn/" target="_blank" class="brand-item">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg" alt="Samsung" title="Samsung">
+                </a>
+
+                <!-- Apple -->
+                <a href="https://www.apple.com/vn/" target="_blank" class="brand-item">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" title="Apple">
+                </a>
+
+                <!-- Nokia -->
+                <a href="https://www.nokia.com/" target="_blank" class="brand-item">
+                    <img src="/img/brand1.png" alt="Nokia" title="Nokia">
+                </a>
+
+                <!-- Canon -->
+                <a href="https://www.canon.com" target="_blank" class="brand-item">
+                    <img src="/img/brand2.png" alt="Canon" title="Canon">
+                </a>
+                <!--HTC-->
+                <a href="https://www.htc.com" target="_blank" class="brand-item">
+                    <img src="/img/brand5.png" alt="HTC" title="HTC">
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<script>
+    $(document).ready(function(){
+        // Product Slider
+        $('.product-slider').owlCarousel({
+            loop: true,
+            margin: 20,
+            nav: true,
+            dots: true,
+            autoplay: true,
+            autoplayTimeout: 5000,
+            autoplayHoverPause: true,
+            navText: ['<span>&lt;</span>','<span>&gt;</span>'],
+            responsive:{
+                0: {
+                    items: 1
+                },
+                600: {
+                    items: 2
+                },
+                1000: {
+                    items: 4
+                }
+            }
+        });
+
+        // Brand Carousel
+        $('.brand-carousel').owlCarousel({
+            loop: true,
+            margin: 30,
+            nav: true,
+            dots: true,
+            autoplay: true,
+            autoplayTimeout: 3000,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                576: {
+                    items: 2
+                },
+                768: {
+                    items: 3
+                },
+                992: {
+                    items: 4
+                }
+            }
+        });
+    });
+</script>
+
+
+

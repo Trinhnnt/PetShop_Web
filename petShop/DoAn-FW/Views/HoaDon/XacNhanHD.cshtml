@@ -1,0 +1,200 @@
+@{
+    // Đảm bảo các khai báo biến ViewBag và tính toán ở đây không thay đổi so với lần trước
+    ViewData["Title"] = "Xác Nhận Đơn Hàng"; // Đổi Title cho phù hợp
+    Layout = "~/Views/Shared/_OrderConfirmationLayout.cshtml"; // Sử dụng layout mới
+
+    List<CTHD> listcthd = ViewBag.listcthd ?? new List<CTHD>();
+    KhuyenMai KM = ViewBag.KM as KhuyenMai ?? new KhuyenMai(); // Ép kiểu an toàn
+    KhachHang KH = ViewBag.KH as KhachHang ?? new KhachHang(); // Ép kiểu an toàn
+
+    long ThanhTienCurrentItem = 0; // Đổi tên biến để tránh nhầm lẫn với biến global (nếu có)
+    long TongTienSanPham = 0;
+    long TTPhaiTra = 0;
+    long TienGiam = 0;
+
+    // Tính toán tổng tiền sản phẩm trước
+    foreach (var item in listcthd)
+    {
+        if (item != null) // Kiểm tra item null
+        {
+            TongTienSanPham += (item.Gia * item.SoLuong);
+        }
+    }
+
+    // Tính tiền giảm và tổng phải trả
+    // if (KM != null && KM.TTienToiThieu.HasValue && KM.SoPTKM.HasValue && TongTienSanPham >= KM.TTienToiThieu.Value)
+    // {
+    //     TienGiam = (TongTienSanPham * KM.SoPTKM.Value) / 100;
+    //     TTPhaiTra = TongTienSanPham - TienGiam;
+    // }
+    // else
+    // {
+    //     TTPhaiTra = TongTienSanPham;
+    //     TienGiam = 0; Đảm bảo TienGiam là 0 nếu không có khuyến mãi
+    // }
+}
+
+<div class="order-confirmation-container">
+    <header class="confirmation-header">
+        <div class="shop-logo">SOASHOP</div> @* Hoặc <img src="/path/to/your-logo.png" alt="SOASHOP Logo"/> *@
+        <h1>Xác nhận đơn hàng của bạn</h1> @* Thay đổi tiêu đề cho phù hợp hơn với bước này *@
+        <p>Vui lòng kiểm tra kỹ thông tin đơn hàng và địa chỉ giao hàng trước khi hoàn tất đặt hàng.</p>
+    
+        
+        </header>
+
+    <div class="confirmation-content">
+        <div class="order-meta">
+            <p>Ngày dự kiến đặt hàng: <strong>@DateTime.Now.ToString("dd/MM/yyyy HH:mm")</strong></p>
+        </div>
+
+        @if (KH != null && !string.IsNullOrEmpty(KH.TenKH))
+        {
+            <div class="customer-info">
+                <h3 class="section-title">Thông Tin Khách Hàng</h3>
+                <p><strong>Tên khách hàng:</strong> @KH.TenKH</p>
+                @if (!string.IsNullOrEmpty(KH.Email))
+                {
+                    <p><strong>Email:</strong> @KH.Email</p>
+                }
+                @if (!string.IsNullOrEmpty(KH.SDT))
+                {
+                    <p><strong>Điện thoại:</strong> @KH.SDT</p>
+                }
+            </div>
+        }
+
+        <div class="order-summary-section">
+            <h3 class="section-title">Chi Tiết Đơn Hàng</h3>
+            <table class="products-table">
+                <thead>
+                    <tr>
+                        <th class="product-name">Sản phẩm</th>
+                        <th class="product-qty">Số lượng</th>
+                        <th class="product-price">Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in listcthd)
+                    {
+                        if (item != null) // Kiểm tra item null
+                        {
+                            ThanhTienCurrentItem = item.Gia * item.SoLuong;
+                            <tr>
+                                <td class="product-name">
+                                    @item.TenSP
+                                    @* Các input ẩn cho form *@
+                                    <input name="MaTTSP[]" type="hidden" value="@item.MaTTSP" />
+                                    <input name="SoLuong[]" type="hidden" value="@item.SoLuong" />
+                                </td>
+                                <td class="product-qty">
+                                    @item.SoLuong
+                                </td>
+                                <td class="product-price">@string.Format("{0:N0} đ", ThanhTienCurrentItem)</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+
+            <table class="summary-table">
+                <tr>
+                    <td class="label">Tổng tiền sản phẩm:</td>
+                    <td class="value">@string.Format("{0:N0} đ", TongTienSanPham)</td>
+                </tr>
+                
+                <tr class="grand-total">
+                    <td class="label">TỔNG CỘNG PHẢI THANH TOÁN:</td>
+                    <td class="value">@string.Format("{0:N0} đ", TTPhaiTra)</td>
+                </tr>
+            </table>
+        </div>
+
+        <form action="/HoaDon/InsertHD" method="post" class="delivery-address-form" id="orderForm">
+            @Html.AntiForgeryToken() @* Thêm AntiForgeryToken để bảo mật *@
+
+            @* Input ẩn cho các thông tin cần gửi lên server *@
+            <input name="MaKM" type="hidden" value="@(KM?.MaKM ?? 0)" />
+            <input type="hidden" name="TongTienTruocGiam" value="@TongTienSanPham" />
+            <input type="hidden" name="SoTienGiam" value="@TienGiam" />
+            <input type="hidden" name="TongTienSauGiam" value="@TTPhaiTra" />
+            <input type="hidden" name="MaKH" value="@(KH?.MaKH ?? 0)" />
+
+            @* Lặp lại các input ẩn MaTTSP và SoLuong ở đây nếu bạn không muốn chúng trong bảng sản phẩm
+               Tuy nhiên, việc đặt chúng trong bảng cùng với từng sản phẩm là hợp lý để backend dễ dàng map lại.
+               Nếu backend của bạn xử lý MaTTSP và SoLuong như một danh sách riêng biệt không cần map trực tiếp với hiển thị
+               thì có thể đặt chúng ở đây. Nhưng hiện tại, chúng đã được đặt trong vòng lặp sản phẩm là ổn.
+            *@
+
+            <div class="shipping-address-section">
+                <h3 class="section-title">Địa Chỉ Giao Hàng</h3>
+                <div class="form-group">
+                    <label for="DiaChi">Địa chỉ chi tiết <span style="color: #e74c3c;">*</span></label>
+                    <input type="text" name="DiaChi" id="DiaChi" class="form-control" placeholder="Nhập số nhà, tên đường, phường/xã, quận/huyện, tỉnh/thành phố" value="@KH?.DiaChi"/>
+                    <span id="diaChiError" class="error-message" style="display: none;">Vui lòng nhập địa chỉ giao hàng.</span>
+                </div>
+                 <div class="form-group">
+                    <label for="GhiChu">Ghi chú đơn hàng (tùy chọn)</label>
+                    <input type="text" name="GhiChu" id="GhiChu" class="form-control" placeholder="Ví dụ: Giao hàng sau 5 giờ chiều, gọi trước khi giao..." />
+                </div>
+            </div>
+
+            <div class="confirmation-actions">
+                <button type="submit" class="btn-submit-order">Hoàn Tất Đặt Hàng</button>
+                <a href="@Url.Action("Index", "Home")" class="btn-continue-shopping">Quay lại mua sắm</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('orderForm');
+            const diaChiInput = document.getElementById('DiaChi');
+            const diaChiError = document.getElementById('diaChiError');
+
+            if (form) { // Kiểm tra form có tồn tại không
+                form.addEventListener('submit', function (event) {
+                    let isValid = true;
+                    // Kiểm tra nếu địa chỉ trống
+                    if (!diaChiInput.value.trim()) {
+                        diaChiError.style.display = 'block';
+                        diaChiInput.classList.add('error');
+                        // Thêm hiệu ứng rung chỉ khi lỗi mới xuất hiện
+                        if (!diaChiInput.classList.contains('shake-active')) {
+                             diaChiInput.classList.add('shake');
+                             diaChiInput.classList.add('shake-active'); // Đánh dấu đã rung
+                             setTimeout(() => {
+                                 diaChiInput.classList.remove('shake');
+                                 diaChiInput.classList.remove('shake-active'); // Xóa đánh dấu
+                             }, 600);
+                        }
+                        isValid = false;
+                    } else {
+                        diaChiError.style.display = 'none';
+                        diaChiInput.classList.remove('error');
+                    }
+
+                    if (!isValid) {
+                        event.preventDefault(); // Ngăn form submit nếu không hợp lệ
+                        const firstErrorField = form.querySelector('.error');
+                        if (firstErrorField) {
+                            firstErrorField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            firstErrorField.focus();
+                        }
+                    }
+                });
+            }
+
+            if (diaChiInput) { // Kiểm tra input địa chỉ có tồn tại không
+                diaChiInput.addEventListener('input', function () {
+                    if (this.value.trim()) {
+                        diaChiError.style.display = 'none';
+                        this.classList.remove('error');
+                    }
+                });
+            }
+        });
+    </script>
+}
