@@ -1,0 +1,258 @@
+﻿@model IEnumerable<DoAn_FW.Models.TinTuc>
+@{
+    ViewData["Title"] = "Tin tức";
+
+    Pager pager = new Pager();
+
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
+}
+<style>
+/* Vùng tiêu đề lớn */
+.product-big-title-area {
+    background: #f6f6f6;
+    padding: 30px 0 10px 0;
+    margin-bottom: 0;
+    box-shadow: none;
+}
+.product-big-title-area .product-bit-title h2 {
+    background-image: url('https://petfair-vietnam.com/wp-content/uploads/2024/01/TRIEN-LAM-THU-CUNG-VIET-NAM.png'); /* đổi thành link ảnh của bạn */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 100px 0;
+    position: relative;
+    text-align: center;
+    color: black;
+    font-weight: bold;
+}
+
+/* Container và headline tin tức */
+.news-listing-container {
+    max-width: 930px;
+    margin: 0 auto;
+    padding: 0 16px 40px 16px;
+}
+.news-headline {
+    font-size: 29px;
+    font-weight: 500;
+    color: #222;
+    margin: 10px 0 18px 0;
+    letter-spacing: 0.5px;
+}
+
+/* Card tin tức */
+.news-card {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    margin-bottom: 32px;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.2s, transform 0.25s;
+}
+
+.news-card:hover {
+    box-shadow: 0 4px 18px rgba(0,0,0,0.13);
+    transform: translateY(-2px) scale(1.01);
+    text-decoration: none;
+}
+.news-card .news-thumb {
+    width: 100%;
+    height: 210px;
+    object-fit: cover;
+    background: #f3f3f3;
+}
+.news-card .news-card-body {
+    padding: 22px 22px 18px 22px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+.news-card .news-title {
+    font-size: 20px;
+    color: #222;
+    margin-bottom: 10px;
+    font-weight: 600;
+    line-height: 1.25;
+}
+.news-card .news-desc {
+    font-size: 15px;
+    color: #6a6a6a;
+    margin-bottom: 16px;
+    line-height: 1.6;
+}
+.news-card .btn-read {
+    align-self: flex-start;
+    padding: 7px 18px;
+    background: #176b53;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s;
+    margin-top: 6px;
+}
+.news-card .btn-read:hover {
+    background: #2eaa7b;
+    color: #fff;
+}
+
+/* Hiển thị dạng lưới 3 cột trên desktop, 2 cột tablet, 1 cột mobile */
+.news-listing-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -12px;
+}
+.news-listing-row .news-listing-col {
+    width: 33.333%;
+    padding: 0 12px;
+    margin-bottom: 32px;
+    box-sizing: border-box;
+}
+    @@media (max-width: 991px) {
+    .news-listing-row .news-listing-col {
+        width: 50%;
+    }
+}
+    @@media (max-width: 600px) {
+    .news-listing-row .news-listing-col {
+        width: 100%;
+    }
+}
+
+/* Phân trang */
+.product-pagination {
+    margin: 30px 0;
+}
+
+.product-pagination ul.pagination {
+    display: inline-block;
+    padding: 0;
+    border-radius: 5px;
+}
+
+.product-pagination ul.pagination li {
+    display: inline;
+}
+
+.product-pagination ul.pagination li a {
+    color: #176b53;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    margin: 0 4px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.product-pagination ul.pagination li a:hover,
+.product-pagination ul.pagination li.active a {
+    background-color: #176b53;
+    color: #fff;
+}
+</style>
+
+<div class="mainmenu-area">
+    <div class="container">
+        <div class="row">
+            <div class="navbar-header">
+                <button type="button"
+                        class="navbar-toggle"
+                        data-toggle="collapse"
+                        data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/Home/Index">Trang chủ</a></li>
+                    <li>
+                        <a href="/SanPham/Products">Sản phẩm</a>
+                    </li>
+                    <li class="active">
+                        <a href="/TinTuc/DanhSachTinTuc">Tin tức</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End mainmenu area -->
+
+<div class="product-big-title-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-bit-title text-center">
+                    <h2>Tin tức nổi bật</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Page title area -->
+
+<div class="single-product-area">
+    <div class="zigzag-bottom"></div>
+    <div class="container">
+        <div class="row">
+            @foreach (var tintuc in Model)
+            {
+                @if (tintuc.TrangThai == 1)
+                {
+                    <div class="col-sm-6 col-md-4">
+                        <a href="~/TinTuc/ChiTietTinTuc?Id=@tintuc.MaTinTuc" class="news-card">
+                                    <img src="@tintuc.HinhBia ?? '/images/default.jpg'" alt="@tintuc.HinhBia" />
+                            <div class="card-content">
+                                <h3>@tintuc.TieuDe</h3>
+                                <p>@tintuc.TieuDe</p>
+                                <!-- Nếu cần thêm nút "Xem ngay" có thể giữ nguyên nhưng không bắt buộc -->
+                                <span class="btn-read">Xem Ngay</span>
+                            </div>
+                        </a>
+                    </div>
+                }
+            }
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-pagination text-center">
+                    @if (pager.TotalPages > 0)
+                    {
+                        <ul class="pagination">
+                            <li>
+                                <a href="/TinTuc/DanhSachTinTuc?pg=@(pager.CurrentPage-1)" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+                            {
+                                <li class="page-item @(pge == pager.CurrentPage ? "active" : "")">
+                                    <a class="page-link" href="/TinTuc/DanhSachTinTuc?pg=@pge">@pge</a>
+                                </li>
+                            }
+                            <li>
+                                <a href="/TinTuc/DanhSachTinTuc?pg=@(pager.CurrentPage+1)" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

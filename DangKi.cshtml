@@ -1,0 +1,384 @@
+﻿@{
+    ViewData["Title"] = "Đăng kí";
+}
+<script>
+    function check(input) {
+        if (input.value != document.getElementById('MatKhau').value) {
+            document.querySelector('.message').innerText = "Mật khẩu không khớp";
+        } else {
+            document.querySelector('.message').innerText = "";
+        }
+    }
+
+    // Hàm đánh giá độ mạnh của mật khẩu
+    function checkPasswordStrength(password) {
+        let strength = 0;
+        let tips = [];
+
+        if (password.length < 6) {
+            tips.push("Cần ít nhất 6 ký tự");
+        } else {
+            strength += 1;
+        }
+        if (password.match(/[a-z]+/)) {
+            strength += 1;
+        } else {
+            tips.push("Thêm chữ cái thường");
+        }
+        if (password.match(/[A-Z]+/)) {
+            strength += 1;
+        } else {
+            tips.push("Thêm chữ cái HOA");
+        }
+        if (password.match(/[0-9]+/)) {
+            strength += 1;
+        } else {
+            tips.push("Thêm chữ số");
+        }
+        if (password.match(/[^a-zA-Z0-9]+/)) {
+            strength += 1;
+        } else {
+            tips.push("Thêm ký tự đặc biệt");
+        }
+
+        const passwordStrengthBar = document.getElementById("password-strength-bar");
+        const passwordStrengthText = document.getElementById("password-strength-text");
+        const passwordTips = document.getElementById("password-tips");
+
+        passwordStrengthBar.style.width = (strength * 20) + "%";
+
+        if (password.length === 0) {
+            passwordStrengthBar.className = "password-strength-bar";
+            passwordStrengthText.textContent = "";
+            passwordTips.innerHTML = "";
+            return;
+        } else if (strength < 2) {
+            passwordStrengthBar.className = "password-strength-bar strength-weak";
+            passwordStrengthText.textContent = "Yếu";
+            passwordStrengthText.className = "strength-text text-danger";
+        } else if (strength < 4) {
+            passwordStrengthBar.className = "password-strength-bar strength-medium";
+            passwordStrengthText.textContent = "Trung bình";
+            passwordStrengthText.className = "strength-text text-warning";
+        } else {
+            passwordStrengthBar.className = "password-strength-bar strength-strong";
+            passwordStrengthText.textContent = "Mạnh";
+            passwordStrengthText.className = "strength-text text-success";
+        }
+
+        passwordTips.innerHTML = tips.length > 0 ?
+            "<small>Gợi ý: " + tips.join(", ") + "</small>" :
+            "<small class='text-success'>Mật khẩu tốt!</small>";
+    }
+</script>
+<style>
+/* PetShop style inspired */
+body {
+    background: #f6f7fb;
+}
+.mainmenu-area {
+    background-color: #117a39;
+    padding: 15px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+.navbar-nav li a {
+    color: #fff !important;
+    font-weight: 500;
+    padding: 12px 18px;
+    transition: background 0.2s;
+    font-size: 16px;
+    background: none !important;
+}
+.navbar-nav li a:hover,
+.navbar-nav li.active a {
+    color: #00b37a !important;
+    background: none !important;
+}
+.product-big-title-area {
+    background: #f6f7fb;
+    padding: 32px 0 14px 0;
+    margin-bottom: 0;
+    box-shadow: none;
+}
+.product-big-title-area .product-bit-title h2 {
+    color: #1a2a32;
+    font-size: 36px;
+    font-weight: 800;
+    text-align: left;
+    text-transform: none;
+    margin: 0 0 12px 0;
+    letter-spacing: 0;
+}
+.single-product-area {
+    background: #f6f7fb;
+    padding: 40px 0;
+}
+.register-box {
+    background-image: url("https://i.pinimg.com/736x/5e/cb/fe/5ecbfe6b3edb3e7aad73a8da4660be5c.jpg");
+    border-radius: 18px;
+    box-shadow: 0 6px 32px rgba(0,0,0,0.07);
+    padding: 40px 32px 32px 32px;
+    margin-bottom: 40px;
+    max-width: 520px;
+    width: 100%;
+    margin: 0 auto 40px auto;
+    border: 1px solid #e6e8ec;
+}
+.sidebar-title {
+    color: #1a2a32;
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 18px;
+    letter-spacing: 0.5px;
+}
+.register-box hr {
+    border-top: 1.5px solid #e6e8ec;
+    margin: 22px 0 24px 0;
+}
+.form-group {
+    margin-bottom: 22px;
+    position: relative;
+}
+
+.form-group label {
+    color: #117a39;
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 7px;
+    display: block;
+}
+.form-control {
+    border-radius: 7px;
+    border: 1.5px solid #e6e8ec;
+    padding: 11px;
+    background: #f6f7fb;
+    font-size: 15px;
+    width: 100%;
+    transition: border 0.2s;
+    height: 46px;
+}
+
+.form-control:focus {
+    border-color: #117a39;
+    background: #fff;
+}
+
+select.form-control {
+
+    appearance: auto;
+    -webkit-appearance: auto;
+    -moz-appearance: auto;
+    color: #1a2a32;
+}
+.form-columns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+}
+.column {
+    flex: 1;
+    min-width: 220px;
+}
+
+.btn-container {
+    text-align: center;
+    margin-top: 22px;
+}
+
+.btn-register {
+    background: #117a39 !important; 
+    border: 2px solid #222;
+    border-radius: 30px;
+    padding: 13px 38px;
+    color: #222;
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: 1px;
+    min-width: 260px;
+    text-align: center;
+    transition: transform 0.2s;
+    box-shadow: none;
+    outline: none;
+    box-sizing: border-box;
+    text-transform: uppercase;
+}
+
+.btn-register:hover{
+    background: #117a39;
+    color: #222;
+    transform: scale(1.09);
+    border: 2px solid #222;
+}
+
+.message {
+    color: #ff3860;
+    font-size: 15px;
+    margin: 10px 0;
+    font-weight: 600;
+    text-align: center;
+}
+.password-strength-container {
+    margin-top: 8px;
+    margin-bottom: 5px;
+}
+
+.password-strength-meter {
+    height: 5px;
+    background-color: #e1e5ea;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    overflow: hidden;
+}
+
+.password-strength-bar {
+    height: 100%;
+    width: 0;
+    transition: width 0.3s, background-color 0.3s;
+    border-radius: 6px;
+}
+.strength-weak { background-color: #ff3860; }
+.strength-medium { background-color: #ffdd57; }
+.strength-strong { background-color: #23d160; }
+.strength-text {
+    font-size: 13px;
+    font-weight: 700;
+    margin-left: 5px;
+}
+.text-danger { color: #ff3860; }
+.text-warning { color: #ffaa00; }
+.text-success { color: #23d160; }
+#password-tips {
+    font-size: 12px;
+    color: #666;
+    margin-top: 2px;
+}
+/* Responsive */
+    @@media (max-width: 900px) {
+    .register-box { padding: 30px 12px 20px 12px; }
+    .form-columns { flex-direction: column; gap: 0; }
+    .column { min-width: 100%; }
+}
+   @@media (max-width: 600px) {
+    .product-big-title-area .product-bit-title h2 { font-size: 26px; }
+    .sidebar-title { font-size: 20px; }
+    .register-box { padding: 18px 2vw 8px 2vw; }
+}
+</style>
+
+<div class="mainmenu-area">
+    <div class="container">
+        <div class="row">
+            <div class="navbar-header">
+                <button type="button"
+                        class="navbar-toggle"
+                        data-toggle="collapse"
+                        data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/Home/Index">Trang chủ</a></li>
+                    <li>
+                        <a href="/SanPham/Products">Sản phẩm</a>
+                    </li>
+                    <li>
+                        <a href="/TinTuc/DanhSachTinTuc">Tin tức</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End mainmenu area -->
+
+
+<div class="product-big-title-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-bit-title text-center">
+                    <h2>Đăng ký thành viên PETSHOP</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Page title area -->
+
+<div class="single-product-area">
+    <div class="zigzag-bottom"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="register-box">
+                    <h2 class="sidebar-title">Thông tin đăng ký</h2>
+                    <hr />
+                    <form action="/TaiKhoan/ThemTK" method="post" class="dangki">
+                        <div class="form-columns">
+                            <div class="column">
+                                <div class="form-group">
+                                    <label for="TenKH"><i class="fa fa-user"></i> Họ tên:</label>
+                                    <input name="TenKH" type="text" class="form-control" id="TenKH" placeholder="Nhập tên của bạn vào đây" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="GioiTinh"><i class="fa fa-venus-mars"></i> Giới tính:</label>
+                                    <select name="GioiTinh" class="form-control" id="GioiTinh">
+                                        <option value="Nam">Nam</option>
+                                        <option value="Nữ">Nữ</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="SDT"><i class="fa fa-phone"></i> SDT:</label>
+                                    <input name="SDT" type="text" class="form-control" id="SDT" placeholder="09xxxxxxxx" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="Email"><i class="fa fa-envelope"></i> Email:</label>
+                                    <input name="Email" type="email" class="form-control" id="Email" placeholder="example@gmail.com" />
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="form-group">
+                                    <label for="CMND"><i class="fa fa-id-card"></i> CMND hoặc CCCD:</label>
+                                    <input name="CMND" type="text" class="form-control" id="CMND" placeholder="" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="DiaChi"><i class="fa fa-map-marker"></i> Địa chỉ:</label>
+                                    <input name="DiaChi" type="text" class="form-control" id="DiaChi" placeholder="Nhập địa chỉ" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="MatKhau"><i class="fa fa-lock"></i> Mật khẩu:</label>
+                                    <input name="MatKhau" type="password" class="form-control" id="MatKhau" placeholder="Nhập mật khẩu" oninput="checkPasswordStrength(this.value)" />
+                                    <div class="password-strength-container">
+                                        <div class="password-strength-meter">
+                                            <div id="password-strength-bar" class="password-strength-bar"></div>
+                                        </div>
+                                        <div class="password-info-row">
+                                            <div id="password-tips"></div>
+                                            <span id="password-strength-text" class="strength-text"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirm-pass"><i class="fa fa-lock"></i> Nhập lại mật khẩu:</label>
+                                    <input name="confirm-pass" type="password" class="form-control" id="confirm-pass" placeholder="Nhập lại mật khẩu" oninput="check(this)" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="message"></div>
+                        <div class="btn-container">
+                            <input type="submit" value="Đăng kí ngay" class="btn btn-register" />
+                            <p style="margin-top: 20px; color: #666;">
+                                Đã có tài khoản? <a href="/TaiKhoan/DangNhap" style="color: #3a7bd5; font-weight: 600;">Đăng nhập</a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
