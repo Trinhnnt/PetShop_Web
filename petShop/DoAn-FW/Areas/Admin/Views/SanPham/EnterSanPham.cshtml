@@ -1,0 +1,202 @@
+﻿@using Web_projectframeword_admin.Models;
+@model SanPham
+@{
+    List<LoaiSanPham> ListLoaiSP = new List<LoaiSanPham>();
+    ListLoaiSP = ViewBag.DSLSP as List<LoaiSanPham>;
+    List<ThuongHieu> ListTH = new List<ThuongHieu>();
+    ListTH = ViewBag.DSTH as List<ThuongHieu>;
+}
+@{
+    <div class="content-wrapper" style="min-height: 639px;">
+        <form action="/Admin/SanPham/InsertSanPham" method="post">
+            <section class="content-header">
+                <h1>
+                    <i class="glyphicon glyphicon-shopping-cart"></i>Thêm sản phẩm thú cưng mới
+                </h1>
+                <div class="breadcrumb">
+                    <a class="btn btn-primary btn-sm" role="button">
+                        <span class="glyphicon glyphicon-floppy-save"></span>
+                        <input type="submit" name="submit" value="Thêm mới" />
+                    </a>
+                    <a class="btn btn-primary btn-sm" href="/Admin/SanPham/LietKeSanPham" role="button">
+                        <span class="glyphicon glyphicon-remove do_nos"></span>Thoát
+                    </a>
+                </div>
+            </section>
+            <section class="content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box" id="view">
+                            <div class="box-header with-border">
+                                <div class="box-body">
+                                    <div class="col-md-8" style="border-right: ridge;">
+                                        <div class="form-group">
+                                            <label for="tenSP">Tên sản phẩm</label>
+                                            <input type="text" class="form-control" name="TenSP" style="width:100%" placeholder="Tên sản phẩm thú cưng">
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="col-md-6" style="padding-left: 0px;">
+                                                    <div class="form-group">
+                                                        <Label>Loại sản phẩm</Label>
+                                                        <select name="MaLoaiSP" class="form-control" id="loaiSanPham">
+                                                            <option value="0">[--Chọn loại sản phẩm--]</option>
+                                                            @foreach (var loai in ListLoaiSP)
+                                                            {
+                                                                <option value="@loai.MALOAISP">@loai.TENLOAISP</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6" style="padding-right: 0px;">
+                                                    <div class="form-group">
+                                                        <Label>Thương hiệu</Label>
+                                                        <select name="MaTH" class="form-control" id="thuongHieu">
+                                                            <option value="0">[--Chọn thương hiệu--]</option>
+                                                            @foreach (var th in ListTH)
+                                                            {
+                                                                <option value="@th.MATH">@th.TENTH</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="hinhAnh">Hình ảnh sản phẩm</label>
+                                            <input type="text" class="form-control" name="HinhAnh" style="width:100%" placeholder="Đường link hình ảnh" required>
+                                        </div>
+                                        <div class="row">
+                                            <span style="color: red; font-weight: 700; font-size: 18px;">Thông tin sản phẩm</span>
+                                            <div class="col-md-12" style="border-top:ridge; padding-top: 10px;">
+                                                <div class="col-md-6" style="padding-left: 0px;">
+                                                    <div class="form-group">
+                                                        <label for="gia">Giá</label>
+                                                        <input name="Gia" class="form-control" type="number" min="0" step="10000">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6" style="padding-right: 0px;">
+                                                    <div class="form-group">
+                                                        <label for="giaKM">Giá khuyến mãi</label>
+                                                        <input name="GiaKM" class="form-control" type="number" min="0" step="10000">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                
+                                                <div class="col-md-6" style="padding-right: 0px;">
+                                                    <label for="soLuong">Số lượng</label>
+                                                    <input name="SoLuong" class="form-control" type="number" min="0" step="1">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="col-md-6" style="padding-left: 0px;">
+                                                    <div class="form-group">
+                                                        <label for="mauSac">Màu sắc</label>
+                                                        <input name="MauSac" class="form-control" type="text">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6" style="padding-right: 0px;">
+                                                    <div class="form-group">
+                                                        <label for="khoiLuong">Khối lượng (kg)</label>
+                                                        <input name="KhoiLuong" class="form-control" type="number" min="0" max="100" step="0.1">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="col-md-6" style="padding-left: 0px;">
+                                                    <div class="form-group">
+                                                        <label for="doTuoi">Phù hợp độ tuổi</label>
+                                                        <input name="DoTuoi" class="form-control" type="text" placeholder="VD: Mèo con, chó trưởng thành,...">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6" style="padding-right: 0px;">
+                                                    <div class="form-group">
+                                                        <label for="xuatXu">Xuất xứ</label>
+                                                        <input name="XuatXu" class="form-control" type="text">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="col-md-6" style="padding-left: 0px;">
+                                                    <div class="form-group">
+                                                        <label for="kichThuoc">Kích thước</label>
+                                                        <input name="KichThuoc" class="form-control" type="text" placeholder="VD: Nhỏ, Vừa, Lớn hoặc kích thước cụ thể">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6" style="padding-right: 0px;">
+                                                    <div class="form-group">
+                                                        <label for="thanhPhan">Thành phần</label>
+                                                        <input name="ThanhPhan" class="form-control" type="text" placeholder="Thành phần của sản phẩm">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="congDung">Công dụng</label>
+                                                    <textarea name="CongDung" class="form-control" rows="3" placeholder="Mô tả công dụng của sản phẩm"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="huongDanSD">Hướng dẫn sử dụng</label>
+                                                    <textarea name="HuongDanSD" class="form-control" rows="3" placeholder="Hướng dẫn sử dụng sản phẩm"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+        </form>
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        // Tải danh sách loại sản phẩm khi trang được load
+        loadLoaiSanPham();
+
+        // Tải danh sách thương hiệu khi trang được load
+        loadThuongHieu();
+
+        // Hàm để tải danh sách loại sản phẩm từ server
+        function loadLoaiSanPham() {
+            $.ajax({
+                url: '/Admin/SanPham/GetLoaiSanPham',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    var select = $('#loaiSanPham');
+                    select.empty();
+                    select.append('<option value="0">[--Chọn loại sản phẩm--]</option>');
+
+                    $.each(data, function (index, item) {
+                        select.append('<option value="' + item.MaLoaiSP + '">' + item.TenLoaiSP + '</option>');
+                    });
+                },
+                error: function (error) {
+                    console.log('Lỗi khi tải danh sách loại sản phẩm: ' + error);
+                }
+            });
+        }
+
+        // Hàm để tải danh sách thương hiệu từ server
+        function loadThuongHieu() {
+            $.ajax({
+                url: '/Admin/SanPham/GetThuongHieu',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    var select = $('#thuongHieu');
+                    select.empty();
+                    select.append('<option value="0">[--Chọn thương hiệu--]</option>');
+
+                    $.each(data, function (index, item) {
+                        select.append('<option value="' + item.MaTH + '">' + item.TenTH + '</option>');
+                    });
+                },
+                error: function (error) {
+                    console.log('Lỗi khi tải danh sách thương hiệu: ' + error);
+                }
+            });
+        }
+    });
+</script>

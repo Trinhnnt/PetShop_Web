@@ -1,0 +1,180 @@
+/* General Variables for Consistent Styling */
+:root {
+    --primary-color: #3c8dbc;
+    --secondary-color: #f39c12;
+    --accent-color: #f56954;
+    --success-color: #4CAF50;
+    --danger-color: #F44336;
+    --text-light: #f5f5f5;
+    --text-dark: #333;
+    --border-radius: 4px;
+    --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    --transition: all 0.3s ease;
+}
+
+/* Bread Crumb Styling */
+.bread_crumb {
+    float: right;
+    background: transparent;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 15px;
+    padding: 8px 12px;
+    position: absolute;
+    top: -3px;
+    right: 10px;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    color: var(--text-dark);
+}
+
+    .bread_crumb:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+/* Year Chooser */
+#chooseyear {
+    width: 100px;
+    padding: 6px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+    #chooseyear:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 5px rgba(60, 141, 188, 0.3);
+        outline: none;
+    }
+
+/* Image Container */
+.pict {
+    width: 100%;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: var(--transition);
+}
+
+/* Enhanced Search Box */
+.searchbox {
+    height: 36px;
+    float: left;
+    background-color: var(--primary-color);
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 20px;
+    box-shadow: var(--box-shadow);
+    transition: var(--transition);
+}
+
+    .searchbox:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .searchbox > input {
+        background: none;
+        outline: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        width: 0px;
+        transition: all 0.5s ease;
+        color: white;
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+        .searchbox > input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+    .searchbox > a {
+        color: var(--text-light);
+        text-align: center;
+        width: 60px;
+        font-size: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+
+        .searchbox > a:hover {
+            color: white;
+        }
+
+    .searchbox:hover input {
+        width: 200px;
+        margin: 0 20px;
+        border-bottom: 2px solid var(--accent-color);
+    }
+
+    .searchbox > input:focus {
+        width: 200px;
+        margin: 0 20px;
+        border-bottom: 2px solid var(--accent-color);
+    }
+
+/* Bread Crumb Container */
+.brcb {
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    float: right;
+    padding: 8px 15px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+
+/* Color Classes */
+.maudo {
+    color: var(--danger-color);
+    font-weight: 500;
+}
+
+.mauxanh18 {
+    color: var(--success-color);
+    font-weight: 500;
+}
+
+/* CKEditor Fix */
+.cke {
+    visibility: hidden;
+}
+
+/* Additional Admin Panel Styles */
+.admin-card {
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin-bottom: 20px;
+    transition: var(--transition);
+    overflow: hidden;
+}
+
+    .admin-card:hover {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transform: translateY(-2px);
+    }
+
+/* Table Enhancements */
+table.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    table.admin-table th {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 12px 15px;
+        text-align: left;
+    }
+
+    table.admin-table td {
+        padding: 10px 15px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    table.admin-table tr:hover {
+        background-color: rgba(60, 141, 188, 0.05);
+    }

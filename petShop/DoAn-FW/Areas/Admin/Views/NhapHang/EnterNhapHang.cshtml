@@ -1,0 +1,129 @@
+﻿@{
+    <div class="content-wrapper" style="min-height: 639px;">
+        <form action="/Admin/NhapHang/InsertNhapHang" method="post">
+            <section class="content-header">
+                <a href="/Admin/NhapHang/ThemPhieuNhap" class="btn btn-primary">Thêm phiếu nhập mới</a>
+                <div class="breadcrumb">
+                    <a class="btn btn-primary btn-sm" role="button">
+                        Insert
+                        <button type="submit" style="width: 50px; height: 25px; background-color: darkcyan; border-radius: 10px; color: white; border-color: white; ">
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </button>
+                    </a>
+                    <a class="btn btn-primary btn-sm" href="/Admin/NhapHang/LietKeNhapHang" role="button">
+                        <span class="glyphicon glyphicon-remove do_nos"></span> Thoát
+                    </a>
+                </div>
+            </section>
+            <!-- Main content -->
+            <section class="content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box" id="view">
+                            <div class="box-body">
+                                <div class="col-md-12">
+                                    <div class="col-md-6" style="padding-left: 0px;">
+                                        <div class="form-group">
+                                            <label for="maPN">Mã phiếu nhập</label>
+                                            <input type="text" class="form-control" name="MAPN">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="padding-right: 0px;">
+                                        <div class="form-group">
+                                            <label for="tongtienTT">Tổng tiền thanh toán</label>
+                                            <input type="text" class="form-control" name="TONGTIENTT" min="0" step="5000" style="width:100%">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-6" style="padding-left: 0px;">
+                                        <div class="form-group">
+                                            <label for="ngaylapPN">Ngày lập phiếu</label>
+                                            <input type="date" class="form-control" name="NGAYLAPPN" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="padding-right: 0px;">
+                                        <div class="form-group">
+                                            <label for="tinhtrangTT">Tình trạng thanh toán</label>
+                                            <select class="form-control" name="TINHTRANGTT">
+                                                <option value="0">Chưa thanh toán</option>
+                                                <option value="1">Đã thanh toán</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-6" style="padding-left: 0px;">
+                                        <div class="form-group">
+                                            <Label>Nhà cung cấp</Label>
+                                            <select name="MANCC" class="form-control">
+                                                <option value="">[--Chọn nhà cung cấp--]</option>
+                                                @foreach (var ncc in ViewBag.DanhSachNCC)
+                                                {
+                                                    <option value="@ncc.mancc">@ncc.tenncc</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" style="padding-right: 0px;">
+                                        <div class="form-group">
+                                            <label for="maNV">Nhân viên</label>
+                                            <select name="MANV" class="form-control">
+                                                <option value="">[--Chọn nhân viên--]</option>
+                                                @foreach (var nv in ViewBag.DanhSachNV)
+                                                {
+                                                    <option value="@nv.MaNV">@nv.TenNV</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <!-- Thêm các input field ẩn để nhận giá trị từ JavaScript binding -->
+                                <div class="col-md-12" style="display: none;">
+                                    <input type="text" id="maSP" name="MaSP" class="form-control" />
+                                    <input type="text" id="giaNhap" name="GiaNhap" class="form-control" />
+                                    <input type="text" id="soLuong" name="SoLuong" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </form>
+
+        <!-- Bảng dữ liệu (nếu có) -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered" id="tbl_ctpn">
+                                <!-- Nội dung bảng sẽ được thêm vào nếu cần -->
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Click_CTPN {
+    <script type="text/javascript">
+        $(function () {
+            $('#tbl_ctpn tr').click(function (e) {
+                var masp = $(this).closest('.onRow').find('td:nth-child(2)').text();
+                var gianhap = $(this).closest('.onRow').find('td:nth-child(4)').text();
+                var sl = $(this).closest('.onRow').find('td:nth-child(5)').text();
+
+                // Sửa lại các ID để thống nhất với CTPN.cshtml
+                $('#maSP').val(masp);
+                $('#giaNhap').val(gianhap);
+                $('#soLuong').val(sl);
+            });
+        });
+    </script>
+}

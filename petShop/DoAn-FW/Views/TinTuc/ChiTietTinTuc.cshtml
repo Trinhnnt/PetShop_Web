@@ -1,0 +1,281 @@
+﻿@{
+    ViewData["Title"] = "Tin tức";
+}
+@model DoAn_FW.Models.TinTuc
+
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+    /* Đồng bộ font chung */
+    body,
+    button,
+    .btn,
+    input,
+    p,
+    h1, h2, h3, h4, h5, h6,
+    div,
+    a {
+        font-family: 'Roboto', sans-serif;
+    }
+
+    /* Màu sắc chính */
+    :root {
+        --primary-color: #117a39;
+        --secondary-color: #f8f9fa;
+        --accent-color: #6c757d;
+        --border-color: #e9ecef;
+        --success-color: #28a745;
+        --text-color: #343a40;
+        --light-text: #6c757d;
+        --total-header-bg: #2c3e50;
+        --petshop-orange: #FF8C00;
+        --petshop-green: #4CAF50;
+        --petshop-light-green: #8BC34A;
+    }
+
+    /* Đảm bảo body có overflow-y auto để cho phép cuộn */
+    body {
+        overflow-y: auto;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        font-family: 'Roboto', sans-serif;
+        background-color: #f5f5f5;
+    }
+
+    /* Container styles từ home */
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
+    /* Cải thiện thanh menu - đồng bộ với home */
+    .mainmenu-area {
+        background-color: #117a39;
+        padding: 15px 0;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .navbar-nav li a {
+        color: #fff !important;
+        font-weight: 500;
+        padding: 12px 18px;
+        transition: background 0.2s;
+        font-size: 16px;
+        background: none !important;
+    }
+
+        .navbar-nav li a:hover,
+        .navbar-nav li.active a {
+            color: var(--petshop-orange) !important;
+            background: none !important;
+        }
+
+    /* Điều chỉnh kích thước icon-bar trong button toggle */
+    .navbar-toggle .icon-bar {
+        width: 22px;
+        height: 2px;
+        background-color: white;
+        display: block;
+        margin: 4px 0;
+    }
+
+    /* Đảm bảo padding của navbar-toggle giống nhau */
+    .navbar-toggle {
+        padding: 9px 10px;
+        margin-top: 8px;
+        margin-right: 15px;
+        margin-bottom: 8px;
+        background-color: transparent;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+
+    /* Đồng bộ styles từ home */
+    .navbar-nav {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+        .navbar-nav li {
+            margin-right: 5px;
+        }
+
+            .navbar-nav li.active a {
+                color: var(--petshop-orange) !important;
+                font-weight: 700;
+            }
+
+    /* Product title area - đồng bộ với login */
+    .product-big-title-area {
+        background: #f6f7fb;
+        padding: 20px 0 10px 0; /* Điều chỉnh padding */
+        margin-bottom: 0;
+        box-shadow: none;
+    }
+
+    .product-bit-title h2 {
+        color: #333;
+        font-size: 32px; /* Giảm font-size */
+        font-weight: 700;
+        margin: 0 0 10px 0;
+        text-align: center;
+        text-transform: none;
+        letter-spacing: 0;
+        position: relative;
+        display: inline-block;
+    }
+
+        .product-bit-title h2:before {
+            content: "🐾";
+            margin-right: 10px;
+            color: var(--petshop-orange);
+        }
+
+    .product-bit-title {
+        text-align: center;
+    }
+
+    /* Remove zigzag */
+    .zigzag-bottom {
+        display: none;
+    }
+
+    /* Điều chỉnh single-product-area */
+    .single-product-area {
+        background: #f6f7fb;
+        padding: 40px 0;
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        min-height: auto;
+    }
+
+    /* Styling cho nội dung bài viết */
+    .news-content {
+        background: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        margin: 0 auto;
+        max-width: 800px;
+    }
+
+        .news-content p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .news-content a {
+            display: inline-block;
+            color: #117a39;
+            font-weight: 500;
+            margin-top: 20px;
+            text-decoration: none;
+        }
+
+            .news-content a:hover {
+                color: var(--petshop-orange);
+                text-decoration: underline;
+            }
+
+    /* Responsive styles */
+    @@media (max-width: 767px) {
+        .navbar-collapse
+
+    {
+        background-color: #117a39;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        border-top: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .navbar-nav {
+        display: block;
+        padding: 10px 0;
+    }
+
+        .navbar-nav li {
+            margin: 0;
+            display: block;
+        }
+
+            .navbar-nav li a {
+                display: block;
+                padding: 12px 20px;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+
+    .navbar-toggle {
+        display: block;
+    }
+
+    .news-content {
+        padding: 20px;
+    }
+
+    }</style>
+
+<div class="mainmenu-area">
+    <div class="container">
+        <div class="row">
+            <div class="navbar-header">
+                <button type="button"
+                        class="navbar-toggle"
+                        data-toggle="collapse"
+                        data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/Home/Index">Trang chủ</a></li>
+                    <li>
+                        <a href="/SanPham/Products">Sản phẩm</a>
+                    </li>
+                    <li class="active">
+                        <a href="/TinTuc/DanhSachTinTuc">Tin tức</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End mainmenu area -->
+
+<div class="product-big-title-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-bit-title text-center">
+                    <h2>@Model.TieuDe</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Page title area -->
+
+<div class="single-product-area">
+    <div class="container">
+        <div class="news-content">
+            <p>
+                @Model.NoiDung
+            </p>
+            <a href="@Model.Link">Nguồn nội dung <i class="fa fa-external-link-alt"></i></a>
+        </div>
+    </div>
+</div>
+
+<!-- Add Font Awesome for icons if not already included -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">

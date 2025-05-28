@@ -1,0 +1,199 @@
+﻿@{
+    KhachHang KH = ViewBag.KH;
+}
+
+<style>
+    /* CSS điều chỉnh chỉ về kích thước và màu sắc */
+    .mainmenu-area {
+        background-color: #f4f4f4;
+        border-bottom: 1px solid #e5e5e5;
+    }
+
+    .product-big-title-area {
+        background-color: #f8f8f8;
+        padding: 30px 0;
+    }
+
+    .product-bit-title h2 {
+        font-size: 24px;
+        margin: 0;
+        color: #333;
+    }
+
+    .single-product-area {
+        padding: 40px 0;
+    }
+
+    .single-sidebar h2.sidebar-title {
+        font-size: 20px;
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-control {
+        display: block;
+        width: 100%;
+        height: 40px;
+        padding: 8px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    }
+
+    label {
+        display: inline-block;
+        max-width: 100%;
+        margin-bottom: 5px;
+        font-weight: normal;
+        color: #333;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 400;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        cursor: pointer;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+
+    .btn-default {
+        color: #fff;
+        background-color: #008066; /* Màu xanh lá theo yêu cầu */
+        border-color: #008066;
+        width: 170px;
+        height: 45px;
+        font-size: 16px;
+    }
+
+    /* Style cho dấu * màu đỏ */
+    .required-field::before {
+        content: "* ";
+        color: red;
+    }
+</style>
+
+<div class="mainmenu-area">
+    <div class="container">
+        <div class="row">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/Home/Index">Trang chủ</a>
+                    </li>
+                    <li class="active">
+                        <a href="">Thông tin cá nhân</a>
+                    </li>
+                    <li>
+                        <a href="/HoaDon/LichSuHD">
+                            Quản lý đơn hàng cá nhân
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/DSSPMua/DSSPMua">Sản phẩm đã mua</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End mainmenu area -->
+<div class="single-product-area">
+    <div class="zigzag-bottom"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="single-sidebar">
+                    <h2 class="sidebar-title">
+                        Chi tiết thông tin của bạn
+                    </h2>
+                    <hr />
+                    <form action="/TaiKhoan/CapNhatTK" method="post" class="dangki">
+                        <input name="MaKH" value="@KH.MaKH" style="display:none" />
+                        <div class="form-group">
+                            <label for="TenKH">Họ tên:</label>
+                            <input name="TenKH"
+                                   type="text"
+                                   class="form-control"
+                                   id="TenKH" placeholder="Nguyễn Công Phượng" value="@KH.TenKH" />
+                        </div>
+                        <div class="form-group">
+                            <label for="GioiTinh">Giới tính:</label>
+                            <select name="GioiTinh" class="form-control" id="GioiTinh">
+                                @if (KH.GioiTinh?.Trim() == "Nam")
+                                {
+                                    <option value="Nam" selected>Nam</option>
+                                    <option value="Nữ">Nữ</option>
+                                }
+                                else
+                                {
+                                    <option value="Nam">Nam</option>
+                                    <option value="Nữ" selected>Nữ</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="SDT">SDT:</label>
+                            <input name="SDT"
+                                   type="text"
+                                   class="form-control"
+                                   id="SDT" placeholder="0379696411" value="@KH.SDT" />
+                        </div>
+                        <div class="form-group">
+                            <label for="Email">Email: @KH.Email</label>
+                            <input name="Email"
+                                   type="email"
+                                   class="form-control"
+                                   id="Email" placeholder="CongPhuong@gmail.com"
+                                   style="display:none" value="@KH.Email" />
+                        </div>
+                        <div class="form-group">
+                            <label for="CMND">CMND:</label>
+                            <input name="CMND"
+                                   type="text"
+                                   class="form-control"
+                                   id="CMND" placeholder="272810711" value="@KH.CMND" />
+                        </div>
+                        <div class="form-group">
+                            <label for="DiaChi">Địa chỉ:</label>
+                            <input name="DiaChi"
+                                   type="text"
+                                   class="form-control"
+                                   id="DiaChi" placeholder="Linh Trung, Thủ Đức, Hồ Chí Minh"
+                                   value="@KH.DiaChi" />
+                        </div>
+                        <div class="message"></div>
+                        <input type="submit"
+                               value="CẬP NHẬT"
+                               class="btn btn-default" 
+                               style="background-color: #008066; border-color: #008066;" />
+                    </form>
+                    <hr />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

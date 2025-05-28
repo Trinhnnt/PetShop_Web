@@ -1,0 +1,84 @@
+﻿@using Web_projectframeword_admin.Models;
+@{
+    ViewData["Title"] = "Quản lý loại sản phẩm";
+    List<LoaiSanPham> ListLoaiSP = new List<LoaiSanPham>();
+    ListLoaiSP = ViewBag.DSLSP as List<LoaiSanPham>;
+}
+
+<div class="content-wrapper" style="min-height: 639px;">
+    <section class="content-header">
+        <h1>
+            <i class="fa fa-list"></i> Quản lý loại sản phẩm
+        </h1>
+        <div class="breadcrumb">
+            <a class="btn btn-primary btn-sm" href="/Admin/SanPham/LietKeSanPham" role="button">
+                <span class="glyphicon glyphicon-remove do_nos"></span> Quay lại
+            </a>
+        </div>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box" id="view">
+                    <div class="box-header with-border">
+                        <div class="box-body">
+                            @if (TempData["thongbao"] != null)
+                            {
+                                <div class="alert alert-success">
+                                    @TempData["thongbao"]
+                                </div>
+                            }
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <form action="/Admin/SanPham/InsertLoaiSP" method="get" class="form-inline">
+                                            <div class="input-group">
+                                                <input type="text" name="TENLOAISP" class="form-control" placeholder="Tên loại sản phẩm" required>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-primary" type="submit">
+                                                        <span class="glyphicon glyphicon-plus"></span> Thêm loại sản phẩm
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table table-hover table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="width: 50px;">ID</th>
+                                            <th>Tên loại sản phẩm</th>
+                                            <th class="text-center" style="width: 120px;">Thao tác</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            int i = 0;
+                                        }
+                                        @foreach (var item in ListLoaiSP)
+                                        {
+                                            i++;
+                                            <tr>
+                                                <td class="text-center">@i</td>
+                                                <td>@item.TENLOAISP</td>
+                                                <td class="text-center">
+                                                    <a class="btn btn-danger btn-xs" onclick="return confirm('Xác nhận xóa loại sản phẩm này?')" href="/Admin/SanPham/DeleteLoaiSP?Id=@item.TENLOAISP" role="button">
+                                                        <span class="glyphicon glyphicon-trash"></span> Xóa
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

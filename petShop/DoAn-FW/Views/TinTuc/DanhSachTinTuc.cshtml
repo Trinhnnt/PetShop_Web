@@ -1,0 +1,231 @@
+﻿@model IEnumerable<DoAn_FW.Models.TinTuc>
+@{
+    ViewData["Title"] = "Tin tức";
+
+    Pager pager = new Pager();
+
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
+}
+<style>
+    /* Mainmenu area - giữ nguyên màu như cũ */
+    .mainmenu-area {
+        background: #1e3c72;
+        padding: 15px 0;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        margin-bottom: 30px;
+    }
+
+        .mainmenu-area .navbar-nav > li > a {
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 10px 15px;
+            transition: color 0.3s;
+        }
+
+            .mainmenu-area .navbar-nav > li > a:hover,
+            .mainmenu-area .navbar-nav > li.active > a {
+                color: #ffd700;
+            }
+    /* Page title area */
+    .product-big-title-area {
+        background: url('/Content/Images/news-bg.jpg') no-repeat center center;
+        background-size: cover;
+        padding: 60px 0;
+        box-shadow: inset 0 0 0 2000px rgba(0,0,0,0.3);
+        margin-bottom: 30px;
+    }
+
+        .product-big-title-area .product-bit-title h2 {
+            color: #fff;
+            font-size: 36px;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin: 0;
+            text-align: center;
+        }
+    /* Tin tức card */
+    .news-card {
+        background: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        margin-bottom: 30px;
+        transition: transform 0.3s, box-shadow 0.3s;
+        text-decoration: none;
+        color: inherit;
+    }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .news-card img {
+            width: 100%;
+            height: auto;
+        }
+
+        .news-card .card-content {
+            padding: 20px;
+        }
+
+            .news-card .card-content h3 {
+                font-size: 22px;
+                font-weight: 700;
+                margin-bottom: 15px;
+                color: #1e3c72;
+            }
+
+            .news-card .card-content p {
+                font-size: 16px;
+                color: #555;
+                margin-bottom: 20px;
+                line-height: 1.5;
+            }
+
+    .btn-read {
+        display: inline-block;
+        background-color: #1e3c72;
+        color: #fff;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+        .btn-read:hover {
+            background-color: #2a5298;
+        }
+    /* Pagination */
+    .product-pagination {
+        margin: 30px 0;
+    }
+
+        .product-pagination ul.pagination {
+            display: inline-block;
+            padding: 0;
+            border-radius: 5px;
+        }
+
+            .product-pagination ul.pagination li {
+                display: inline;
+            }
+
+                .product-pagination ul.pagination li a {
+                    color: #1e3c72;
+                    float: left;
+                    padding: 8px 16px;
+                    text-decoration: none;
+                    border: 1px solid #ddd;
+                    margin: 0 4px;
+                    border-radius: 5px;
+                    transition: background-color 0.3s, color 0.3s;
+                }
+
+                    .product-pagination ul.pagination li a:hover,
+                    .product-pagination ul.pagination li.active a {
+                        background-color: #1e3c72;
+                        color: #fff;
+                    }
+</style>
+
+<div class="mainmenu-area">
+    <div class="container">
+        <div class="row">
+            <div class="navbar-header">
+                <button type="button"
+                        class="navbar-toggle"
+                        data-toggle="collapse"
+                        data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/Home/Index">Trang chủ</a></li>
+                    <li>
+                        <a href="/SanPham/Products">Sản phẩm</a>
+                    </li>
+                    <li class="active">
+                        <a href="/TinTuc/DanhSachTinTuc">Tin tức</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End mainmenu area -->
+
+<div class="product-big-title-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-bit-title text-center">
+                    <h2>Tin tức nổi bật</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Page title area -->
+
+<div class="single-product-area">
+    <div class="zigzag-bottom"></div>
+    <div class="container">
+        <div class="row">
+            @foreach (var tintuc in Model)
+            {
+                @if (tintuc.TrangThai == 1)
+                {
+                    <div class="col-sm-6 col-md-4">
+                        <a href="~/TinTuc/ChiTietTinTuc?Id=@tintuc.MaTinTuc" class="news-card">
+                            <img src="@tintuc.HinhBia" alt="@tintuc.HinhBia" />
+                            <div class="card-content">
+                                <h3>@tintuc.TieuDe</h3>
+                                <p>@tintuc.TieuDe</p>
+                                <!-- Nếu cần thêm nút "Xem ngay" có thể giữ nguyên nhưng không bắt buộc -->
+                                <span class="btn-read">Xem ngay</span>
+                            </div>
+                        </a>
+                    </div>
+                }
+            }
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-pagination text-center">
+                    @if (pager.TotalPages > 0)
+                    {
+                        <ul class="pagination">
+                            <li>
+                                <a href="/TinTuc/DanhSachTinTuc?pg=@(pager.CurrentPage-1)" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+                            {
+                                <li class="page-item @(pge == pager.CurrentPage ? "active" : "")">
+                                    <a class="page-link" href="/TinTuc/DanhSachTinTuc?pg=@pge">@pge</a>
+                                </li>
+                            }
+                            <li>
+                                <a href="/TinTuc/DanhSachTinTuc?pg=@(pager.CurrentPage+1)" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

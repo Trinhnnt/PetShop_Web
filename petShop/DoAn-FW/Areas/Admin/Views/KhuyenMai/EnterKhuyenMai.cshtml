@@ -1,0 +1,98 @@
+﻿@using Web_projectframeword_admin.Models;
+@model KhuyenMai
+@{
+    <div class="content-wrapper" style="min-height: 639px;">
+        <form action="/Admin/KhuyenMai/InsertKhuyenMai" method="post">
+            <section class="content-header">
+                <h1><i class="glyphicon glyphicon-leaf"></i> Thêm khuyến mãi mới</h1>
+                <div class="breadcrumb">
+                    <a class="btn btn-primary btn-sm" href="/Admin/KhuyenMai/InsertKhuyenMai">
+                        Insert
+                        <button type="submit" style="width: 50px; height: 25px; background-color: darkcyan; border-radius: 10px; color: white; border-color: white; ">
+                            <i class="glyphicon glyphicon-floppy-save"></i>
+                        </button>
+                    </a>
+                    <a class="btn btn-primary btn-sm" href="/Admin/KhuyenMai/LietKeKhuyenMai" role="button">
+                        <span class="glyphicon glyphicon-remove do_nos"></span> Thoát
+                    </a>
+                </div>
+            </section>
+            <!-- Main content -->
+            <section class="content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box" id="view">
+                            <div class="box-body">
+                                <div class="col-md-12">
+                                    <div class="col-md-6" style="padding-left: 0px;">
+                                        <div class="form-group">
+                                            <label for="maKM">Mã khuyến mãi</label>
+                                            <input type="number" class="form-control" name="MaKM" value="@ViewBag.NextMaKM" readonly style="width:100%; background-color: #f0f0f0;">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="padding-right: 0px;">
+                                        <div class="form-group">
+                                            <label for="soPTKM">Số % khuyến mãi</label>
+                                            <input type="number" class="form-control" name="SoPTKM" min="0" style="width:100%">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-6" style="padding-left: 0px;">
+                                        <div class="form-group">
+                                            <label for="tuNgay">Ngày bắt đầu</label>
+                                            <input type="date" class="form-control" name="TuNgay" style="width:100%">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="padding-right: 0px;">
+                                        <div class="form-group">
+                                            <label for="denNgay">Ngày kết thúc</label>
+                                            <input type="date" class="form-control" name="DenNgay" style="width:100%">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-6" style="padding-left: 0px;">
+                                        <div class="form-group">
+                                            <label for="ttienToiThieu">Số tiền tối thiểu</label>
+                                            <input type="number" class="form-control" name="TTienToiThieu" min="0" step="any" style="width:100%">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <label>Sản phẩm được giảm giá</label><br>
+                                    <input type="checkbox" name="AllSP" id="allSP" onchange="toggleProductSelection()">
+                                    <label for="allSP" style="font-weight:400;">Tất cả sản phẩm</label>
+                                    <select name="SPGG" id="productList" class="form-control" style="width:100%" multiple>
+                                        @foreach (var item in ViewBag.DanhSachSanPham)
+                                        {
+                                            <option value="@item.MaTTSP">@item.TenSP</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </form>
+    </div>
+    <script type="text/javascript">
+        // Hàm để bật/tắt khả năng chọn sản phẩm khi checkbox "Tất cả sản phẩm" được chọn
+        function toggleProductSelection() {
+            var allProductsCheckbox = document.getElementById('allSP');
+            var productListSelect = document.getElementById('productList');
+
+            if (allProductsCheckbox.checked) {
+                productListSelect.disabled = true;
+            } else {
+                productListSelect.disabled = false;
+            }
+        }
+
+        // Khởi tạo trạng thái khi trang được load
+        document.addEventListener('DOMContentLoaded', function() {
+            toggleProductSelection();
+        });
+    </script>
+}

@@ -1,0 +1,294 @@
+﻿@section Click_CTHD {
+    <script type="text/javascript">
+        $(function () {
+            $('#tbl_cthd tr').click(function (e) {
+                var masp = $(this).closest('.onRow').find('td:nth-child(1)').text();
+                var sl = $(this).closest('.onRow').find('td:nth-child(3)').text();
+                $('#spSL').val(masp);
+                $('#slIP').val(sl);
+            });
+        });
+    </script>
+}
+@model IEnumerable<Web_projectframeword_admin.Models.CTHD>
+<div class="content-wrapper" style="min-height: 639px;">
+    <form action="InsertCTHD" method="post">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-3">
+                    <div class="col-sm-6">
+                        <h1><i class="fas fa-file-invoice text-primary mr-2"></i>Chi tiết hóa đơn</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="float-right">
+                            <a class="btn btn-primary btn-save" href="/Admin/HoaDon/Index" role="button">
+                                <i class="fas fa-save mr-2"></i>Lưu
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content">
+            <div class="container-fluid">
+                <!-- Notification Messages -->
+                @{
+                    if (Convert.ToString(ViewData["thongbao"]) == "Vui lòng chọn sản phẩm và số lượng" || Convert.ToString(ViewData["thongbao"]) == "Thêm thất bại")
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            <i class="fas fa-exclamation-circle mr-2"></i>@ViewData["thongbao"]
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    }
+                    if (Convert.ToString(ViewData["thongbao"]) == "Thêm thành công")
+                    {
+                        <div class="alert alert-success alert-dismissible fade show">
+                            <i class="fas fa-check-circle mr-2"></i>@ViewData["thongbao"]
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    }
+                }
+                @{
+                    if (Convert.ToString(ViewData["trangthai"]) == "Xóa không thành công")
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            <i class="fas fa-times-circle mr-2"></i>@ViewData["trangthai"]
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    }
+                    if (Convert.ToString(ViewData["trangthai"]) == "Xóa thành công")
+                    {
+                        <div class="alert alert-success alert-dismissible fade show">
+                            <i class="fas fa-check-circle mr-2"></i>@ViewData["trangthai"]
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    }
+                }
+
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">Chi tiết hóa đơn</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row product-selection-area mb-4">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class="control-label">Sản phẩm</label>
+                                    <select class="form-control select2" style="width:100%" onchange="return LoadMASP(this)">
+                                        <option value="">[----Xem danh sách sản phẩm----]</option>
+                                        @foreach (var item in ViewBag.DSSP)
+                                        {
+                                            <option value="@item.MaTTSP">@item.MaTTSP - @item.TenSP</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label">Mã sản phẩm</label>
+                                    <input type="hidden" class="form-control" name="MaHD" min="0" step="1" value="@ViewData["mahd"]">
+                                    <input type="number" class="form-control" id="spSL" name="MaSP" min="0" step="1" value="0">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label class="control-label">Số lượng</label>
+                                    <input type="number" class="form-control" id="slIP" name="SoLuong" min="0" step="1" value="0">
+                                </div>
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    <i class="fas fa-plus mr-2"></i>Thêm
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped" id="tbl_cthd">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th class="text-center" width="10%">Mã SP</th>
+                                        <th width="40%">Tên sản phẩm</th>
+                                        <th class="text-center" width="15%">Số lượng</th>
+                                        <th class="text-center" width="20%">Thành tiền</th>
+                                        <th class="text-center" width="15%">Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null && Model.Any())
+                                    {
+                                        foreach (var item in Model)
+                                        {
+                                            <tr class="onRow">
+                                                <td class="text-center">@item.MaSP</td>
+                                                <td>
+                                                    <span class="product-name">@item.TenSP</span>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span class="badge badge-info">@item.SoLuong</span>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span class="price-amount">@String.Format("{0:N0}", item.ThanhTien) đ</span>
+                                                </td>
+                                                <td class="text-center">
+                                                    <a class="btn btn-danger btn-sm" href="/Admin/HoaDon/DeleteCTHD?MAHD=@item.MaHD&MASP=@item.MaSP" onclick="return confirm('Xác nhận xóa sản phẩm này?')" title="Xóa">
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="5" class="text-center py-4">
+                                                <i class="fas fa-shopping-cart text-muted mb-2" style="font-size: 48px;"></i>
+                                                <p class="text-muted">Chưa có sản phẩm nào trong hóa đơn</p>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </form>
+</div>
+
+<script type="text/javascript">
+    function LoadMASP(obj) {
+        var masp = obj.value;
+        document.getElementById("spSL").value = masp;
+    }
+</script>
+
+<style>
+    body {
+        font-size: 14px;
+    }
+
+    .content-header h1 {
+        font-size: 24px;
+        font-weight: 500;
+    }
+
+    .card {
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        border: none;
+        margin-bottom: 2rem;
+    }
+
+    .card-primary.card-outline {
+        border-top: 3px solid #007bff;
+    }
+
+    .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #eee;
+    }
+
+    .card-title {
+        font-size: 18px;
+        font-weight: 500;
+        margin: 0;
+    }
+
+    .control-label {
+        font-weight: 500;
+        color: #495057;
+        margin-bottom: 0.5rem;
+        font-size: 14px;
+    }
+
+    .form-control {
+        height: 38px;
+        border-radius: 4px;
+        border: 1px solid #ced4da;
+        padding: .375rem .75rem;
+        font-size: 14px;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+
+        .form-control:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+        }
+
+    .btn {
+        font-size: 14px;
+    }
+
+    .btn-save {
+        padding: 8px 24px;
+        font-size: 15px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+    .product-selection-area {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .table th {
+        background-color: #343a40;
+        color: white;
+        font-weight: 500;
+        vertical-align: middle;
+    }
+
+    .table td {
+        vertical-align: middle;
+        padding: 0.75rem;
+    }
+
+    .badge {
+        font-size: 14px;
+        padding: 0.4em 0.8em;
+        font-weight: 500;
+    }
+
+    .badge-info {
+        background-color: #17a2b8;
+    }
+
+    .price-amount {
+        font-weight: 600;
+        color: #28a745;
+    }
+
+    .product-name {
+        font-weight: 500;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: rgba(0, 0, 0, 0.035);
+    }
+
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 14px;
+        border-radius: 0.2rem;
+    }
+</style>

@@ -1,0 +1,115 @@
+﻿/* ========== CORE STYLES ========== */
+.mainmenu-area {
+    background: #ffffff;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.06);
+}
+
+/* ========== FORM ENHANCEMENTS ========== */
+.premium-form {
+    padding: 40px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    animation: formEntrance 0.6s ease-out;
+}
+
+@keyframes formEntrance {
+    0% {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.form-control {
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 14px 20px;
+    font-size: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(255, 255, 255, 0.9);
+}
+
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 12px rgba(102, 126, 234, 0.2);
+        background: #ffffff;
+    }
+
+/* ========== TYPOGRAPHY ========== */
+.sidebar-title {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-weight: 700;
+    color: #2d3436;
+    position: relative;
+    padding-bottom: 25px;
+    margin-bottom: 35px;
+}
+
+    .sidebar-title:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 4px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        border-radius: 2px;
+    }
+
+/* ========== BUTTON DESIGN ========== */
+.btn-royal {
+    padding: 14px 45px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+}
+
+    .btn-royal:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 7px 20px rgba(118, 75, 162, 0.25);
+    }
+
+    .btn-royal:active {
+        transform: translateY(1px);
+    }
+
+/* ========== RESPONSIVE DESIGN ========== */
+@media (max-width: 768px) {
+    .premium-form {
+        padding: 25px;
+        margin: 15px;
+    }
+
+    .form-control {
+        padding: 12px 15px;
+        font-size: 14px;
+    }
+
+    .btn-royal {
+        width: 100%;
+        padding: 12px 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar-title {
+        font-size: 1.5rem;
+        padding-bottom: 20px;
+    }
+
+        .sidebar-title:after {
+            width: 40px;
+            height: 3px;
+        }
+}
