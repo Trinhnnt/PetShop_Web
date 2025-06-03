@@ -1,0 +1,944 @@
+﻿@model IEnumerable<Web_projectframeword_admin.Models.GiaoHang>
+@{
+    int pages = Convert.ToInt32(ViewData["pages"]); int p = Convert.ToInt32(ViewData["page"]);
+}
+<style>
+    @@import url('https://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,700,600');
+    @@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300');
+    @@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+    :root {
+        --primary-green: #0D8E78;
+        --dark-green: #0a7865;
+        --light-green: #10a085;
+        --success-green: #0D8E78;
+        --secondary-color: #f8f9fa;
+        --border-color: #e9ecef;
+        --text-color: #343a40;
+        --light-text: #6c757d;
+        --danger-color: #dc3545;
+        --white: #ffffff;
+        --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.1);
+        --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Base Styling */
+    * {
+        box-sizing: border-box;
+    }
+
+    body, html {
+        font-family: 'Roboto', 'Titillium Web', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+        background-color: var(--secondary-color) !important;
+        color: var(--text-color) !important;
+        font-size: 14px !important;
+        line-height: 1.5 !important;
+    }
+
+    /* Content Wrapper */
+    .content-wrapper {
+        padding: 25px !important;
+        background-color: var(--secondary-color) !important;
+    }
+
+    /* Content Header Styling */
+    .content-header {
+        background: linear-gradient(135deg, var(--primary-green), var(--dark-green)) !important;
+        color: white !important;
+        padding: 25px 35px !important;
+        border-radius: 12px !important;
+        margin-bottom: 25px !important;
+        box-shadow: var(--shadow-medium) !important;
+        position: relative !important;
+        overflow: hidden !important;
+    }
+
+        .content-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .content-header h1 {
+            font-family: 'Roboto Condensed', 'Titillium Web', sans-serif !important;
+            margin: 0 0 20px 0 !important;
+            font-size: 1.8rem !important;
+            font-weight: 700 !important;
+            color: white !important;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1.2px !important;
+            position: relative !important;
+            z-index: 2 !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+        }
+
+            .content-header h1 .fas {
+                font-size: 1.5rem !important;
+            }
+
+    /* Search Box Styling - Simple & Clean */
+    .searchbox {
+        display: flex !important;
+        align-items: center !important;
+        background: rgba(255, 255, 255, 0.15) !important;
+        border-radius: 20px !important;
+        padding: 4px !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        max-width: 300px !important;
+        width: 100% !important;
+        transition: all 0.3s ease !important;
+    }
+
+        .searchbox:hover {
+            background: rgba(255, 255, 255, 0.2) !important;
+            border-color: rgba(255, 255, 255, 0.3) !important;
+        }
+
+        .searchbox input[type="text"] {
+            font-family: 'Roboto', sans-serif !important;
+            background: transparent !important;
+            border: none !important;
+            padding: 8px 15px !important;
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-size: 0.9rem !important;
+            flex: 1 !important;
+            outline: none !important;
+        }
+
+            .searchbox input[type="text"]::placeholder {
+                color: rgba(255, 255, 255, 0.7) !important;
+                font-style: italic !important;
+                font-size: 0.85rem !important;
+            }
+
+        .searchbox button {
+            background: rgba(255, 255, 255, 0.2) !important;
+            border: none !important;
+            padding: 6px 10px !important;
+            border-radius: 15px !important;
+            color: white !important;
+            cursor: pointer !important;
+            transition: all 0.2s ease !important;
+            min-width: 35px !important;
+            height: 35px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+            .searchbox button:hover {
+                background: rgba(255, 255, 255, 0.3) !important;
+                transform: scale(1.05) !important;
+            }
+
+            .searchbox button i {
+                font-size: 14px !important;
+            }
+
+
+    /* Add New Button */
+    .btn-success {
+        font-family: 'Roboto', 'Titillium Web', sans-serif !important;
+        background: linear-gradient(135deg, var(--success-green), var(--dark-green)) !important;
+        border: 2px solid rgba(255, 255, 255, 0.4) !important;
+        border-radius: 8px !important;
+        color: white !important;
+        padding: 10px 20px !important;
+        font-size: 0.9rem !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+        box-shadow: 0 4px 8px rgba(13, 142, 120, 0.4) !important;
+        transition: all 0.3s ease !important;
+        text-decoration: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+    }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #085d52, var(--dark-green)) !important;
+            transform: translateY(-2px) scale(1.05) !important;
+            box-shadow: 0 6px 15px rgba(13, 142, 120, 0.5) !important;
+            border-color: rgba(255, 255, 255, 0.6) !important;
+            color: white !important;
+            text-decoration: none !important;
+        }
+
+    /* Card Styling */
+    .card {
+        background: white !important;
+        border-radius: 12px !important;
+        box-shadow: var(--shadow-medium) !important;
+        border: 1px solid var(--border-color) !important;
+        overflow: hidden !important;
+        margin: 0 !important;
+    }
+
+    .card-body {
+        padding: 0 !important;
+        overflow-x: auto !important;
+    }
+
+    /* Table Container */
+    .table-responsive {
+        border-radius: 12px !important;
+        overflow-x: auto !important;
+        box-shadow: var(--shadow-light) !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Table Styling - 5 CỘT với kích thước hợp lý */
+    .table {
+        font-family: 'Roboto', 'Titillium Web', sans-serif !important;
+        margin: 0 !important;
+        border-collapse: separate !important;
+        border-spacing: 0 !important;
+        background: white !important;
+        width: 100% !important;
+        table-layout: fixed !important;
+        font-size: 0.85rem !important;
+        min-width: 900px !important;
+    }
+
+        /* CỘT 1: Mã HĐ - Nhỏ gọn */
+        .table th:nth-child(1),
+        .table td:nth-child(1) {
+            width: 100px !important;
+            min-width: 100px !important;
+            max-width: 100px !important;
+            text-align: center !important;
+            font-weight: 700 !important;
+            font-size: 0.9rem !important;
+            padding: 12px 8px !important;
+        }
+
+        /* CỘT 2: Địa chỉ nhận hàng - Rộng nhất */
+        .table th:nth-child(2),
+        .table td:nth-child(2) {
+            width: 300px !important;
+            min-width: 300px !important;
+            max-width: 300px !important;
+            text-align: left !important;
+            padding: 12px 10px !important;
+            white-space: normal !important;
+            word-wrap: break-word !important;
+            overflow: visible !important;
+            text-overflow: unset !important;
+        }
+
+        /* CỘT 3: NV giao hàng - Vừa phải */
+        .table th:nth-child(3),
+        .table td:nth-child(3) {
+            width: 180px !important;
+            min-width: 180px !important;
+            max-width: 180px !important;
+            text-align: left !important;
+            padding: 12px 10px !important;
+        }
+
+        /* CỘT 4: SĐT nhân viên - Vừa phải */
+        .table th:nth-child(4),
+        .table td:nth-child(4) {
+            width: 140px !important;
+            min-width: 140px !important;
+            max-width: 140px !important;
+            text-align: center !important;
+            padding: 12px 8px !important;
+            font-family: 'Roboto Mono', monospace !important;
+        }
+
+        /* CỘT 5: Giao hàng - Vừa phải */
+        .table th:nth-child(5),
+        .table td:nth-child(5) {
+            width: 180px !important;
+            min-width: 180px !important;
+            max-width: 180px !important;
+            text-align: center !important;
+            padding: 12px 10px !important;
+        }
+
+        /* Header Styling */
+        .table thead th {
+            font-family: 'Roboto Condensed', 'Titillium Web', sans-serif !important;
+            background: linear-gradient(135deg, var(--primary-green), var(--dark-green)) !important;
+            color: white !important;
+            font-weight: 700 !important;
+            font-size: 0.8rem !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
+            padding: 15px 10px !important;
+            border: none !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+            vertical-align: middle !important;
+            line-height: 1.3 !important;
+        }
+
+        /* Body rows */
+        .table tbody tr {
+            transition: all 0.3s ease !important;
+            border-bottom: 1px solid var(--border-color) !important;
+        }
+
+            .table tbody tr:hover {
+                background-color: rgba(13, 142, 120, 0.05) !important;
+                transform: scale(1.001) !important;
+                box-shadow: 0 2px 8px rgba(13, 142, 120, 0.1) !important;
+            }
+
+        .table tbody td {
+            padding: 12px 10px !important;
+            vertical-align: middle !important;
+            border: none !important;
+            font-size: 0.85rem !important;
+            color: var(--text-color) !important;
+            line-height: 1.4 !important;
+        }
+
+            /* Định dạng SĐT */
+            .table tbody td:nth-child(4) {
+                font-family: 'Roboto Mono', monospace !important;
+                font-weight: 600 !important;
+                color: var(--primary-green) !important;
+            }
+
+            /* Định dạng địa chỉ */
+            .table tbody td:nth-child(2) {
+                line-height: 1.3 !important;
+                font-size: 0.82rem !important;
+            }
+
+    /* RESPONSIVE DESIGN - Cập nhật lại */
+    @@media (max-width: 1200px) {
+        .table
+
+    {
+        min-width: 800px !important;
+        font-size: 0.8rem !important;
+    }
+
+    .table th:nth-child(1), .table td:nth-child(1) {
+        width: 90px !important;
+    }
+
+    .table th:nth-child(2), .table td:nth-child(2) {
+        width: 250px !important;
+    }
+
+    .table th:nth-child(3), .table td:nth-child(3) {
+        width: 160px !important;
+    }
+
+    .table th:nth-child(4), .table td:nth-child(4) {
+        width: 130px !important;
+    }
+
+    .table th:nth-child(5), .table td:nth-child(5) {
+        width: 170px !important;
+    }
+
+    }
+
+    @@media (max-width: 992px) {
+        .table
+
+    {
+        min-width: 700px !important;
+        font-size: 0.78rem !important;
+    }
+
+    .table th:nth-child(1), .table td:nth-child(1) {
+        width: 80px !important;
+    }
+
+    .table th:nth-child(2), .table td:nth-child(2) {
+        width: 220px !important;
+    }
+
+    .table th:nth-child(3), .table td:nth-child(3) {
+        width: 150px !important;
+    }
+
+    .table th:nth-child(4), .table td:nth-child(4) {
+        width: 120px !important;
+    }
+
+    .table th:nth-child(5), .table td:nth-child(5) {
+        width: 130px !important;
+    }
+
+    .table thead th {
+        font-size: 0.75rem !important;
+        padding: 12px 8px !important;
+    }
+
+    .table tbody td {
+        padding: 10px 8px !important;
+        font-size: 0.8rem !important;
+    }
+
+    }
+
+    @@media (max-width: 768px) {
+        .table
+
+    {
+        min-width: 600px !important;
+        font-size: 0.75rem !important;
+    }
+
+    /* Ẩn cột SĐT trên mobile */
+    .table th:nth-child(4),
+    .table td:nth-child(4) {
+        display: none !important;
+    }
+
+    .table th:nth-child(1), .table td:nth-child(1) {
+        width: 70px !important;
+    }
+
+    .table th:nth-child(2), .table td:nth-child(2) {
+        width: 200px !important;
+    }
+
+    .table th:nth-child(3), .table td:nth-child(3) {
+        width: 140px !important;
+    }
+
+    .table th:nth-child(5), .table td:nth-child(5) {
+        width: 190px !important;
+    }
+
+    }
+
+    @@media (max-width: 480px) {
+        .table
+
+    {
+        min-width: 500px !important;
+        font-size: 0.7rem !important;
+    }
+
+    /* Ẩn thêm cột tên NV */
+    .table th:nth-child(3),
+    .table td:nth-child(3) {
+        display: none !important;
+    }
+
+    .table th:nth-child(1), .table td:nth-child(1) {
+        width: 80px !important;
+    }
+
+    .table th:nth-child(2), .table td:nth-child(2) {
+        width: 250px !important;
+    }
+
+    .table th:nth-child(5), .table td:nth-child(5) {
+        width: 170px !important;
+    }
+
+    .table thead th {
+        font-size: 0.7rem !important;
+        padding: 10px 6px !important;
+    }
+
+    .table tbody td {
+        padding: 8px 6px !important;
+        font-size: 0.75rem !important;
+    }
+
+    }
+
+    /* Badge Styling */
+    .badge {
+        font-size: 0.7rem !important;
+        font-weight: 600 !important;
+        padding: 4px 8px !important;
+        border-radius: 4px !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.3px !important;
+        display: inline-block !important;
+        white-space: nowrap !important;
+    }
+
+    .badge-warning {
+        background-color: #ffc107 !important;
+        color: #212529 !important;
+    }
+
+    .badge-success {
+        background-color: var(--success-green) !important;
+        color: white !important;
+    }
+
+    .badge-danger {
+        background-color: var(--danger-color) !important;
+        color: white !important;
+    }
+
+    .badge-info {
+        background-color: #17a2b8 !important;
+        color: white !important;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+        display: flex !important;
+        gap: 4px !important;
+        justify-content: center !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+    }
+
+    .btn-xs {
+        font-size: 0.65rem !important;
+        padding: 4px 8px !important;
+        border-radius: 3px !important;
+        font-weight: 600 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.2px !important;
+        transition: all 0.3s ease !important;
+        text-decoration: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 1px !important;
+        white-space: nowrap !important;
+        min-width: 35px !important;
+        line-height: 1.2 !important;
+    }
+
+    .btn-success.btn-xs {
+        background: linear-gradient(135deg, var(--success-green), var(--dark-green)) !important;
+        border: 1px solid var(--success-green) !important;
+        color: white !important;
+    }
+
+        .btn-success.btn-xs:hover {
+            background: linear-gradient(135deg, var(--dark-green), #085d52) !important;
+            transform: translateY(-1px) scale(1.05) !important;
+            box-shadow: 0 3px 6px rgba(13, 142, 120, 0.4) !important;
+            color: white !important;
+            text-decoration: none !important;
+        }
+
+    /* Styling cho buttons duyệt/hủy trong cột 6 */
+    .table tbody td:nth-child(6) .btn {
+        font-size: 0.65rem !important;
+        padding: 4px 8px !important;
+        margin: 1px !important;
+        min-width: 50px !important;
+        display: block !important;
+        width: 100% !important;
+        text-align: center !important;
+    }
+
+    .table tbody td:nth-child(6) div {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 2px !important;
+        align-items: stretch !important;
+    }
+
+    /* Card footer styling */
+    .card-footer {
+        background: var(--secondary-color) !important;
+        border-top: 1px solid var(--border-color) !important;
+        padding: 15px 20px !important;
+    }
+
+        .card-footer .form-inline {
+            gap: 10px !important;
+        }
+
+        .card-footer input[type="number"] {
+            border: 1px solid var(--border-color) !important;
+            border-radius: 4px !important;
+            padding: 6px 8px !important;
+            font-size: 0.85rem !important;
+        }
+
+        .card-footer .btn-primary {
+            background: var(--primary-green) !important;
+            border-color: var(--primary-green) !important;
+            padding: 6px 12px !important;
+            font-size: 0.85rem !important;
+        }
+
+            .card-footer .btn-primary:hover {
+                background: var(--dark-green) !important;
+                border-color: var(--dark-green) !important;
+            }
+
+    /* Alert styling */
+    .alert {
+        border-radius: 8px !important;
+        margin-bottom: 20px !important;
+        border: none !important;
+        box-shadow: var(--shadow-light) !important;
+    }
+
+    .alert-success {
+        background: linear-gradient(135deg, #d4edda, #c3e6cb) !important;
+        color: #155724 !important;
+    }
+
+    .alert-danger {
+        background: linear-gradient(135deg, #f8d7da, #f5c6cb) !important;
+        color: #721c24 !important;
+    }
+
+    /* RESPONSIVE DESIGN */
+    @@media (max-width: 1400px) {
+        .table {
+            font-size: 0.78rem !important;
+            min-width: 1000px !important;
+        }
+
+            .table thead th {
+                font-size: 0.7rem !important;
+                padding: 10px 6px !important;
+            }
+
+            .table tbody td {
+                font-size: 0.76rem !important;
+                padding: 8px 6px !important;
+            }
+
+        .btn-xs {
+            font-size: 0.6rem !important;
+            padding: 3px 6px !important;
+        }
+    }
+
+    @@media (max-width: 1200px) {
+        /* Ẩn cột địa chỉ */
+        .table th:nth-child(7), .table td:nth-child(7) {
+            display: none !important;
+        }
+
+        .table {
+            min-width: 900px !important;
+        }
+            /* Điều chỉnh lại width các cột còn lại */
+            .table th:nth-child(1), .table td:nth-child(1) {
+                width: 90px !important;
+            }
+
+            .table th:nth-child(2), .table td:nth-child(2) {
+                width: 150px !important;
+            }
+
+            .table th:nth-child(3), .table td:nth-child(3) {
+                width: 130px !important;
+            }
+
+            .table th:nth-child(4), .table td:nth-child(4) {
+                width: 120px !important;
+            }
+
+            .table th:nth-child(5), .table td:nth-child(5) {
+                width: 140px !important;
+            }
+
+            .table th:nth-child(6), .table td:nth-child(6) {
+                width: 130px !important;
+            }
+
+            .table th:nth-child(8), .table td:nth-child(8) {
+                width: 240px !important;
+            }
+    }
+
+    @@media (max-width: 992px) {
+        /* Ẩn thêm cột ngày lập */
+        .table th:nth-child(4), .table td:nth-child(4) {
+            display: none !important;
+        }
+
+        .table {
+            min-width: 800px !important;
+        }
+
+        .content-header {
+            padding: 20px 25px !important;
+        }
+        /* Điều chỉnh lại width */
+        .table th:nth-child(1), .table td:nth-child(1) {
+            width: 80px !important;
+        }
+
+        .table th:nth-child(2), .table td:nth-child(2) {
+            width: 160px !important;
+        }
+
+        .table th:nth-child(3), .table td:nth-child(3) {
+            width: 140px !important;
+        }
+
+        .table th:nth-child(5), .table td:nth-child(5) {
+            width: 150px !important;
+        }
+
+        .table th:nth-child(6), .table td:nth-child(6) {
+            width: 140px !important;
+        }
+
+        .table th:nth-child(8), .table td:nth-child(8) {
+            width: 230px !important;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .content-wrapper {
+            padding: 15px !important;
+        }
+
+        .content-header h1 {
+            font-size: 1.5rem !important;
+            text-align: center !important;
+        }
+
+        .table {
+            min-width: 700px !important;
+        }
+            /* Ẩn thêm cột duyệt */
+            .table th:nth-child(6),
+            .table td:nth-child(6) {
+                display: none !important;
+            }
+            /* Chỉ hiển thị các cột quan trọng nhất */
+            .table th:nth-child(1), .table td:nth-child(1) {
+                width: 80px !important;
+            }
+
+            .table th:nth-child(2), .table td:nth-child(2) {
+                width: 150px !important;
+            }
+
+            .table th:nth-child(3), .table td:nth-child(3) {
+                width: 130px !important;
+            }
+
+            .table th:nth-child(5), .table td:nth-child(5) {
+                width: 140px !important;
+            }
+
+            .table th:nth-child(8), .table td:nth-child(8) {
+                width: 200px !important;
+            }
+    }
+
+    @@media (max-width: 480px) {
+        .searchbox {
+            flex-direction: column !important;
+            padding: 12px !important;
+            gap: 10px !important;
+        }
+
+            .searchbox input[type="text"] {
+                width: 100% !important;
+                text-align: center !important;
+            }
+
+        .btn-success {
+            width: 100% !important;
+            justify-content: center !important;
+        }
+
+        .table {
+            min-width: 600px !important;
+        }
+
+            .table th:nth-child(1),
+            .table td:nth-child(1) {
+                display: none !important;
+            }
+
+            .table th:nth-child(2), .table td:nth-child(2) {
+                width: 140px !important;
+            }
+
+            .table th:nth-child(3), .table td:nth-child(3) {
+                width: 120px !important;
+            }
+
+            .table th:nth-child(5), .table td:nth-child(5) {
+                width: 130px !important;
+            }
+
+            .table th:nth-child(8), .table td:nth-child(8) {
+                width: 210px !important;
+            }
+
+        .btn-xs {
+            font-size: 0.55rem !important;
+            padding: 2px 4px !important;
+        }
+
+        .action-buttons {
+            flex-direction: column !important;
+            gap: 2px !important;
+        }
+    }
+
+    /* Focus states */
+    input:focus,
+    button:focus,
+    .btn:focus {
+        outline: 2px solid var(--primary-green) !important;
+        outline-offset: 2px !important;
+    }
+
+    /* Table polish */
+    .table tbody tr:last-child td {
+        border-bottom: none !important;
+    }
+
+    .table thead th:first-child {
+        border-top-left-radius: 12px !important;
+    }
+
+    .table thead th:last-child {
+        border-top-right-radius: 12px !important;
+    }
+
+    /* Text alignment classes */
+    .text-center {
+        text-align: center !important;
+    }
+
+    .text-left {
+        text-align: left !important;
+    }
+
+    .text-right {
+        text-align: right !important;
+    }
+
+    /* Smooth transitions */
+    .table, .table th, .table td, .btn, .badge {
+        transition: all 0.3s ease !important;
+    }
+</style>
+<div class="content-wrapper" style="min-height: 639px;">
+    <section class="content-header">
+        <h1><i class="glyphicon glyphicon-shopping-cart"></i> Giao hàng</h1>
+        <div >
+            <form class="searchbox" action="/Admin/GiaoHang/Index" method="get">
+                <input type="text" placeholder="Search here" name="Search">
+                <button type="submit" ><i class="fas fa-search-location"></i></button>
+            </form>
+        </div>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        @{
+            if (Convert.ToString(ViewData["trangthai"]) == "Xóa không thành công")
+            {
+                <div class="row">
+                    <div class="alert alert-error">
+                        @ViewData["trangthai"]
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    </div>
+                </div>
+            }
+            if (Convert.ToString(ViewData["trangthai"]) == "Xóa thành công")
+            {
+                <div class="row">
+                    <div class="alert alert-success">
+                        @ViewData["trangthai"]
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    </div>
+                </div>
+            }
+        }
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box" id="view">
+                    <div class="box-body">
+                        <div class="row" style="padding:0px; margin:0px;">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">Mã hóa đơn</th>
+                                            <th>Địa chỉ nhận hàng</th>
+                                            <th>NV giao hàng</th>
+                                            <th class="text-center">SĐT nhân viên</th>
+                                            <th class="text-center">Giao hàng</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            int a = Convert.ToInt32(ViewData["ThongBao"]);
+                                            if (a == 1)
+                                            {
+                                                <tr><td class="text-center" colspan="9">Không tìm thấy phiếu giao hàng nào!</td></tr>
+                                            }
+                                            else
+                                            {
+                                                @foreach (var item in Model)
+                                                {
+                                                    <tr>
+                                                        <td class="text-center">@item.MaHD</td>
+                                                        <td>@item.DiaChiGH</td>
+                                                        <td>@item.TenNV</td>
+                                                        <td class="text-center">@item.SDT</td>
+                                                        <td class="text-center">
+                                                            @if (item.TinhTrangGH == 0)
+                                                            {
+                                                                <form action="/Admin/GiaoHang/HoanThanhGH" method="get">
+                                                                    <input type="hidden" name="MaHD" value="@item.MaHD" />
+                                                                    <input type="hidden" name="MaNV" value="@item.MaNV" />
+                                                                    <input type="hidden" name="page" value="@p" />
+                                                                    <input type="hidden" name="STN" value="@item.TongTien" />
+                                                                    <button type="submit" class="btn btn-success btn-xs">
+                                                                        <span class="glyphicon glyphicon-ok"></span>Hoàn thành
+                                                                    </button>
+                                                                </form>
+
+                                                            }
+                                                            else
+                                                            {
+                                                                <span>Đã giao</span>
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                }
+
+                                            }
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.box -->
+        </div>
+        <!-- /.col -->
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div class="pull-right pagination">
+                    <form action="/Admin/GiaoHang/Index" method="get">
+                        <input type="submit" value="Go to" /> page <input type="number" max="@pages" min="1" name="page" value="@p" /> of @pages
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
