@@ -1,0 +1,354 @@
+@* File: Views/HoaDon/CTHD.cshtml *@
+@{
+    ViewData["Title"] = "Chi Tiết Đơn Hàng #" + (ViewBag.HD != null ? ViewBag.HD.MaHD.ToString() : "");
+    // Layout = "_Layout"; // Đảm bảo View này sử dụng Layout chung của bạn
+
+    HoaDon HD = ViewBag.HD as HoaDon;
+    List<CTHD> listcthd = ViewBag.CTHD as List<CTHD> ?? new List<CTHD>();
+
+    long tongTienSanPhamTruocKM = 0; // Tổng tiền các sản phẩm dựa trên giá gốc (chưa có KM tổng đơn)
+    if (listcthd.Any())
+    {
+        foreach (var item in listcthd)
+        {
+            if (item != null)
+            {
+                // item.ThanhTien ở đây đã được tính là (item.Gia * item.SoLuong) từ Model CTHD.cs
+                tongTienSanPhamTruocKM += item.ThanhTien ?? 0;
+            }
+        }
+    }
+
+    long tienGiamThucTe = 0;
+    if (HD != null)
+    {
+        tienGiamThucTe = tongTienSanPhamTruocKM - HD.TongTienTT;
+        if (tienGiamThucTe < 0) tienGiamThucTe = 0; // Đảm bảo tiền giảm không âm
+    }
+}
+
+@if (HD == null)
+{
+    <div class="container mt-5">
+        <div class="alert alert-danger text-center" role="alert">
+            <h2>Không tìm thấy thông tin hóa đơn</h2>
+            <p>Mã hóa đơn bạn yêu cầu không tồn tại hoặc đã có lỗi xảy ra khi tải dữ liệu.</p>
+            <a href="@Url.Action("LichSuHD", "HoaDon")" class="btn btn-primary mt-3"><i class="fas fa-arrow-left"></i> Quay lại Lịch sử</a>
+        </div>
+    </div>
+}
+else
+{
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Đặt CSS vào đây hoặc tốt hơn là vào file CSS riêng và link từ _Layout.cshtml hoặc section styles */
+        body { /* CSS này có thể không cần nếu body đã được style ở _Layout.cshtml */
+            font-family: 'Montserrat', sans-serif;
+            background-color: #eef2f7; /* Màu nền nhẹ nhàng hơn */
+            margin: 0;
+            padding: 20px;
+        }
+
+        .invoice-container-custom {
+            max-width: 850px; /* Rộng hơn một chút */
+            margin: 30px auto;
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .invoice-header-custom {
+            background: #00796b; /* Màu xanh đậm hơn một chút */
+            color: #ffffff;
+            padding: 25px 30px;
+            text-align: center;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+            .invoice-header-custom h1 {
+                font-size: 28px;
+                font-weight: 700;
+                margin: 0;
+            }
+
+        .invoice-content-custom {
+            padding: 30px;
+        }
+
+            .invoice-content-custom h2 {
+                font-size: 22px; /* Nhỏ hơn một chút */
+                font-weight: 700;
+                margin: 0 0 20px;
+                color: #00796b;
+                text-align: center;
+            }
+
+        .invoice-info-custom p {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+            .invoice-info-custom p strong {
+                color: #005a4f;
+                min-width: 150px; /* Căn chỉnh label */
+                display: inline-block;
+            }
+
+        .products-table-custom {
+            width: 100%;
+            margin-top: 25px;
+            border-collapse: collapse;
+        }
+
+            .products-table-custom th, .products-table-custom td {
+                border: 1px solid #e0e0e0;
+                padding: 12px 10px; /* Tăng padding */
+                text-align: left;
+                font-size: 15px;
+            }
+
+            .products-table-custom th {
+                background-color: #f0f5f4; /* Màu nền header nhạt hơn */
+                color: #005a4f;
+                font-weight: 600;
+            }
+
+                .products-table-custom td.text-right, .products-table-custom th.text-right {
+                    text-align: right;
+                }
+
+                .products-table-custom td.text-center, .products-table-custom th.text-center {
+                    text-align: center;
+                }
+
+        .summary-section-custom {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px dashed #00796b;
+        }
+
+            .summary-section-custom table {
+                width: 100%;
+                max-width: 400px; /* Giới hạn chiều rộng bảng tổng */
+                margin-left: auto; /* Căn phải */
+            }
+
+            .summary-section-custom td {
+                padding: 8px 0;
+                font-size: 16px;
+            }
+
+                .summary-section-custom td.summary-label {
+                    font-weight: 600;
+                    color: #333;
+                }
+
+                .summary-section-custom td.summary-value {
+                    text-align: right;
+                    font-weight: 600;
+                    color: #333;
+                }
+
+            .summary-section-custom tr.grand-total td {
+                font-size: 18px;
+                font-weight: 700;
+                color: #00796b;
+                padding-top: 10px;
+                border-top: 1px solid #00796b;
+            }
+
+        .shipping-details-custom {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #fdfaf1; /* Màu nền khác biệt */
+            border-radius: 5px;
+            border: 1px solid #f0e6d2;
+        }
+
+            .shipping-details-custom h3 {
+                font-size: 18px;
+                color: #005a4f;
+                margin-top: 0;
+                margin-bottom: 15px;
+                border-bottom: 1px solid #e0e0e0;
+                padding-bottom: 10px;
+            }
+
+        .footer-actions-custom {
+            text-align: center;
+            padding: 30px 0 10px;
+        }
+
+        .btn-back-custom {
+            font-size: 16px;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 25px;
+            background: #00796b;
+            padding: 12px 30px;
+            display: inline-block;
+            font-weight: 600;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+
+            .btn-back-custom:hover {
+                background: #005a4f;
+                transform: translateY(-2px);
+            }
+
+        .status-badge {
+            padding: .3em .6em;
+            font-size: .9em;
+            font-weight: 600;
+            border-radius: .25rem;
+            color: #fff;
+        }
+
+        .status-pending {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .status-cancelled {
+            background-color: #dc3545;
+        }
+
+        .status-shipping {
+            background-color: #17a2b8;
+        }
+
+        .status-completed {
+            background-color: #28a745;
+        }
+
+        .status-unpaid {
+            background-color: #fd7e14;
+        }
+
+        .status-paid {
+            background-color: #28a745;
+        }
+
+    </style>
+
+    <div class="invoice-container-custom">
+        <div class="invoice-header-custom">
+            <h1>Chi Tiết Đơn Hàng</h1>
+        </div>
+        <div class="invoice-content-custom">
+            <h2>Cảm ơn bạn đã đặt hàng tại PetShop!</h2>
+
+            <div class="invoice-info-custom">
+                <p><strong>Mã hóa đơn:</strong> #@HD.MaHD</p>
+                <p><strong>Ngày đặt hàng:</strong> @HD.NgayLapHD.ToString("dd/MM/yyyy HH:mm")</p>
+                <p>
+                    <strong>Trạng thái đơn hàng:</strong>
+                    @if (HD.TinhTrangHD == 0)
+                    {
+                        <span class="status-badge status-pending">Chờ xử lý</span>
+                    }
+                    else if (HD.TinhTrangHD == -1)
+                    {
+                        <span class="status-badge status-cancelled">Đã hủy</span>
+                    }
+                    else if (HD.TinhTrangHD == 1)
+                    {
+                        <span class="status-badge status-shipping">Đang giao</span>
+                    }
+                    else if (HD.TinhTrangHD == 2)
+                    {
+                        <span class="status-badge status-completed">Hoàn thành</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-secondary">Không xác định</span>
+                    }
+                </p>
+                <p>
+                    <strong>Trạng thái thanh toán:</strong>
+                    @if (HD.TinhTrangTT == 0)
+                    {
+                        <span class="status-badge status-unpaid">Chưa thanh toán</span>
+                    }
+                    else if (HD.TinhTrangTT == 1)
+                    {
+                        <span class="status-badge status-paid">Đã thanh toán</span>
+                    }
+                    else
+                    {
+                        <span>N/A</span>
+                    }
+                </p>
+            </div>
+
+            <table class="products-table-custom">
+                <thead>
+                    <tr>
+                        <th>Tên sản phẩm</th>
+                        <th class="text-right">Đơn giá</th>
+                        <th class="text-center">Số lượng</th>
+                        <th class="text-right">Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (listcthd.Any())
+                    {
+                        foreach (var item in listcthd)
+                        {
+                            <tr>
+                                <td>@item.TenSP</td>
+                                <td class="text-right">@string.Format("{0:N0} đ", item.Gia)</td>
+                                <td class="text-center">@item.SoLuong</td>
+                                <td class="text-right">@string.Format("{0:N0} đ", item.ThanhTien)</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr><td colspan="4" class="text-center" style="padding:20px;">Không có chi tiết sản phẩm cho đơn hàng này.</td></tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="summary-section-custom">
+                <table>
+                    <tr>
+                        <td class="summary-label">Tổng tiền sản phẩm:</td>
+                        <td class="summary-value">@string.Format("{0:N0} đ", tongTienSanPhamTruocKM)</td>
+                    </tr>
+                    @if (tienGiamThucTe > 0)
+                    {
+                        <tr>
+                            <td class="summary-label">Giảm giá:</td>
+                            <td class="summary-value" style="color: #dc3545;">- @string.Format("{0:N0} đ", tienGiamThucTe)</td>
+                        </tr>
+                    }
+                    <tr class="grand-total">
+                        <td class="summary-label">TỔNG CỘNG PHẢI TRẢ:</td>
+                        <td class="summary-value">@string.Format("{0:N0} đ", HD.TongTienTT)</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="shipping-details-custom">
+                <h3><i class="fas fa-shipping-fast"></i> Thông Tin Giao Hàng</h3>
+                <p><strong>Người nhận:</strong> @(ViewBag.KH?.TenKH ?? "Không có thông tin")</p>
+                <p><strong>Địa chỉ:</strong> @(!string.IsNullOrEmpty(HD.DiaChiGH) ? HD.DiaChiGH : "Chưa có thông tin")</p>
+                <p><strong>Số điện thoại:</strong> @(ViewBag.KH?.SDT ?? "Không có thông tin")</p>
+            </div>
+
+        </div>
+        <div class="footer-actions-custom">
+            <a href="@Url.Action("LichSuHD", "HoaDon")" class="btn-back-custom"><i class="fas fa-arrow-left"></i> Quay lại Lịch sử đơn hàng</a>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        // JavaScript dành riêng cho trang này (nếu có)
+    </script>
+}

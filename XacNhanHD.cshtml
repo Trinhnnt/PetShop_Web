@@ -1,0 +1,559 @@
+@* File: Views/HoaDon/XacNhanHD.cshtml *@
+@{
+    ViewData["Title"] = "Xác Nhận Hóa Đơn";
+    // Layout = "_Layout"; // Đảm bảo sử dụng Layout chung
+
+    List<CTHD> listcthd = ViewBag.listcthd as List<CTHD> ?? new List<CTHD>();
+    KhuyenMai KM = ViewBag.KM as KhuyenMai;
+    KhachHang KH = ViewBag.KH as KhachHang ?? new KhachHang();
+
+    long thanhTienDongTrongVongLap = 0;
+    long tongTienSanPhamGoc = 0;
+    long tienGiamTuKhuyenMai = 0;
+    long tongTienPhaiThanhToan = 0;
+
+    if (listcthd.Any())
+    {
+        foreach (var item in listcthd)
+        {
+            if (item != null)
+            {
+                thanhTienDongTrongVongLap = item.Gia * item.SoLuong;
+                tongTienSanPhamGoc += thanhTienDongTrongVongLap;
+            }
+        }
+    }
+
+    tongTienPhaiThanhToan = tongTienSanPhamGoc;
+
+    if (KM != null && KM.MaKM > 0)
+    {
+        DateTime ngayHienTaiView = DateTime.Now.Date;
+        if (ngayHienTaiView >= KM.TuNgay.Date && ngayHienTaiView <= KM.DenNgay.Date &&
+            (KM.TTienToiThieu == null || KM.TTienToiThieu <= tongTienSanPhamGoc))
+        {
+            tienGiamTuKhuyenMai = (long)Math.Round((double)tongTienSanPhamGoc * KM.SoPTKM / 100.0);
+            tongTienPhaiThanhToan = tongTienSanPhamGoc - tienGiamTuKhuyenMai;
+        }
+    }
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>@ViewData["Title"] - PetShop</title>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        html {
+            box-sizing: border-box;
+            overflow-x: hidden; /* Ngăn cuộn ngang ở html */
+        }
+
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Đảm bảo body cũng không cuộn ngang */
+        }
+
+        .page-container-wrapper {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .invoice-form {
+            max-width: 700px;
+            width: 100%;
+            margin: 20px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+            .invoice-form header {
+                background: #008066;
+                color: #fff;
+                padding: 15px 20px;
+                text-align: center;
+                border-top-left-radius: 8px;
+                border-top-right-radius: 8px;
+            }
+
+                .invoice-form header h1 {
+                    margin: 0;
+                    font-size: 22px;
+                    font-weight: 600;
+                }
+
+            .invoice-form .content {
+                padding: 20px;
+            }
+
+                .invoice-form .content h2 {
+                    text-align: center;
+                    font-size: 18px;
+                    color: #008066;
+                    margin-bottom: 20px;
+                    font-weight: 600;
+                }
+
+            .invoice-form table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 20px;
+                table-layout: auto;
+            }
+
+                .invoice-form table th, .invoice-form table td {
+                    padding: 10px 8px;
+                    border-bottom: 1px solid #eee;
+                    text-align: left;
+                    font-size: 14px;
+                    word-break: break-word;
+                }
+
+                .invoice-form table th {
+                    background-color: #008066;
+                    color: #fff;
+                    font-weight: 600;
+                    white-space: nowrap;
+                }
+
+                .invoice-form table td.product-name-cell {
+                    min-width: 150px;
+                }
+
+                .invoice-form table td.text-right,
+                .invoice-form table th.text-right {
+                    text-align: right;
+                }
+
+                .invoice-form table td.text-center,
+                .invoice-form table th.text-center {
+                    text-align: center;
+                }
+
+            .invoice-form .summary-table td {
+                border-top: 2px solid #eee;
+                padding: 10px 8px;
+                font-weight: 600;
+            }
+
+                .invoice-form .summary-table td:last-child {
+                    text-align: right;
+                }
+
+            .invoice-form .final-total td {
+                color: #008066;
+                background-color: #fafafa;
+                border-top: 2px solid #008066;
+                border-bottom: 2px solid #008066;
+                font-weight: bold;
+            }
+
+                .invoice-form .final-total td:last-child {
+                    text-align: right;
+                }
+
+        .address-row {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+            .address-row > div {
+                flex: 1 1 calc(50% - 8px);
+                min-width: 0; /* Cho phép flex item co lại nếu cần */
+                display: flex;
+                flex-direction: column;
+                position: relative; /* Để error message không ảnh hưởng nhiều */
+            }
+
+                .address-row > div.full-width {
+                    flex-basis: 100%;
+                    flex-grow: 1;
+                }
+
+        .invoice-form label {
+            font-weight: 600;
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 6px;
+        }
+
+        .select2-container {
+            width: 100% !important;
+            box-sizing: border-box;
+        }
+
+        .invoice-form input[type="text"],
+        .invoice-form select,
+        .select2-container--default .select2-selection--single {
+            width: 100% !important;
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 14px;
+            min-height: 40px;
+            box-sizing: border-box;
+        }
+
+            .select2-container--default .select2-selection--single .select2-selection__rendered {
+                line-height: normal;
+                padding-top: 8px;
+                padding-bottom: 8px;
+                padding-left: 0;
+                padding-right: 20px;
+            }
+
+            .select2-container--default .select2-selection--single .select2-selection__arrow {
+                height: 38px;
+                right: 3px;
+            }
+
+        .select2-dropdown {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
+
+        .select2-search__field {
+            width: 100% !important;
+            box-sizing: border-box;
+            padding: 6px 8px;
+        }
+
+        .invoice-form .btn-submit {
+            display: block;
+            width: 100%;
+            background-color: #008066;
+            color: #fff;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+            text-align: center;
+            margin-top: 25px;
+        }
+
+            .invoice-form .btn-submit:hover {
+                background-color: #006a55;
+                transform: translateY(-1px);
+            }
+
+        .error-message {
+            color: #d9534f;
+            font-size: 0.85em;
+            margin-top: 4px; /* Khoảng cách với input/select phía trên */
+            display: block; /* Chiếm một dòng riêng */
+            width: 100%; /* Đảm bảo không tràn khỏi div cha */
+            word-wrap: break-word;
+            /* Không nên dùng position: absolute ở đây nếu không quản lý kỹ */
+        }
+
+        input.error,
+        .select2-container--default.select2-container--focus .select2-selection--single.error,
+        .select2-container--default .select2-selection--single.error {
+            border: 1px solid #d9534f !important;
+        }
+
+        @@media (max-width: 600px) {
+            .address-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+                .address-row > div {
+                    flex-basis: 100%;
+                    width: 100%;
+                    margin-bottom: 15px;
+                    min-width: auto;
+                }
+
+                    .address-row > div:last-child {
+                        margin-bottom: 0;
+                    }
+
+            .invoice-form .content {
+                padding: 15px;
+            }
+
+            .invoice-form header {
+                padding: 15px;
+            }
+
+                .invoice-form header h1 {
+                    font-size: 20px;
+                }
+
+            .invoice-form .content h2 {
+                font-size: 18px;
+                margin-bottom: 15px;
+            }
+
+            .invoice-form table th, .invoice-form table td {
+                padding: 8px 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container-wrapper">
+        <div class="invoice-form">
+            <header>
+                <h1>Xác nhận hóa đơn</h1>
+            </header>
+            <div class="content">
+                @if (ViewBag.ErrorMessageFromController != null)
+                {
+                    <div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 15px; border-radius: 5px; text-align:center;">
+                        @ViewBag.ErrorMessageFromController
+                    </div>
+                }
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 15px; border-radius: 5px; text-align:center;">
+                        @TempData["ErrorMessage"]
+                    </div>
+                }
+
+                <h2>Vui lòng kiểm tra lại thông tin!</h2>
+                <form action="/HoaDon/InsertHD" method="post" id="deliveryForm">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 40%;">Tên sản phẩm</th>
+                                <th style="width: 20%;" class="text-right">Đơn giá</th>
+                                <th style="width: 15%;" class="text-center">Số lượng</th>
+                                <th style="width: 25%;" class="text-right">Thành Tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (listcthd.Any())
+                            {
+                                for (int i = 0; i < listcthd.Count; i++)
+                                {
+                                    var item = listcthd[i];
+                                    <tr>
+                                        <td class="product-name-cell">
+                                            @item.TenSP
+                                            <input name="MaTTSP" type="hidden" value="@item.MaTTSP" />
+                                        </td>
+                                        <td class="text-right">@string.Format("{0:N0} đ", item.Gia)</td>
+                                        <td class="text-center">
+                                            @item.SoLuong
+                                            <input name="SoLuong" type="hidden" value="@item.SoLuong" />
+                                        </td>
+                                        @{
+                                            long currentThanhTienDong = item.Gia * item.SoLuong;
+                                        }
+                                        <td class="text-right">@string.Format("{0:N0} đ", currentThanhTienDong)</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="4" style="text-align:center; padding: 20px;">Không có sản phẩm nào để xác nhận.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <input type="hidden" name="MaKM_DaApDung" value="@(KM != null && KM.MaKM > 0 && tienGiamTuKhuyenMai > 0 ? KM.MaKM : 0)" />
+
+                    <table class="summary-table">
+                        <tr>
+                            <td style="width: 75%;">Tổng tiền sản phẩm</td>
+                            <td style="width: 25%; text-align:right;">@string.Format("{0:N0} đ", tongTienSanPhamGoc)</td>
+                        </tr>
+                        <tr>
+                            <td>Giảm</td>
+                            <td style="text-align:right;">@string.Format("{0:N0} đ", tienGiamTuKhuyenMai)</td>
+                        </tr>
+                        <tr class="final-total">
+                            <td>Tổng tiền phải thanh toán</td>
+                            <td style="text-align:right;">@string.Format("{0:N0} đ", tongTienPhaiThanhToan)</td>
+                        </tr>
+                    </table>
+
+                    <div class="address-row">
+                        <div>
+                            <label for="Tinh">Tỉnh/Thành phố *</label>
+                            <select id="Tinh" name="Tinh" required></select>
+                            <span id="tinhError" class="error-message" style="display:none;">Vui lòng chọn tỉnh/thành phố</span>
+                        </div>
+                        <div>
+                            <label for="Quan">Quận/Huyện *</label>
+                            <select id="Quan" name="Quan" required></select>
+                            <span id="quanError" class="error-message" style="display:none;">Vui lòng chọn quận/huyện</span>
+                        </div>
+                        <div class="full-width">
+                            <label for="DiaChi">Địa chỉ chi tiết (số nhà, tên đường, phường/xã) *</label>
+                            <input type="text" name="DiaChi" id="DiaChi" class="form-control" placeholder="Nhập địa chỉ chi tiết..." required />
+                            <span id="diaChiError" class="error-message" style="display:none;">Vui lòng nhập địa chỉ giao hàng</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 16px;">
+                        <label>Ngày lập hóa đơn:</label>
+                        <span>@DateTime.Now.ToString("dd/MM/yyyy")</span>
+                    </div>
+
+                    @if (listcthd.Any())
+                    {
+                        <input type="submit" value="Đặt Hàng" class="btn-submit" />
+                    }
+                    else
+                    {
+                        <input type="button" value="Đặt Hàng" class="btn-submit" disabled style="background-color:grey; cursor:not-allowed;" />
+                    }
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            if (typeof jQuery == 'undefined') {
+                console.error("LỖI jQuery: jQuery CHƯA được tải. Trang này sẽ không hoạt động đúng.");
+                $('.invoice-form .content').first().prepend('<div style="color:red; text-align:center; padding:10px; border:1px solid red; background-color:#ffebeb; border-radius:4px; margin-bottom:15px;">Lỗi tải thư viện cơ bản (jQuery). Vui lòng làm mới trang (F5) hoặc liên hệ hỗ trợ.</div>');
+                return;
+            }
+            if (typeof $.fn.select2 === 'undefined') {
+                console.error("LỖI Select2: Plugin Select2 CHƯA được tải vào jQuery.");
+                $('.address-row').first().before('<div style="color:red; text-align:center; padding:10px; border:1px solid red; background-color:#ffebeb; border-radius:4px; margin-bottom:15px;">Lỗi tải thư viện chọn địa chỉ. Vui lòng làm mới trang (F5) hoặc liên hệ hỗ trợ.</div>');
+                return;
+            }
+
+            // Khởi tạo Select2 cho Tỉnh/Thành phố - Tải tất cả và tìm kiếm client-side
+            $('#Tinh').select2({
+                placeholder: "Chọn tỉnh/thành...",
+                allowClear: true,
+                ajax: {
+                    url: "https://provinces.open-api.vn/api/p/", // API lấy TẤT CẢ tỉnh/thành
+                    dataType: 'json',
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (obj) {
+                                return {
+                                    id: obj.code,
+                                    text: obj.name_with_type || obj.name
+                                };
+                            })
+                        };
+                    },
+                    cache: true
+                }
+            });
+
+            // Khởi tạo Select2 cho Quận/Huyện (ban đầu vô hiệu hóa)
+            $('#Quan').select2({
+                placeholder: "Vui lòng chọn tỉnh/thành trước",
+                allowClear: true,
+                data: []
+            }).prop('disabled', true);
+
+            // Sự kiện khi chọn Tỉnh/Thành phố
+            $('#Tinh').on('select2:select', function (e) {
+                var provinceCode = e.params.data.id;
+                $('#Quan').val(null).empty().trigger('change');
+                $('#Quan').prop('disabled', false);
+                hideSelect2Error($('#Quan'), $('#quanError'));
+
+                $('#Quan').select2({
+                    placeholder: "Chọn quận/huyện...",
+                    allowClear: true,
+                    ajax: {
+                        url: `https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`, // Tải tất cả quận/huyện của tỉnh đã chọn
+                        dataType: 'json',
+                        processResults: function (provinceData) {
+                            var districts = [];
+                            if (provinceData && provinceData.districts && Array.isArray(provinceData.districts)) {
+                                districts = $.map(provinceData.districts, function (obj) {
+                                    return { id: obj.code, text: obj.name_with_type || obj.name };
+                                });
+                            }
+                            return { results: districts };
+                        },
+                        cache: true
+                    }
+                });
+            });
+
+            $('#Tinh').on('select2:unselect', function (e) {
+                $('#Quan').val(null).empty().trigger('change');
+                $('#Quan').select2({ placeholder: "Vui lòng chọn tỉnh/thành trước", data: [] }).prop('disabled', true);
+                hideSelect2Error($('#Tinh'), $('#tinhError'));
+                hideSelect2Error($('#Quan'), $('#quanError'));
+            });
+
+            function showSelect2Error(selectElement, errorElement) {
+                errorElement.show();
+                $(selectElement.data('select2').$container).find('.select2-selection--single').addClass('error');
+            }
+
+            function hideSelect2Error(selectElement, errorElement) {
+                errorElement.hide();
+                $(selectElement.data('select2').$container).find('.select2-selection--single').removeClass('error');
+            }
+
+            $('#deliveryForm').on('submit', function (event) {
+                let isValid = true;
+                const tinhInput = $('#Tinh');
+                const tinhError = $('#tinhError');
+                if (!tinhInput.val()) { showSelect2Error(tinhInput, tinhError); isValid = false; }
+                else { hideSelect2Error(tinhInput, tinhError); }
+
+                const quanInput = $('#Quan');
+                const quanError = $('#quanError');
+                if (tinhInput.val() && !quanInput.prop('disabled') && !quanInput.val()) {
+                    showSelect2Error(quanInput, quanError); isValid = false;
+                } else if (quanInput.val() || quanInput.prop('disabled')) {
+                    hideSelect2Error(quanInput, quanError);
+                }
+
+                const diaChiInput = $('#DiaChi');
+                const diaChiError = $('#diaChiError');
+                if (!diaChiInput.val().trim()) {
+                    diaChiError.show(); diaChiInput.addClass('error'); isValid = false;
+                } else {
+                    diaChiError.hide(); diaChiInput.removeClass('error');
+                }
+
+                if (!isValid) {
+                    event.preventDefault();
+                    if (!tinhInput.val()) { tinhInput.select2('open'); }
+                    else if (!quanInput.prop('disabled') && !quanInput.val()) { quanInput.select2('open'); }
+                    else if (!diaChiInput.val().trim()) { diaChiInput.focus(); }
+                }
+            });
+
+            $('#DiaChi').on('input', function () {
+                if ($(this).val().trim()) { $('#diaChiError').hide(); $(this).removeClass('error'); }
+            });
+            $('#Tinh').on('select2:select select2:unselect', function() {
+                if ($(this).val()) { hideSelect2Error($(this), $('#tinhError')); }
+            });
+            $('#Quan').on('select2:select select2:unselect', function() {
+                if ($(this).val() || $(this).prop('disabled')) { hideSelect2Error($(this), $('#quanError')); }
+            });
+        });
+    </script>
+</body>
+</html>

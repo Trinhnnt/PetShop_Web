@@ -1,0 +1,429 @@
+@{
+
+    ViewData["Title"] = "Giỏ hàng";
+    List<object> ListSP = ViewData["ListSP"] as List<object>;
+    List<KhuyenMai> ListKM = ViewData["ListKM"] as List<KhuyenMai>;
+    long SoLuong = 0;
+    long Gia = 0;
+    long ThanhTien = 0;
+    long TongTien = 0;
+
+}
+
+<style>
+    :root {
+        --primary-color: #0D8E78;
+        --primary-color-dark: #0A6B5A;
+        --secondary-color: #ffffff;
+        --border-color: #dee2e6;
+        --text-color: #212529;
+        --light-gray: #f5f7fa;
+        --hover-color: #f1f1f1;
+        --danger-color: #dc3545;
+        --success-color: #28a745;
+    }
+
+    .product-big-title-area {
+        background: var(--secondary-color);
+        padding: 50px 0 30px;
+        border-bottom: 1px solid #e9ecef;
+        margin-bottom: 40px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .product-bit-title h2 {
+        font-size: 38px;
+        font-weight: 700;
+        color: var(--primary-color);
+        text-align: center;
+        text-transform: uppercase;
+        margin: 0;
+    }
+
+    .shop_table {
+        width: 100%;
+        background: var(--secondary-color);
+        border-radius: 14px;
+        box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+        overflow: hidden;
+        margin-bottom: 40px;
+        border-collapse: collapse;
+    }
+
+        .shop_table th, .shop_table td {
+            padding: 20px 15px;
+            text-align: center;
+            font-size: 15px;
+            border-bottom: 1px solid #f0f1f3;
+            vertical-align: middle;
+        }
+
+        .shop_table th {
+            background: #f1fcf6;
+            color: var(--primary-color);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 0.6px;
+            white-space: nowrap;
+        }
+
+    .product-thumbnail img {
+        width: 85px;
+        height: 85px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid #dcdcdc;
+    }
+
+    .product-name a {
+        font-weight: 600;
+        font-size: 16px;
+        color: var(--text-color);
+        text-decoration: none;
+        display: inline-block;
+        margin-bottom: 5px;
+    }
+
+    .product-name small {
+        font-size: 13px;
+        color: #888;
+        line-height: 1.3;
+    }
+
+    .amount {
+        font-weight: 700;
+        font-size: 16px;
+        color: var(--primary-color);
+    }
+
+    .product-quantity input {
+        width: 60px;
+        padding: 6px;
+        font-size: 14px;
+        text-align: center;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+
+    .product-remove a {
+        color: var(--secondary-color);
+        background: var(--danger-color);
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        display: inline-block;
+        text-align: center;
+        font-size: 16px;
+        transition: background 0.3s ease-in-out;
+    }
+
+        .product-remove a:hover {
+            background-color: #c0392b;
+        }
+
+    .actions {
+        background-color: var(--secondary-color) !important;
+        padding: 25px !important;
+    }
+
+    /* Hàng chứa cả khuyến mãi và tổng tiền */
+    .discount-total-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        flex-wrap: wrap;
+        margin-top: 30px;
+    }
+
+    /* Khuyến mãi bên trái */
+    .discount-box {
+        flex: 1;
+        min-width: 320px;
+        background: var(--secondary-color);
+        border-radius: 14px;
+        border: 1px solid #D1EDE9;
+        padding: 20px 24px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        .discount-box label {
+            font-weight: 600;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            font-size: 16px;
+        }
+
+        .discount-box select {
+            padding: 10px 14px;
+            font-size: 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            background-color: var(--secondary-color);
+            min-width: 220px;
+        }
+
+    /* Tổng tiền bên phải */
+    .total-box {
+        flex: 1;
+        min-width: 320px;
+        background: var(--secondary-color);
+        border-radius: 14px;
+        border: 1px solid #D1EDE9;
+        padding: 20px 24px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        .total-box span:first-child {
+            font-weight: 600;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            font-size: 16px;
+        }
+
+        .total-box .amount {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            white-space: nowrap;
+        }
+
+    .cart-action-buttons {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        margin-top: 30px;
+    }
+
+    .cart-button {
+        flex: 1;
+        height: 60px;
+        border-radius: 30px;
+        font-size: 16px;
+        font-weight: 600;
+        text-transform: uppercase;
+        text-align: center;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease-in-out;
+    }
+
+        .cart-button.primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+            .cart-button.primary:hover {
+                background-color: var(--primary-color-dark);
+            }
+
+        .cart-button.secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+            .cart-button.secondary:hover {
+                background-color: var(--hover-color);
+            }
+
+
+
+    /* Áp dụng màu nền và hover riêng cho nút submit để tăng độ ưu tiên */
+    .woocommerce form.cart td.actions .cart-action-buttons input[type="submit"].cart-button {
+        background-color: var(--primary-color) !important;
+    }
+
+        .woocommerce form.cart td.actions .cart-action-buttons input[type="submit"].cart-button:hover {
+            background-color: var(--primary-color-dark) !important;
+        }
+
+    .cart-button:hover {
+        background-color: var(--primary-color-dark);
+        color: #fff;
+    }
+</style>
+
+<!-- End Page title area -->
+
+<script>
+    function capNhatSoLuong(maKH, maTTSP, soLuong) {
+          if (parseInt(soLuong) <= 0) {
+        alert("Số lượng phải lớn hơn 0!");
+        location.reload(); // hoặc reset lại trang
+        return;
+    }
+        $.post("/GioHang/UpdateSoLuong", {
+            maKH: maKH,
+            maTTSP: maTTSP,
+            soLuong: soLuong
+        }, function (data) {
+            if (data.success) {
+                // Lấy giá tại dòng đó từ data attribute
+                var gia = parseInt($("#gia_" + maTTSP).data("gia"));
+
+                // Tính lại thành tiền
+                var thanhTien = gia * soLuong;
+
+                // Cập nhật lại text hiển thị thành tiền
+                $("#thanhtien_" + maTTSP).text(thanhTien.toLocaleString() + " đ");
+
+                // Cập nhật input hidden nếu có
+                $("#thanhtien_input_" + maTTSP).val(thanhTien);
+
+                // Gọi hàm tính tổng mới
+                tinhTongTien();
+            }
+        });
+    }
+
+    function tinhTongTien() {
+        var tong = 0;
+        $(".thanhtien_input").each(function () {
+            tong += parseInt($(this).val());
+        });
+
+        $("#tongtien_text").text(tong.toLocaleString() + " đ");
+    }
+</script>
+
+
+@* ... (Phần CSS và script của bạn cho Cart.cshtml giữ nguyên) ... *@
+
+<div class="single-product-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-content-right">
+                    <div class="woocommerce">
+                        <form method="post" action="/HoaDon/XacNhanHD">
+                            <table cellspacing="0" class="shop_table cart">
+                                <thead>
+                                    <tr>
+                                        <th class="product-thumbnail">Hình ảnh</th>
+                                        <th class="product-name">Sản phẩm</th>
+                                        <th class="product-price">Giá</th>
+                                        <th class="product-quantity">Số lượng</th>
+                                        <th class="product-subtotal">Tổng tiền</th>
+                                        <th class="product-remove">Xóa</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (ListSP != null && ListSP.Any()) // Kiểm tra ListSP không null và có phần tử
+                                    {
+                                        foreach (var ctsp in ListSP)
+                                        {
+                                            // Giả sử ctsp là một object có các thuộc tính như MaTTSP, TenSP, HinhAnh, Gia, GiaKM, SoLuong, MaKH
+                                            // Cần đảm bảo các thuộc tính này tồn tại và có giá trị
+                                            var maTtSp = ctsp.GetType().GetProperty("MaTTSP")?.GetValue(ctsp, null)?.ToString();
+                                            var tenSp = ctsp.GetType().GetProperty("TenSP")?.GetValue(ctsp, null)?.ToString();
+                                            var hinhAnh = ctsp.GetType().GetProperty("HinhAnh")?.GetValue(ctsp, null)?.ToString();
+                                            var giaSp = Convert.ToInt64(ctsp.GetType().GetProperty("Gia")?.GetValue(ctsp, null) ?? 0);
+                                            var giaKmSp = Convert.ToInt64(ctsp.GetType().GetProperty("GiaKM")?.GetValue(ctsp, null) ?? 0);
+                                            var soLuongSp = Convert.ToInt64(ctsp.GetType().GetProperty("SoLuong")?.GetValue(ctsp, null) ?? 0);
+                                            var maKhSp = Convert.ToInt32(ctsp.GetType().GetProperty("MaKH")?.GetValue(ctsp, null) ?? 0);
+                                            var maLoaiSp = Convert.ToInt32(ctsp.GetType().GetProperty("MaLoaiSP")?.GetValue(ctsp, null) ?? 0);
+
+                                            var giaHienThi = giaKmSp > 0 ? giaKmSp : giaSp;
+                                            var thanhTienDong = giaHienThi * soLuongSp;
+                                            TongTien += thanhTienDong; // TongTien này dùng để kiểm tra điều kiện KM tối thiểu
+
+                                            <tr class="cart_item">
+                                                <td class="product-thumbnail">
+                                                    <input name="MaTTSP" type="hidden" value="@maTtSp" /> <a href="/SanPham/ChiTietSP?t=@maTtSp&l=@maLoaiSp">
+                                                        <img width="145" height="145" alt="@tenSp" class="shop_thumbnail" src="@hinhAnh" />
+                                                    </a>
+                                                </td>
+                                                <td class="product-name">
+                                                    <a href="/SanPham/ChiTietSP?t=@maTtSp&l=@maLoaiSp">@tenSp</a>
+                                                    @* <input name="TenSP_TuForm" type="hidden" value="@tenSp" /> *@
+                                                </td>
+                                                <td class="product-price">
+                                                    <span class="amount" id="gia_@maTtSp" data-gia="@giaHienThi">@string.Format("{0:N0} đ", giaHienThi)</span>
+                                                </td>
+                                                <td class="product-quantity">
+                                                    <div class="quantity buttons_added">
+                                                        <input type="number" min="1" name="SoLuong_TuForm" value="@soLuongSp"
+                                                               onchange="capNhatSoLuong(@maKhSp, @maTtSp, this.value)"
+                                                               data-mattsp="@maTtSp" class="input-text qty text cart-item-qty" />
+                                                    </div>
+                                                </td>
+                                                <td class="product-subtotal">
+                                                    <span class="amount" id="thanhtien_@maTtSp">@string.Format("{0:N0} đ", thanhTienDong)</span>
+                                                    <input type="hidden" class="thanhtien_input" value="@thanhTienDong" />
+                                                </td>
+                                                <td class="product-remove">
+                                                    <a title="Xóa sản phẩm này" class="remove" href="/GioHang/DeleteCart?id=@maTtSp&kh=@maKhSp">×</a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="6" style="text-align:center; padding: 40px;">Giỏ hàng của bạn đang trống!</td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td class="actions" colspan="6">
+                                            <div class="discount-total-row">
+                                                @if (ListKM != null && ListKM.Any())
+                                                {
+                                                    <div class="discount-box">
+                                                        <label for="MaKM_TuForm">Chọn khuyến mãi:</label>
+                                                        <select name="MaKM_TuForm" id="MaKM_TuForm">
+                                                            <option value="0">Không sử dụng khuyến mãi</option>
+                                                            @foreach (var kmItem in ListKM)
+                                                            {
+                                                                // Kiểm tra ngày hiệu lực của KM ngay tại đây
+                                                                bool kmHopLeVeNgay = DateTime.Now.Date >= kmItem.TuNgay.Date && DateTime.Now.Date <= kmItem.DenNgay.Date;
+                                                                if (kmHopLeVeNgay && (kmItem.TTienToiThieu == null || TongTien >= kmItem.TTienToiThieu))
+                                                                {
+                                                                    <option value="@kmItem.MaKM">Giảm @kmItem.SoPTKM% (đơn từ @string.Format("{0:N0}đ", kmItem.TTienToiThieu ?? 0))</option>
+                                                                }
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <input type="hidden" name="MaKM_TuForm" value="0" />
+                                                }
+
+                                                <div class="total-box">
+                                                    <span>Tổng tiền sản phẩm</span>
+                                                    <span class="amount" id="tongtien_text">@string.Format("{0:N0} đ", TongTien)</span>
+                                                </div>
+                                            </div>
+                                            <div class="cart-action-buttons">
+                                                <a href="/Home/Index" class="cart-button secondary">← Tiếp tục mua sắm</a>
+                                                @if (ListSP != null && ListSP.Any())
+                                                {
+                                                    <input type="submit" value="Xác nhận đơn hàng" name="proceed" class="cart-button primary" />
+                                                }
+                                                else
+                                                {
+                                                    <input type="button" value="Xác nhận đơn hàng" class="cart-button primary" disabled style="background-color: gray !important; cursor: not-allowed;" />
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
