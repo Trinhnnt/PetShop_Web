@@ -1,0 +1,1020 @@
+﻿@model IEnumerable<Web_projectframeword_admin.Models.CTPN>
+<style>
+    @@import url('https://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,700,600');
+    @@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300');
+    @@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+    :root {
+        --primary-green: #0D8E78;
+        --dark-green: #0a7865;
+        --light-green: #10a085;
+        --success-green: #0D8E78;
+        --secondary-color: #f8f9fa;
+        --border-color: #e9ecef;
+        --text-color: #343a40;
+        --light-text: #6c757d;
+        --danger-color: #dc3545;
+        --white: #ffffff;
+        --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.1);
+        --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Base Styling */
+    * {
+        box-sizing: border-box;
+    }
+
+    body, html {
+        font-family: 'Roboto', 'Titillium Web', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+        background-color: var(--secondary-color) !important;
+        color: var(--text-color) !important;
+        font-size: 15px !important;
+        line-height: 1.5 !important;
+    }
+
+
+    /* Content Wrapper */
+    .content-wrapper {
+        padding: 25px !important;
+        background-color: var(--secondary-color) !important;
+    }
+
+    /* Content Header Styling */
+    .content-header {
+        background: linear-gradient(135deg, var(--primary-green), var(--dark-green)) !important;
+        color: white !important;
+        padding: 25px 35px !important;
+        border-radius: 12px !important;
+        margin-bottom: 25px !important;
+        box-shadow: var(--shadow-medium) !important;
+        position: relative !important;
+        overflow: hidden !important;
+    }
+
+        .content-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .content-header h1 {
+            font-family: 'Roboto Condensed', 'Titillium Web', sans-serif !important;
+            margin: 0 0 20px 0 !important;
+            font-size: 1.8rem !important;
+            font-weight: 700 !important;
+            color: white !important;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1.2px !important;
+            position: relative !important;
+            z-index: 2 !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+        }
+
+            .content-header h1 .glyphicon {
+                font-size: 1.5rem !important;
+            }
+
+    /* Breadcrumb Section */
+    .breadcrumb {
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: none !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        gap: 20px !important;
+        position: relative !important;
+        z-index: 2 !important;
+    }
+
+    /* Search Box Styling */
+    .searchbox {
+        display: flex !important;
+        align-items: center !important;
+        background: rgba(255, 255, 255, 0.15) !important;
+        border-radius: 25px !important;
+        padding: 8px !important;
+        border: 1px solid rgba(255, 255, 255, 0.25) !important;
+        backdrop-filter: blur(10px) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+        transition: all 0.3s ease !important;
+    }
+
+        .searchbox:hover {
+            background: rgba(255, 255, 255, 0.2) !important;
+            border-color: rgba(255, 255, 255, 0.4) !important;
+        }
+
+        .searchbox input[type="text"] {
+            font-family: 'Roboto', 'Titillium Web', sans-serif !important;
+            background: transparent !important;
+            border: none !important;
+            padding: 8px 15px !important;
+            color: white !important;
+            font-size: 0.95rem !important;
+            width: 250px !important;
+            outline: none !important;
+        }
+
+            .searchbox input[type="text"]::placeholder {
+                color: rgba(255, 255, 255, 0.7) !important;
+                font-style: italic !important;
+            }
+
+        .searchbox button {
+            background: linear-gradient(135deg, var(--dark-green), var(--primary-green)) !important;
+            border: none !important;
+            padding: 8px 12px !important;
+            border-radius: 20px !important;
+            color: white !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            font-size: 0.9rem !important;
+        }
+
+            .searchbox button:hover {
+                background: linear-gradient(135deg, #085d52, var(--dark-green)) !important;
+                transform: scale(1.05) !important;
+            }
+
+    /* Add New Button */
+    .btn-primary {
+        font-family: 'Roboto', 'Titillium Web', sans-serif !important;
+        background: linear-gradient(135deg, var(--dark-green), var(--primary-green)) !important;
+        border: 2px solid rgba(255, 255, 255, 0.4) !important;
+        border-radius: 8px !important;
+        color: white !important;
+        padding: 10px 20px !important;
+        font-size: 0.9rem !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+        box-shadow: 0 4px 8px rgba(13, 142, 120, 0.4) !important;
+        transition: all 0.3s ease !important;
+        text-decoration: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+    }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #085d52, var(--dark-green)) !important;
+            transform: translateY(-2px) scale(1.05) !important;
+            box-shadow: 0 6px 15px rgba(13, 142, 120, 0.5) !important;
+            border-color: rgba(255, 255, 255, 0.6) !important;
+            color: white !important;
+            text-decoration: none !important;
+        }
+
+    /* Box Styling */
+    .box {
+        background: white !important;
+        border-radius: 12px !important;
+        box-shadow: var(--shadow-medium) !important;
+        border: 1px solid var(--border-color) !important;
+        overflow: hidden !important;
+    }
+
+    /* Ẩn box-header */
+    .box-header {
+        display: none !important;
+    }
+
+    .box-body {
+        padding: 0 !important;
+    }
+
+    /* Table Container */
+    .table-responsive {
+        border-radius: 12px !important;
+        overflow: hidden !important;
+        box-shadow: var(--shadow-light) !important;
+    }
+
+    /* Table Styling */
+    .table {
+        font-family: 'Roboto', 'Titillium Web', sans-serif !important;
+        margin: 0 !important;
+        border-collapse: separate !important;
+        border-spacing: 0 !important;
+        background: white !important;
+        width: 100% !important;
+    }
+
+        /* QUAN TRỌNG: Tất cả header cùng màu */
+        .table thead th {
+            font-family: 'Roboto Condensed', 'Titillium Web', sans-serif !important;
+            background: linear-gradient(135deg, var(--primary-green), var(--dark-green)) !important;
+            color: white !important;
+            font-weight: 700 !important;
+            font-size: 0.95rem !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
+            padding: 18px 15px !important;
+            border: none !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+            vertical-align: middle !important;
+        }
+
+        .table tbody tr {
+            transition: all 0.3s ease !important;
+            border-bottom: 1px solid var(--border-color) !important;
+        }
+
+            .table tbody tr:hover {
+                background-color: rgba(13, 142, 120, 0.05) !important;
+                transform: scale(1.002) !important;
+                box-shadow: 0 2px 8px rgba(13, 142, 120, 0.1) !important;
+            }
+
+        .table tbody td {
+            padding: 15px !important;
+            vertical-align: middle !important;
+            border: none !important;
+            font-size: 0.9rem !important;
+            color: var(--text-color) !important;
+        }
+
+        /* COLUMN WIDTHS cho bảng chi tiết phiếu nhập */
+
+        /* Mã TTSP Column */
+        .table th:nth-child(1),
+        .table td:nth-child(1) {
+            width: 100px !important;
+            min-width: 100px !important;
+            max-width: 100px !important;
+            text-align: center !important;
+            font-weight: 700 !important;
+            color: var(--primary-green) !important;
+            font-size: 0.95rem !important;
+        }
+
+        /* Tên sản phẩm Column */
+        .table th:nth-child(2),
+        .table td:nth-child(2) {
+            width: auto !important;
+            min-width: 300px !important;
+            font-weight: 500 !important;
+            color: var(--text-color) !important;
+            padding-left: 20px !important;
+            word-wrap: break-word !important;
+            line-height: 1.4 !important;
+            text-align: left !important;
+        }
+
+        /* Giá nhập Column */
+        .table th:nth-child(3),
+        .table td:nth-child(3) {
+            width: 130px !important;
+            min-width: 130px !important;
+            max-width: 130px !important;
+            text-align: center !important;
+            font-weight: 600 !important;
+            color: var(--primary-green) !important;
+        }
+
+        /* Số lượng Column */
+        .table th:nth-child(4),
+        .table td:nth-child(4) {
+            width: 100px !important;
+            min-width: 100px !important;
+            max-width: 100px !important;
+            text-align: center !important;
+            font-weight: 600 !important;
+        }
+
+        /* Thành tiền Column */
+        .table th:nth-child(5),
+        .table td:nth-child(5) {
+            width: 150px !important;
+            min-width: 150px !important;
+            max-width: 150px !important;
+            text-align: center !important;
+            font-weight: 700 !important;
+            color: var(--danger-color) !important;
+            font-size: 1rem !important;
+        }
+
+        /* Thao tác Column */
+        .table th:nth-child(6),
+        .table td:nth-child(6) {
+            width: 90px !important;
+            min-width: 90px !important;
+            max-width: 90px !important;
+            text-align: center !important;
+            padding: 8px !important;
+        }
+
+    /* Responsive cho màn hình nhỏ */
+    @@media (max-width: 1200px) {
+        .table th:nth-child(2), .table td:nth-child(2) {
+            min-width: 250px !important;
+        }
+
+        .table th:nth-child(3),
+        .table td:nth-child(3) {
+            width: 120px !important;
+            min-width: 120px !important;
+        }
+
+        .table th:nth-child(5),
+        .table td:nth-child(5) {
+            width: 130px !important;
+            min-width: 130px !important;
+        }
+    }
+
+    @@media (max-width: 992px) {
+        .table th:nth-child(2), .table td:nth-child(2) {
+            min-width: 200px !important;
+        }
+
+        .table th:nth-child(1),
+        .table td:nth-child(1) {
+            width: 80px !important;
+            min-width: 80px !important;
+        }
+
+        .table th:nth-child(3),
+        .table td:nth-child(3) {
+            width: 100px !important;
+            min-width: 100px !important;
+        }
+
+        .table th:nth-child(4),
+        .table td:nth-child(4) {
+            width: 80px !important;
+            min-width: 80px !important;
+        }
+
+        .table th:nth-child(5),
+        .table td:nth-child(5) {
+            width: 120px !important;
+            min-width: 120px !important;
+        }
+
+        .table th:nth-child(6),
+        .table td:nth-child(6) {
+            width: 70px !important;
+            min-width: 70px !important;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .table th:nth-child(1), .table td:nth-child(1) {
+            width: 60px !important;
+            min-width: 60px !important;
+            font-size: 0.8rem !important;
+        }
+
+        .table th:nth-child(2),
+        .table td:nth-child(2) {
+            min-width: 150px !important;
+            font-size: 0.85rem !important;
+        }
+
+        .table th:nth-child(3),
+        .table td:nth-child(3) {
+            width: 90px !important;
+            min-width: 90px !important;
+            font-size: 0.8rem !important;
+        }
+
+        .table th:nth-child(4),
+        .table td:nth-child(4) {
+            width: 60px !important;
+            min-width: 60px !important;
+            font-size: 0.8rem !important;
+        }
+
+        .table th:nth-child(5),
+        .table td:nth-child(5) {
+            width: 100px !important;
+            min-width: 100px !important;
+            font-size: 0.85rem !important;
+        }
+
+        .table th:nth-child(6),
+        .table td:nth-child(6) {
+            width: 60px !important;
+            min-width: 60px !important;
+        }
+    }
+
+    @@media (max-width: 480px) {
+        /* Ẩn cột Mã TTSP trên mobile */
+        .table th:nth-child(1), .table td:nth-child(1) {
+            display: none !important;
+        }
+
+        .table th:nth-child(2),
+        .table td:nth-child(2) {
+            min-width: 120px !important;
+            font-size: 0.8rem !important;
+        }
+
+        .table th:nth-child(3),
+        .table td:nth-child(3) {
+            width: 80px !important;
+            min-width: 80px !important;
+            font-size: 0.75rem !important;
+        }
+
+        .table th:nth-child(4),
+        .table td:nth-child(4) {
+            width: 50px !important;
+            min-width: 50px !important;
+            font-size: 0.75rem !important;
+        }
+
+        .table th:nth-child(5),
+        .table td:nth-child(5) {
+            width: 90px !important;
+            min-width: 90px !important;
+            font-size: 0.8rem !important;
+        }
+
+        .table th:nth-child(6),
+        .table td:nth-child(6) {
+            width: 50px !important;
+            min-width: 50px !important;
+        }
+    }
+
+    /* IMAGE STYLING */
+    .table tbody td img {
+        width: 120px !important;
+        height: 80px !important;
+        object-fit: cover !important;
+        border-radius: 8px !important;
+        border: 2px solid var(--border-color) !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1) !important;
+        transition: all 0.3s ease !important;
+        display: block !important;
+        margin: 0 auto !important;
+        cursor: pointer !important;
+    }
+
+        .table tbody td img:hover {
+            transform: scale(1.15) !important;
+            border-color: var(--primary-green) !important;
+            box-shadow: 0 6px 15px rgba(13, 142, 120, 0.3) !important;
+            z-index: 5 !important;
+            position: relative !important;
+        }
+
+    /* QUAN TRỌNG: Status Icons với class đúng */
+    .glyphicon-ok-circle {
+        color: var(--success-green) !important;
+        font-size: 1.8rem !important;
+        transition: all 0.3s ease !important;
+        cursor: pointer !important;
+    }
+
+        .glyphicon-ok-circle:hover {
+            color: var(--dark-green) !important;
+            transform: scale(1.3) !important;
+            text-shadow: 0 2px 4px rgba(13, 142, 120, 0.3) !important;
+        }
+
+    .glyphicon-remove-circle {
+        color: var(--danger-color) !important;
+        font-size: 1.8rem !important;
+        transition: all 0.3s ease !important;
+        cursor: pointer !important;
+    }
+
+        .glyphicon-remove-circle:hover {
+            color: #c82333 !important;
+            transform: scale(1.3) !important;
+            text-shadow: 0 2px 4px rgba(220, 53, 69, 0.3) !important;
+        }
+
+    /* Backup cho class cũ nếu có */
+    .mauxanh18 {
+        color: var(--success-green) !important;
+        font-size: 1.8rem !important;
+        transition: all 0.3s ease !important;
+        cursor: pointer !important;
+    }
+
+        .mauxanh18:hover {
+            color: var(--dark-green) !important;
+            transform: scale(1.3) !important;
+            text-shadow: 0 2px 4px rgba(13, 142, 120, 0.3) !important;
+        }
+
+    .maudo {
+        color: var(--danger-color) !important;
+        font-size: 1.8rem !important;
+        transition: all 0.3s ease !important;
+        cursor: pointer !important;
+    }
+
+        .maudo:hover {
+            color: #c82333 !important;
+            transform: scale(1.3) !important;
+            text-shadow: 0 2px 4px rgba(220, 53, 69, 0.3) !important;
+        }
+
+    /* Action Buttons */
+    .btn-success {
+        background: linear-gradient(135deg, var(--primary-green), var(--dark-green)) !important;
+        border: 1px solid var(--primary-green) !important;
+        color: white !important;
+        font-size: 0.75rem !important;
+        padding: 6px 12px !important;
+        border-radius: 5px !important;
+        font-weight: 600 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.3px !important;
+        transition: all 0.3s ease !important;
+        text-decoration: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+        white-space: nowrap !important;
+    }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, var(--dark-green), #085d52) !important;
+            transform: translateY(-1px) scale(1.05) !important;
+            box-shadow: 0 4px 8px rgba(13, 142, 120, 0.4) !important;
+            color: white !important;
+            text-decoration: none !important;
+        }
+
+    .btn-danger {
+        background: linear-gradient(135deg, var(--danger-color), #c82333) !important;
+        border: 1px solid var(--danger-color) !important;
+        color: white !important;
+        font-size: 0.75rem !important;
+        padding: 6px 12px !important;
+        border-radius: 5px !important;
+        font-weight: 600 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.3px !important;
+        transition: all 0.3s ease !important;
+        text-decoration: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+        white-space: nowrap !important;
+    }
+
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #c82333, #bd2130) !important;
+            transform: translateY(-1px) scale(1.05) !important;
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.4) !important;
+            color: white !important;
+            text-decoration: none !important;
+        }
+
+    /* Button Icons */
+    .btn .glyphicon {
+        font-size: 0.8rem !important;
+        margin-right: 0 !important;
+    }
+
+    /* Pagination */
+    .pagination {
+        display: flex !important;
+        justify-content: center !important;
+        margin: 30px 0 !important;
+        padding: 0 !important;
+        list-style: none !important;
+    }
+
+        .pagination li {
+            margin: 0 3px !important;
+        }
+
+        .pagination a {
+            font-family: 'Roboto', 'Titillium Web', sans-serif !important;
+            padding: 8px 15px !important;
+            background: white !important;
+            border: 1px solid var(--border-color) !important;
+            color: var(--text-color) !important;
+            text-decoration: none !important;
+            border-radius: 6px !important;
+            transition: all 0.3s ease !important;
+            font-weight: 500 !important;
+        }
+
+            .pagination a:hover {
+                background: var(--primary-green) !important;
+                color: white !important;
+                border-color: var(--primary-green) !important;
+                transform: translateY(-1px) !important;
+            }
+
+    /* Responsive Design */
+    @@media (max-width: 1200px) {
+        .table th:nth-child(3), .table td:nth-child(3) {
+            min-width: 280px !important;
+        }
+
+        .table tbody td img {
+            width: 100px !important;
+            height: 70px !important;
+        }
+    }
+
+    @@media (max-width: 992px) {
+        .content-header {
+            padding: 20px 25px !important;
+        }
+
+        .breadcrumb {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 15px !important;
+        }
+
+        .searchbox input[type="text"] {
+            width: 200px !important;
+        }
+
+        .table th:nth-child(3),
+        .table td:nth-child(3) {
+            min-width: 220px !important;
+        }
+
+        .table th:nth-child(2),
+        .table td:nth-child(2) {
+            width: 120px !important;
+            min-width: 120px !important;
+        }
+
+        .table tbody td img {
+            width: 90px !important;
+            height: 60px !important;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .content-wrapper {
+            padding: 15px !important;
+        }
+
+        .content-header h1 {
+            font-size: 1.5rem !important;
+            text-align: center !important;
+        }
+
+        .searchbox input[type="text"] {
+            width: 180px !important;
+        }
+
+        .table th:nth-child(1),
+        .table td:nth-child(1) {
+            width: 60px !important;
+            min-width: 60px !important;
+        }
+
+        .table th:nth-child(2),
+        .table td:nth-child(2) {
+            width: 100px !important;
+            min-width: 100px !important;
+        }
+
+        .table tbody td img {
+            width: 80px !important;
+            height: 55px !important;
+        }
+
+        .table th:nth-child(5),
+        .table td:nth-child(5),
+        .table td:nth-child(6) {
+            width: 80px !important;
+            min-width: 80px !important;
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .searchbox {
+            flex-direction: column !important;
+            padding: 12px !important;
+            gap: 10px !important;
+        }
+
+            .searchbox input[type="text"] {
+                width: 100% !important;
+                text-align: center !important;
+            }
+
+        .btn-primary {
+            width: 100% !important;
+            justify-content: center !important;
+        }
+
+        .table th:nth-child(1),
+        .table td:nth-child(1) {
+            display: none !important;
+        }
+
+        .table th:nth-child(2),
+        .table td:nth-child(2) {
+            width: 80px !important;
+            min-width: 80px !important;
+        }
+
+        .table tbody td img {
+            width: 60px !important;
+            height: 40px !important;
+        }
+
+        .table td:nth-child(5),
+        .table td:nth-child(6) {
+            width: auto !important;
+            display: block !important;
+            text-align: center !important;
+            padding: 4px !important;
+        }
+    }
+
+    /* Focus states */
+    input:focus,
+    button:focus,
+    .btn:focus {
+        outline: 2px solid var(--primary-green) !important;
+        outline-offset: 2px !important;
+    }
+
+    /* Table polish */
+    .table tbody tr:last-child td {
+        border-bottom: none !important;
+    }
+
+    .table thead th:first-child {
+        border-top-left-radius: 12px !important;
+    }
+
+    .table thead th:last-child {
+        border-top-right-radius: 12px !important;
+    }
+    /* Text alignment classes */
+    .text-center {
+        text-align: center !important;
+    }
+
+    .text-left {
+        text-align: left !important;
+    }
+
+    .text-right {
+        text-align: right !important;
+    }
+
+    /* QUAN TRỌNG: Style riêng cho header với class text-center */
+    .table thead th.text-center {
+        font-family: 'Roboto Condensed', 'Titillium Web', sans-serif !important;
+        background: linear-gradient(135deg, var(--primary-green), var(--dark-green)) !important;
+        color: white !important;
+        font-weight: 700 !important;
+        font-size: 0.95rem !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.8px !important;
+        padding: 18px 15px !important;
+        border: none !important;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+        vertical-align: middle !important;
+        text-align: center !important;
+        position: relative !important;
+    }
+
+        /* Hiệu ứng hover cho header */
+        .table thead th.text-center:hover {
+            background: linear-gradient(135deg, var(--dark-green), #085d52) !important;
+            transform: translateY(-1px) !important;
+            box-shadow: 0 4px 8px rgba(13, 142, 120, 0.3) !important;
+        }
+
+        /* Style cho từng header cụ thể */
+        .table thead th.text-center:nth-child(1) {
+            /* ID column */
+            font-size: 1rem !important;
+            font-weight: 800 !important;
+        }
+
+        .table thead th.text-center:nth-child(2) {
+            /* Hình column */
+            font-size: 0.9rem !important;
+        }
+
+        .table thead th.text-center:nth-child(3) {
+            /* Tiêu đề bài viết column */
+            font-size: 1rem !important;
+            font-weight: 700 !important;
+        }
+
+        .table thead th.text-center:nth-child(4) {
+            /* Trạng thái column */
+            font-size: 0.9rem !important;
+        }
+
+        .table thead th.text-center:nth-child(5) {
+            /* Thao tác column */
+            font-size: 0.85rem !important;
+        }
+
+    /* Style cho body cells với text-center */
+    .table tbody td.text-center {
+        text-align: center !important;
+        vertical-align: middle !important;
+        font-weight: 500 !important;
+    }
+
+    }
+
+    /* Alternative CSS selector cho status (nếu CSS :contains không hoạt động) */
+    .status-published {
+        color: white !important;
+        background: linear-gradient(135deg, var(--success-green), var(--dark-green)) !important;
+        border-color: var(--success-green) !important;
+        box-shadow: 0 2px 4px rgba(13, 142, 120, 0.3) !important;
+        font-weight: 600 !important;
+        font-size: 0.85rem !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        padding: 6px 12px !important;
+        border-radius: 6px !important;
+        display: inline-block !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .status-unpublished {
+        color: white !important;
+        background: linear-gradient(135deg, var(--danger-color), #c82333) !important;
+        border-color: var(--danger-color) !important;
+        box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3) !important;
+        font-weight: 600 !important;
+        font-size: 0.85rem !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        padding: 6px 12px !important;
+        border-radius: 6px !important;
+        display: inline-block !important;
+        transition: all 0.3s ease !important;
+    }
+
+        .status-published:hover,
+        .status-unpublished:hover {
+            transform: scale(1.05) translateY(-1px) !important;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+        }
+</style>
+<div class="content-wrapper" style="min-height: 639px;">
+    <form action="/Admin/NhapHang/InsertCTPN" method="post">
+        <section class="content-header">
+            <h1><i class="glyphicon glyphicon-ok-sign"></i>Chi tiết phiếu nhập</h1>
+            <div class="breadcrumb">
+                <a class="btn btn-primary btn-sm" href="/Admin/NhapHang/LietKeNhapHang" role="button">
+                    Lưu
+                </a>
+            </div>
+        </section>
+        @if (ViewData["thongbao"] != null)
+        {
+            <div class="alert alert-warning" id="thongbao-alert" style="margin: 15px 0;">
+                @ViewData["thongbao"]
+            </div>
+        }
+@{
+    int tinhTrangThanhToan = (int)(ViewData["TinhTrangThanhToan"] ?? 0);
+    bool isPaid = tinhTrangThanhToan == 1; // true nếu đã thanh toán
+    // Bạn cần thêm một biến để kiểm tra xem có sản phẩm nào trong chi tiết phiếu nhập không
+    bool hasProducts = Model != null && Model.Any(); // Model là IEnumerable<CTPN>
+}
+        <script>
+            window.addEventListener('DOMContentLoaded', function() {
+                setTimeout(function () {
+                    var tb = document.getElementById('thongbao-alert');
+                    if(tb) tb.style.display = 'none';
+                }, 2500);
+            });
+        </script>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box" id="view">
+                    <div class="box-body">
+                        <div class="col-md-12" style="border-right:ridge">
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <label>Mã phiếu nhập</label>
+                                    <input type="text" class="form-control" id="showMaPN" value="@ViewData["mapn"]" readonly style="background:#eee; margin-bottom:10px;">
+                                    <input type="hidden" id="maPN" name="MAPN" value="@ViewData["mapn"]" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Mã sản phẩm</label>
+                                    <input type="hidden" class="form-control" name="MAPN" min="0" step="1" style="width: 100%; margin-bottom: 10px;" value="@ViewData["mapn"]">
+                                    <input type="number" class="form-control" id="maSP" name="MATTSP" min="0" step="1" style="width: 100%; margin-bottom: 10px;" value="0" @( "readonly disabled" )>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Số lượng</label>
+                                    <input type="number" class="form-control" id="soLuong" name="SOLUONG" min="0" step="1" style="width:100%; margin-bottom: 10px;" value="0" @(isPaid ? "readonly disabled" : "")>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Sản phẩm</label>
+                                    <select class="form-group" style="width: 100%; margin-bottom: 10px;" onchange="return LoadMASP(this)" @(isPaid ? "disabled" : "")>
+                                        <option value="">[----Xem danh sách sản phẩm----]</option>
+                                        @foreach (var item in ViewBag.DSSP)
+                                        {
+                                            <option value="@item.MaTTSP">@item.MaTTSP - @item.TenSP</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Giá nhập</label>
+                                    <input type="number" class="form-control" id="giaNhap" name="GIANHAP" min="0" step="1" style="width:100%; margin-bottom: 10px;" value="0" @(isPaid ? "readonly disabled" : "")>
+                                </div>
+
+                                <div class="col-md-12" style="margin-bottom: 10px;">
+                                    <button class="btn btn-primary btn-sm" type="submit" @(isPaid ? "disabled" : "")>
+                                        <span class="glyphicon glyphicon-plus"></span>Thêm
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row" style="padding:0px; margin:0px;">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-bordered" id="tbl_ctpn">
+                                            <thead>
+                                                <tr class="onRow">
+                                                    <th class="text-center">Mã TTSP</th>
+                                                    <th class="text-center">Tên sản phẩm</th>
+                                                    <th class="text-center">Giá nhập</th>
+                                                    <th class="text-center">Số lượng</th>
+                                                    <th class="text-center">Thành Tiền</th>
+                                                    <th class="text-center">Thao tác</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model)
+                                                {
+                                                    <tr class="onRow">
+                                                        <td class="text-center">@item.MATTSP</td>
+                                                        <td class="text-center">@item.TENSP</td>
+                                                        <td class="text-center">@item.GIANHAP</td>
+                                                        <td class="text-center">@item.SOLUONG</td>
+                                                        <td class="text-center">@item.THANHTIEN</td>
+                                                        <td class="text-center">
+                                                            @if (!isPaid)
+                                                            {
+                                                                <a class="btn btn-danger btn-xs"
+                                                            
+                                                            href="/Admin/NhapHang/DeleteCTPN?MAPN=@item.MAPN&MASP=@item.MATTSP" onclick="return confirm('Xác nhận xóa ?')" role="button">
+                                                                Xóa
+                                                            </a>
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    function LoadMASP(obj) {
+        var masp = obj.value;
+        document.getElementById("maSP").value = masp;
+    }
+</script>
+
+@section Click_CTPN {
+    <script type="text/javascript">
+        $(function () {
+            $('#tbl_ctpn tr').click(function (e) {
+                
+                var masp = $(this).closest('.onRow').find('td:nth-child(1)').text();
+                var gianhap = $(this).closest('.onRow').find('td:nth-child(3)').text();
+                var sl = $(this).closest('.onRow').find('td:nth-child(4)').text();
+
+                // Sửa lại các ID để phù hợp với mục đích
+                $('#maSP').val(masp);
+                $('#giaNhap').val(gianhap);
+                $('#soLuong').val(sl);
+            });
+        });
+    </script>
+}

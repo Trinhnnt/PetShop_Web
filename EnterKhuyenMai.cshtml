@@ -1,0 +1,1159 @@
+﻿@using Web_projectframeword_admin.Models;
+@model KhuyenMai
+<style>
+    @@import url('https://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,700,600');
+    @@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300');
+    @@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+    :root {
+        --primary-green: #0D8E78;
+        --dark-green: #0a7865;
+        --light-green: #10a085;
+        --success-green: #0D8E78;
+        --secondary-color: #f8f9fa;
+        --border-color: #e9ecef;
+        --text-color: #343a40;
+        --light-text: #6c757d;
+        --danger-color: #dc3545;
+        --white: #ffffff;
+        --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.1);
+        --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Base Styling */
+    * {
+        box-sizing: border-box;
+    }
+
+    body, html {
+        font-family: 'Roboto', 'Titillium Web', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+        background-color: var(--secondary-color) !important;
+        color: var(--text-color) !important;
+        font-size: 15px !important;
+        line-height: 1.5 !important;
+    }
+
+
+    /* Content Wrapper */
+    .content-wrapper {
+        padding: 25px !important;
+        background-color: var(--secondary-color) !important;
+    }
+
+    /* Content Header Styling */
+    .content-header {
+        background: linear-gradient(135deg, var(--primary-green), var(--dark-green)) !important;
+        color: white !important;
+        padding: 25px 35px !important;
+        border-radius: 12px !important;
+        margin-bottom: 25px !important;
+        box-shadow: var(--shadow-medium) !important;
+        position: relative !important;
+        overflow: hidden !important;
+    }
+
+        .content-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .content-header h1 {
+            font-family: 'Roboto Condensed', 'Titillium Web', sans-serif !important;
+            margin: 0 0 20px 0 !important;
+            font-size: 1.8rem !important;
+            font-weight: 700 !important;
+            color: white !important;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1.2px !important;
+            position: relative !important;
+            z-index: 2 !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+        }
+
+            .content-header h1 .glyphicon {
+                font-size: 1.5rem !important;
+            }
+
+    /* Breadcrumb Section */
+    .breadcrumb {
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: none !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        gap: 20px !important;
+        position: relative !important;
+        z-index: 2 !important;
+    }
+
+    /* Search Box Styling */
+    .searchbox {
+        display: flex !important;
+        align-items: center !important;
+        background: rgba(255, 255, 255, 0.15) !important;
+        border-radius: 25px !important;
+        padding: 8px !important;
+        border: 1px solid rgba(255, 255, 255, 0.25) !important;
+        backdrop-filter: blur(10px) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+        transition: all 0.3s ease !important;
+    }
+
+        .searchbox:hover {
+            background: rgba(255, 255, 255, 0.2) !important;
+            border-color: rgba(255, 255, 255, 0.4) !important;
+        }
+
+        .searchbox input[type="text"] {
+            font-family: 'Roboto', 'Titillium Web', sans-serif !important;
+            background: transparent !important;
+            border: none !important;
+            padding: 8px 15px !important;
+            color: white !important;
+            font-size: 0.95rem !important;
+            width: 250px !important;
+            outline: none !important;
+        }
+
+            .searchbox input[type="text"]::placeholder {
+                color: rgba(255, 255, 255, 0.7) !important;
+                font-style: italic !important;
+            }
+
+        .searchbox button {
+            background: linear-gradient(135deg, var(--dark-green), var(--primary-green)) !important;
+            border: none !important;
+            padding: 8px 12px !important;
+            border-radius: 20px !important;
+            color: white !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            font-size: 0.9rem !important;
+        }
+
+            .searchbox button:hover {
+                background: linear-gradient(135deg, #085d52, var(--dark-green)) !important;
+                transform: scale(1.05) !important;
+            }
+
+    /* Add New Button */
+    .btn-primary {
+        font-family: 'Roboto', 'Titillium Web', sans-serif !important;
+        background: linear-gradient(135deg, var(--dark-green), var(--primary-green)) !important;
+        border: 2px solid rgba(255, 255, 255, 0.4) !important;
+        border-radius: 8px !important;
+        color: white !important;
+        padding: 10px 20px !important;
+        font-size: 0.9rem !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+        box-shadow: 0 4px 8px rgba(13, 142, 120, 0.4) !important;
+        transition: all 0.3s ease !important;
+        text-decoration: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+    }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #085d52, var(--dark-green)) !important;
+            transform: translateY(-2px) scale(1.05) !important;
+            box-shadow: 0 6px 15px rgba(13, 142, 120, 0.5) !important;
+            border-color: rgba(255, 255, 255, 0.6) !important;
+            color: white !important;
+            text-decoration: none !important;
+        }
+
+    /* Box Styling */
+    .box {
+        background: white !important;
+        border-radius: 12px !important;
+        box-shadow: var(--shadow-medium) !important;
+        border: 1px solid var(--border-color) !important;
+        overflow: hidden !important;
+    }
+
+    /* Ẩn box-header */
+    .box-header {
+        display: none !important;
+    }
+
+    .box-body {
+        padding: 0 !important;
+    }
+
+    /* Table Container */
+    .table-responsive {
+        border-radius: 12px !important;
+        overflow: hidden !important;
+        box-shadow: var(--shadow-light) !important;
+    }
+
+    /* Table Styling */
+    .table {
+        font-family: 'Roboto', 'Titillium Web', sans-serif !important;
+        margin: 0 !important;
+        border-collapse: separate !important;
+        border-spacing: 0 !important;
+        background: white !important;
+        width: 100% !important;
+    }
+
+        /* QUAN TRỌNG: Tất cả header cùng màu */
+        .table thead th {
+            font-family: 'Roboto Condensed', 'Titillium Web', sans-serif !important;
+            background: linear-gradient(135deg, var(--primary-green), var(--dark-green)) !important;
+            color: white !important;
+            font-weight: 700 !important;
+            font-size: 0.95rem !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
+            padding: 18px 15px !important;
+            border: none !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+            vertical-align: middle !important;
+        }
+
+        .table tbody tr {
+            transition: all 0.3s ease !important;
+            border-bottom: 1px solid var(--border-color) !important;
+        }
+
+            .table tbody tr:hover {
+                background-color: rgba(13, 142, 120, 0.05) !important;
+                transform: scale(1.002) !important;
+                box-shadow: 0 2px 8px rgba(13, 142, 120, 0.1) !important;
+            }
+
+        .table tbody td {
+            padding: 15px !important;
+            vertical-align: middle !important;
+            border: none !important;
+            font-size: 0.9rem !important;
+            color: var(--text-color) !important;
+        }
+
+        /* COLUMN WIDTHS */
+        /* ID Column */
+        .table th:nth-child(1),
+        .table td:nth-child(1) {
+            width: 80px !important;
+            min-width: 80px !important;
+            max-width: 80px !important;
+            text-align: center !important;
+            font-weight: 700 !important;
+            color: var(--primary-green) !important;
+            font-size: 1rem !important;
+        }
+
+        /* Image Column */
+        .table th:nth-child(2),
+        .table td:nth-child(2) {
+            width: 160px !important;
+            min-width: 160px !important;
+            max-width: 160px !important;
+            text-align: center !important;
+            padding: 10px !important;
+        }
+
+        /* Title Column */
+        .table th:nth-child(3),
+        .table td:nth-child(3) {
+            width: auto !important;
+            min-width: 350px !important;
+            font-weight: 500 !important;
+            color: var(--text-color) !important;
+            padding-left: 20px !important;
+            word-wrap: break-word !important;
+            line-height: 1.4 !important;
+        }
+
+        /* Status Column */
+        .table th:nth-child(4),
+        .table td:nth-child(4) {
+            width: 120px !important;
+            min-width: 120px !important;
+            max-width: 120px !important;
+            text-align: center !important;
+        }
+
+        /* Action Columns */
+        .table th:nth-child(5),
+        .table td:nth-child(5),
+        .table td:nth-child(6) {
+            width: 100px !important;
+            min-width: 100px !important;
+            max-width: 100px !important;
+            text-align: center !important;
+            padding: 8px !important;
+        }
+
+        /* IMAGE STYLING */
+        .table tbody td img {
+            width: 120px !important;
+            height: 80px !important;
+            object-fit: cover !important;
+            border-radius: 8px !important;
+            border: 2px solid var(--border-color) !important;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1) !important;
+            transition: all 0.3s ease !important;
+            display: block !important;
+            margin: 0 auto !important;
+            cursor: pointer !important;
+        }
+
+            .table tbody td img:hover {
+                transform: scale(1.15) !important;
+                border-color: var(--primary-green) !important;
+                box-shadow: 0 6px 15px rgba(13, 142, 120, 0.3) !important;
+                z-index: 5 !important;
+                position: relative !important;
+            }
+
+    /* QUAN TRỌNG: Status Icons với class đúng */
+    .glyphicon-ok-circle {
+        color: var(--success-green) !important;
+        font-size: 1.8rem !important;
+        transition: all 0.3s ease !important;
+        cursor: pointer !important;
+    }
+
+        .glyphicon-ok-circle:hover {
+            color: var(--dark-green) !important;
+            transform: scale(1.3) !important;
+            text-shadow: 0 2px 4px rgba(13, 142, 120, 0.3) !important;
+        }
+
+    .glyphicon-remove-circle {
+        color: var(--danger-color) !important;
+        font-size: 1.8rem !important;
+        transition: all 0.3s ease !important;
+        cursor: pointer !important;
+    }
+
+        .glyphicon-remove-circle:hover {
+            color: #c82333 !important;
+            transform: scale(1.3) !important;
+            text-shadow: 0 2px 4px rgba(220, 53, 69, 0.3) !important;
+        }
+
+    /* Backup cho class cũ nếu có */
+    .mauxanh18 {
+        color: var(--success-green) !important;
+        font-size: 1.8rem !important;
+        transition: all 0.3s ease !important;
+        cursor: pointer !important;
+    }
+
+        .mauxanh18:hover {
+            color: var(--dark-green) !important;
+            transform: scale(1.3) !important;
+            text-shadow: 0 2px 4px rgba(13, 142, 120, 0.3) !important;
+        }
+
+    .maudo {
+        color: var(--danger-color) !important;
+        font-size: 1.8rem !important;
+        transition: all 0.3s ease !important;
+        cursor: pointer !important;
+    }
+
+        .maudo:hover {
+            color: #c82333 !important;
+            transform: scale(1.3) !important;
+            text-shadow: 0 2px 4px rgba(220, 53, 69, 0.3) !important;
+        }
+
+    /* Action Buttons */
+    .btn-success {
+        background: linear-gradient(135deg, var(--primary-green), var(--dark-green)) !important;
+        border: 1px solid var(--primary-green) !important;
+        color: white !important;
+        font-size: 0.75rem !important;
+        padding: 6px 12px !important;
+        border-radius: 5px !important;
+        font-weight: 600 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.3px !important;
+        transition: all 0.3s ease !important;
+        text-decoration: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+        white-space: nowrap !important;
+    }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, var(--dark-green), #085d52) !important;
+            transform: translateY(-1px) scale(1.05) !important;
+            box-shadow: 0 4px 8px rgba(13, 142, 120, 0.4) !important;
+            color: white !important;
+            text-decoration: none !important;
+        }
+
+    .btn-danger {
+        background: linear-gradient(135deg, var(--danger-color), #c82333) !important;
+        border: 1px solid var(--danger-color) !important;
+        color: white !important;
+        font-size: 0.75rem !important;
+        padding: 6px 12px !important;
+        border-radius: 5px !important;
+        font-weight: 600 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.3px !important;
+        transition: all 0.3s ease !important;
+        text-decoration: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+        white-space: nowrap !important;
+    }
+
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #c82333, #bd2130) !important;
+            transform: translateY(-1px) scale(1.05) !important;
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.4) !important;
+            color: white !important;
+            text-decoration: none !important;
+        }
+
+    /* Button Icons */
+    .btn .glyphicon {
+        font-size: 0.8rem !important;
+        margin-right: 0 !important;
+    }
+
+    /* Pagination */
+    .pagination {
+        display: flex !important;
+        justify-content: center !important;
+        margin: 30px 0 !important;
+        padding: 0 !important;
+        list-style: none !important;
+    }
+
+        .pagination li {
+            margin: 0 3px !important;
+        }
+
+        .pagination a {
+            font-family: 'Roboto', 'Titillium Web', sans-serif !important;
+            padding: 8px 15px !important;
+            background: white !important;
+            border: 1px solid var(--border-color) !important;
+            color: var(--text-color) !important;
+            text-decoration: none !important;
+            border-radius: 6px !important;
+            transition: all 0.3s ease !important;
+            font-weight: 500 !important;
+        }
+
+            .pagination a:hover {
+                background: var(--primary-green) !important;
+                color: white !important;
+                border-color: var(--primary-green) !important;
+                transform: translateY(-1px) !important;
+            }
+
+    /* Responsive Design */
+    @@media (max-width: 1200px) {
+        .table th:nth-child(3), .table td:nth-child(3) {
+            min-width: 280px !important;
+        }
+
+        .table tbody td img {
+            width: 100px !important;
+            height: 70px !important;
+        }
+    }
+
+    @@media (max-width: 992px) {
+        .content-header {
+            padding: 20px 25px !important;
+        }
+
+        .breadcrumb {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 15px !important;
+        }
+
+        .searchbox input[type="text"] {
+            width: 200px !important;
+        }
+
+        .table th:nth-child(3),
+        .table td:nth-child(3) {
+            min-width: 220px !important;
+        }
+
+        .table th:nth-child(2),
+        .table td:nth-child(2) {
+            width: 120px !important;
+            min-width: 120px !important;
+        }
+
+        .table tbody td img {
+            width: 90px !important;
+            height: 60px !important;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .content-wrapper {
+            padding: 15px !important;
+        }
+
+        .content-header h1 {
+            font-size: 1.5rem !important;
+            text-align: center !important;
+        }
+
+        .searchbox input[type="text"] {
+            width: 180px !important;
+        }
+
+        .table th:nth-child(1),
+        .table td:nth-child(1) {
+            width: 60px !important;
+            min-width: 60px !important;
+        }
+
+        .table th:nth-child(2),
+        .table td:nth-child(2) {
+            width: 100px !important;
+            min-width: 100px !important;
+        }
+
+        .table tbody td img {
+            width: 80px !important;
+            height: 55px !important;
+        }
+
+        .table th:nth-child(5),
+        .table td:nth-child(5),
+        .table td:nth-child(6) {
+            width: 80px !important;
+            min-width: 80px !important;
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .searchbox {
+            flex-direction: column !important;
+            padding: 12px !important;
+            gap: 10px !important;
+        }
+
+            .searchbox input[type="text"] {
+                width: 100% !important;
+                text-align: center !important;
+            }
+
+        .btn-primary {
+            width: 100% !important;
+            justify-content: center !important;
+        }
+
+        .table th:nth-child(1),
+        .table td:nth-child(1) {
+            display: none !important;
+        }
+
+        .table th:nth-child(2),
+        .table td:nth-child(2) {
+            width: 80px !important;
+            min-width: 80px !important;
+        }
+
+        .table tbody td img {
+            width: 60px !important;
+            height: 40px !important;
+        }
+
+        .table td:nth-child(5),
+        .table td:nth-child(6) {
+            width: auto !important;
+            display: block !important;
+            text-align: center !important;
+            padding: 4px !important;
+        }
+    }
+
+    /* Focus states */
+    input:focus,
+    button:focus,
+    .btn:focus {
+        outline: 2px solid var(--primary-green) !important;
+        outline-offset: 2px !important;
+    }
+
+    /* Table polish */
+    .table tbody tr:last-child td {
+        border-bottom: none !important;
+    }
+
+    .table thead th:first-child {
+        border-top-left-radius: 12px !important;
+    }
+
+    .table thead th:last-child {
+        border-top-right-radius: 12px !important;
+    }
+    /* Text alignment classes */
+    .text-center {
+        text-align: center !important;
+    }
+
+    .text-left {
+        text-align: left !important;
+    }
+
+    .text-right {
+        text-align: right !important;
+    }
+
+    /* QUAN TRỌNG: Style riêng cho header với class text-center */
+    .table thead th.text-center {
+        font-family: 'Roboto Condensed', 'Titillium Web', sans-serif !important;
+        background: linear-gradient(135deg, var(--primary-green), var(--dark-green)) !important;
+        color: white !important;
+        font-weight: 700 !important;
+        font-size: 0.95rem !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.8px !important;
+        padding: 18px 15px !important;
+        border: none !important;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+        vertical-align: middle !important;
+        text-align: center !important;
+        position: relative !important;
+    }
+
+        /* Hiệu ứng hover cho header */
+        .table thead th.text-center:hover {
+            background: linear-gradient(135deg, var(--dark-green), #085d52) !important;
+            transform: translateY(-1px) !important;
+            box-shadow: 0 4px 8px rgba(13, 142, 120, 0.3) !important;
+        }
+
+        /* Style cho từng header cụ thể */
+        .table thead th.text-center:nth-child(1) {
+            /* ID column */
+            font-size: 1rem !important;
+            font-weight: 800 !important;
+        }
+
+        .table thead th.text-center:nth-child(2) {
+            /* Hình column */
+            font-size: 0.9rem !important;
+        }
+
+        .table thead th.text-center:nth-child(3) {
+            /* Tiêu đề bài viết column */
+            font-size: 1rem !important;
+            font-weight: 700 !important;
+        }
+
+        .table thead th.text-center:nth-child(4) {
+            /* Trạng thái column */
+            font-size: 0.9rem !important;
+        }
+
+        .table thead th.text-center:nth-child(5) {
+            /* Thao tác column */
+            font-size: 0.85rem !important;
+        }
+
+    /* Style cho body cells với text-center */
+    .table tbody td.text-center {
+        text-align: center !important;
+        vertical-align: middle !important;
+        font-weight: 500 !important;
+    }
+
+    }
+
+    /* Alternative CSS selector cho status (nếu CSS :contains không hoạt động) */
+    .status-published {
+        color: white !important;
+        background: linear-gradient(135deg, var(--success-green), var(--dark-green)) !important;
+        border-color: var(--success-green) !important;
+        box-shadow: 0 2px 4px rgba(13, 142, 120, 0.3) !important;
+        font-weight: 600 !important;
+        font-size: 0.85rem !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        padding: 6px 12px !important;
+        border-radius: 6px !important;
+        display: inline-block !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .status-unpublished {
+        color: white !important;
+        background: linear-gradient(135deg, var(--danger-color), #c82333) !important;
+        border-color: var(--danger-color) !important;
+        box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3) !important;
+        font-weight: 600 !important;
+        font-size: 0.85rem !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        padding: 6px 12px !important;
+        border-radius: 6px !important;
+        display: inline-block !important;
+        transition: all 0.3s ease !important;
+    }
+
+        .status-published:hover,
+        .status-unpublished:hover {
+            transform: scale(1.05) translateY(-1px) !important;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+        }
+
+    /* CSS cho select box sản phẩm được giảm giá */
+
+    /* Container cho select */
+    .product-select-container {
+        position: relative;
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    /* Style cho select multiple */
+    #productList {
+        font-family: 'Roboto', 'Titillium Web', sans-serif !important;
+        width: 100% !important;
+        min-height: 150px !important;
+        max-height: 200px !important;
+        padding: 12px !important;
+        border: 2px solid var(--border-color) !important;
+        border-radius: 8px !important;
+        background: white !important;
+        color: var(--text-color) !important;
+        font-size: 0.9rem !important;
+        line-height: 1.4 !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1) !important;
+        transition: all 0.3s ease !important;
+        resize: vertical !important;
+        overflow-y: auto !important;
+        box-sizing: border-box !important;
+    }
+
+        /* Focus state */
+        #productList:focus {
+            outline: none !important;
+            border-color: var(--primary-green) !important;
+            box-shadow: 0 0 0 3px rgba(13, 142, 120, 0.2), 0 4px 12px rgba(13, 142, 120, 0.15) !important;
+            transform: translateY(-1px) !important;
+        }
+
+        /* Hover state */
+        #productList:hover {
+            border-color: var(--light-green) !important;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12) !important;
+        }
+
+        /* Style cho các option */
+        #productList option {
+            font-family: 'Roboto', 'Titillium Web', sans-serif !important;
+            padding: 8px 12px !important;
+            margin: 2px 0 !important;
+            background: white !important;
+            color: var(--text-color) !important;
+            border: none !important;
+            border-radius: 4px !important;
+            font-size: 0.85rem !important;
+            line-height: 1.3 !important;
+            cursor: pointer !important;
+            transition: all 0.2s ease !important;
+        }
+
+            /* Selected option */
+            #productList option:checked {
+                background: linear-gradient(135deg, var(--primary-green), var(--dark-green)) !important;
+                color: white !important;
+                font-weight: 600 !important;
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+            }
+
+            /* Hover trên option */
+            #productList option:hover {
+                background: rgba(13, 142, 120, 0.1) !important;
+                color: var(--primary-green) !important;
+                font-weight: 500 !important;
+            }
+
+    /* Label cho select */
+    label[for="productList"] {
+        font-family: 'Roboto Condensed', 'Titillium Web', sans-serif !important;
+        font-weight: 600 !important;
+        font-size: 1rem !important;
+        color: var(--text-color) !important;
+        margin-bottom: 8px !important;
+        display: block !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+    }
+
+    /* Custom scrollbar cho select */
+    #productList::-webkit-scrollbar {
+        width: 8px !important;
+    }
+
+    #productList::-webkit-scrollbar-track {
+        background: #f1f1f1 !important;
+        border-radius: 4px !important;
+    }
+
+    #productList::-webkit-scrollbar-thumb {
+        background: var(--primary-green) !important;
+        border-radius: 4px !important;
+        transition: background 0.3s ease !important;
+    }
+
+        #productList::-webkit-scrollbar-thumb:hover {
+            background: var(--dark-green) !important;
+        }
+
+    /* Thêm icon cho label */
+    label[for="productList"]::before {
+        content: "🏷️";
+        margin-right: 8px;
+        font-size: 1.1rem;
+    }
+
+    /* Container wrapper với border đẹp */
+    .form-group:has(#productList) {
+        background: white !important;
+        padding: 20px !important;
+        border-radius: 10px !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+        border: 1px solid var(--border-color) !important;
+        margin-bottom: 20px !important;
+        transition: all 0.3s ease !important;
+    }
+
+        .form-group:has(#productList):hover {
+            box-shadow: 0 4px 12px rgba(13, 142, 120, 0.12) !important;
+            border-color: var(--primary-green) !important;
+        }
+
+    /* Helper text */
+    .select-helper {
+        font-size: 0.8rem !important;
+        color: var(--light-text) !important;
+        margin-top: 5px !important;
+        font-style: italic !important;
+        display: block !important;
+    }
+
+    /* Badge hiển thị số lượng đã chọn */
+    .selected-count {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background: linear-gradient(135deg, var(--primary-green), var(--dark-green)) !important;
+        color: white !important;
+        border-radius: 50% !important;
+        width: 24px !important;
+        height: 24px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 0.75rem !important;
+        font-weight: 700 !important;
+        box-shadow: 0 2px 4px rgba(13, 142, 120, 0.4) !important;
+        transition: all 0.3s ease !important;
+    }
+
+        /* Animation cho badge */
+        .selected-count.animate {
+            animation: bounce 0.5s ease;
+        }
+
+    @@keyframes bounce {
+        0%, 20%, 60%, 100% {
+            transform: translateY(0);
+        }
+
+        40% {
+            transform: translateY(-5px);
+        }
+
+        80% {
+            transform: translateY(-2px);
+        }
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        #productList {
+            min-height: 120px !important;
+            max-height: 150px !important;
+            font-size: 0.85rem !important;
+        }
+
+            #productList option {
+                padding: 6px 10px !important;
+                font-size: 0.8rem !important;
+            }
+
+        .form-group:has(#productList) {
+            padding: 15px !important;
+        }
+    }
+
+    @@media (max-width: 480px) {
+        #productList {
+            min-height: 100px !important;
+            max-height: 120px !important;
+            font-size: 0.8rem !important;
+        }
+
+        label[for="productList"] {
+            font-size: 0.9rem !important;
+        }
+    }
+
+    /* Disabled state */
+    #productList:disabled {
+        background-color: #f8f9fa !important;
+        color: #6c757d !important;
+        border-color: #dee2e6 !important;
+        cursor: not-allowed !important;
+        opacity: 0.7 !important;
+    }
+
+        #productList:disabled option {
+            color: #6c757d !important;
+            background-color: #f8f9fa !important;
+        }
+
+    /* Loading state */
+    #productList.loading {
+        background-image: linear-gradient(90deg, transparent, rgba(13, 142, 120, 0.1), transparent);
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+    }
+
+    @@keyframes loading {
+        0% {
+            background-position: -200% 0;
+        }
+
+        100% {
+            background-position: 200% 0;
+        }
+    }</style>
+<!-- Custom Centered Alert Modal -->
+<div id="customAlert" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:10000; background:rgba(0,0,0,0.3);">
+    <div style="
+        background: #fff;
+        min-width: 350px;
+        max-width: 90vw;
+        margin: 0 auto;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 8px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+        padding: 24px 32px 18px 32px;
+        text-align: left;
+    ">
+        <div id="customAlertTitle" style="font-weight:bold; margin-bottom:8px;">Thông báo</div>
+        <div id="customAlertMsg" style="white-space:pre-line; margin-bottom:16px;"></div>
+        <div style="text-align:right;">
+            <button onclick="closeCustomAlert()" style="background:#0d8e78; color:#fff; border:none; border-radius:4px; padding:6px 22px; font-size:1rem;">OK</button>
+        </div>
+    </div>
+</div>
+
+@{
+    @if (ViewData["errors"] != null)
+    {
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                showCustomAlert(@Html.Raw(Json.Serialize(ViewData["errors"])), "Có lỗi:");
+            });
+        </script>
+    }
+    if (ViewData["thongbao"] != null)
+    {
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                showCustomAlert("@ViewData["thongbao"]", "Thông báo");
+            });
+        </script>
+    }
+}
+
+<div class="content-wrapper" style="min-height: 639px;">
+    <form action="/Admin/KhuyenMai/InsertKhuyenMai" method="post" id="insertKhuyenMaiForm">
+        <section class="content-header">
+            <h1><i class="glyphicon glyphicon-leaf"></i> Thêm khuyến mãi mới</h1>
+            <div class="breadcrumb">
+                <a class="btn btn-primary btn-sm" href="/Admin/KhuyenMai/InsertKhuyenMai">
+                    Insert
+                    <button type="submit" style="width: 50px; height: 25px; background-color:  #0D8E78; border-radius: 10px; color: white; border-color: white; ">
+                        <i class="glyphicon glyphicon-floppy-save"></i>
+                    </button>
+                </a>
+                <a class="btn btn-primary btn-sm" href="/Admin/KhuyenMai/LietKeKhuyenMai" role="button">
+                    <span class="glyphicon glyphicon-remove do_nos"></span> Thoát
+                </a>
+            </div>
+        </section>
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box" id="view">
+                        <div class="box-body">
+                            <div class="col-md-12">
+                                <div class="col-md-6" style="padding-left: 0px;">
+                                    <div class="form-group">
+                                        <label for="maKM">Mã khuyến mãi</label>
+                                        <input type="number" class="form-control" name="MaKM" value="@ViewBag.NextMaKM" readonly style="width:100%; background-color: #f0f0f0;">
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="padding-right: 0px;">
+                                    <div class="form-group">
+                                        <label for="soPTKM">Số % khuyến mãi</label>
+                                        <input type="number" value="@(ViewBag.SoPTKM ?? "")" class="form-control" name="SoPTKM" id="soPTKM" min="0" style="width:100%">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-6" style="padding-left: 0px;">
+                                    <div class="form-group">
+                                        <label for="tuNgay">Ngày bắt đầu</label>
+                                        <input type="date" class="form-control" name="TuNgay" value="@(ViewBag.TuNgay ?? "")" id="tuNgay" min="@DateTime.Now.ToString("yyyy-MM-dd")" style="width:100%">
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="padding-right: 0px;">
+                                    <div class="form-group">
+                                        <label for="denNgay">Ngày kết thúc</label>
+                                        <input type="date" class="form-control" name="DenNgay" id="denNgay" style="width:100%">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-6" style="padding-left: 0px;">
+                                    <div class="form-group">
+                                        <label for="ttienToiThieu">Số tiền tối thiểu</label>
+                                        <input type="number" class="form-control" name="TTienToiThieu" id="ttienToiThieu" min="0" step="any" style="width:100%">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <label>Sản phẩm được giảm giá</label><br>
+                                <input type="checkbox" name="AllSP" id="allSP" onchange="toggleProductSelection()">
+                                <label for="allSP" style="font-weight:400;">Tất cả sản phẩm</label>
+                                <select name="SPGG" id="productList" class="form-control" style="width:100%" multiple>
+                                    @foreach (var item in ViewBag.DanhSachSanPham)
+                                    {
+                                        <option value="@item.MaTTSP">@item.TenSP</option>
+                                    }
+                                </select>
+                                <span class="select-helper">Giữ Ctrl (hoặc Cmd) để chọn nhiều sản phẩm</span>
+                                <span class="selected-count" id="selectedCount" style="display: none;">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </form>
+</div>
+
+<script type="text/javascript">
+    // Custom alert functions
+    function showCustomAlert(message, title = "Thông báo") {
+        document.getElementById('customAlertTitle').innerText = title;
+        document.getElementById('customAlertMsg').innerText = message;
+        document.getElementById('customAlert').style.display = 'block';
+    }
+    function closeCustomAlert() {
+        document.getElementById('customAlert').style.display = 'none';
+    }
+
+    // Bật/tắt chọn sản phẩm khi chọn tất cả sản phẩm
+    function toggleProductSelection() {
+        var allProductsCheckbox = document.getElementById('allSP');
+        var productListSelect = document.getElementById('productList');
+        if (allProductsCheckbox.checked) {
+            productListSelect.disabled = true;
+        } else {
+            productListSelect.disabled = false;
+        }
+    }
+
+    // Ngày kết thúc không nhỏ hơn ngày bắt đầu
+    const tuNgayInput = document.getElementById('tuNgay');
+    const denNgayInput = document.getElementById('denNgay');
+    tuNgayInput.addEventListener('change', function() {
+        denNgayInput.min = tuNgayInput.value;
+        if (denNgayInput.value && denNgayInput.value < tuNgayInput.value) {
+            denNgayInput.value = tuNgayInput.value;
+        }
+    });
+
+    // Đếm số sản phẩm đã chọn
+    document.getElementById('productList').addEventListener('change', function() {
+        const selectedCount = this.selectedOptions.length;
+        const countBadge = document.getElementById('selectedCount');
+        if (selectedCount > 0) {
+            countBadge.textContent = selectedCount;
+            countBadge.style.display = 'flex';
+            countBadge.classList.add('animate');
+            setTimeout(() => countBadge.classList.remove('animate'), 500);
+        } else {
+            countBadge.style.display = 'none';
+        }
+    });
+
+    // Kiểm tra dữ liệu trước khi submit form
+    document.getElementById('insertKhuyenMaiForm').addEventListener('submit', function(e) {
+        let errors = [];
+        const maKM = document.querySelector('input[name="MaKM"]').value.trim();
+        const soPTKM = document.querySelector('input[name="SoPTKM"]').value.trim();
+        const tuNgay = document.querySelector('input[name="TuNgay"]').value.trim();
+        const denNgay = document.querySelector('input[name="DenNgay"]').value.trim();
+        const ttienToiThieu = document.querySelector('input[name="TTienToiThieu"]').value.trim();
+        const allSP = document.getElementById('allSP').checked;
+        const productList = document.getElementById('productList');
+        const selectedSP = Array.from(productList.selectedOptions);
+
+        if (!soPTKM || isNaN(soPTKM) || Number(soPTKM) <= 0) errors.push("Phải nhập số % khuyến mãi lớn hơn 0.");
+        if (!tuNgay) errors.push("Chưa chọn ngày bắt đầu.");
+        if (!denNgay) errors.push("Chưa chọn ngày kết thúc.");
+        if (tuNgay && denNgay && denNgay < tuNgay) errors.push("Ngày kết thúc không được nhỏ hơn ngày bắt đầu.");
+        if (!ttienToiThieu || isNaN(ttienToiThieu) || Number(ttienToiThieu) < 0) errors.push("Số tiền tối thiểu phải lớn hơn hoặc bằng 0.");
+        if (!allSP && selectedSP.length === 0) errors.push("Phải chọn ít nhất một sản phẩm được giảm giá hoặc chọn tất cả sản phẩm.");
+
+        if (errors.length > 0) {
+            showCustomAlert("Có lỗi:\n" + errors.join('\n'), "Thông báo");
+            e.preventDefault();
+        }
+    });
+</script>
+
+
+
+

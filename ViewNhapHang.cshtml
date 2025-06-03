@@ -1,0 +1,970 @@
+﻿@using Web_projectframeword_admin.Models;
+@model NhapHang
+
+@{
+    bool isPaid = Model.TINHTRANGTT == 1;
+    bool isUnpaid = Model.TINHTRANGTT == 0;
+}
+
+@section Click_CTPN {
+    <script type="text/javascript">
+        $(function () {
+            $('#tbl_ctpn tr').click(function (e) {
+                var masp = $(this).closest('.onRow').find('td:nth-child(2)').text();
+                var gianhap = $(this).closest('.onRow').find('td:nth-child(4)').text();
+                var sl = $(this).closest('.onRow').find('td:nth-child(5)').text();
+                $('#spSL').val(masp);
+                $('#gnIP').val(gianhap);
+                $('#slIP').val(sl);
+            });
+
+            // Validate on submit
+            $('form').submit(function (e) {
+                var isPaid = @Model.TINHTRANGTT == 1 ? true : false;
+                // Chỉ kiểm tra khi chưa thanh toán
+                if (!isPaid) {
+                    var ncc = $('[name="MANCC"]').val();
+                    var nv = $('[name="MANV"]').val();
+                    if (!ncc || !nv) {
+                        alert("Vui lòng chọn nhà cung cấp và nhân viên!");
+                        e.preventDefault();
+                        return false;
+                    }
+                }
+            });
+        });
+    </script>
+}
+<style>
+
+    @@import url('https://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,700,600');
+    @@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300');
+    @@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+    :root {
+        --primary-green: #0D8E78;
+        --dark-green: #0a7865;
+        --light-green: #10a085;
+        --success-green: #0D8E78;
+        --secondary-color: #f8f9fa;
+        --border-color: #e9ecef;
+        --text-color: #343a40;
+        --light-text: #6c757d;
+        --danger-color: #dc3545;
+        --white: #ffffff;
+        --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.1);
+        --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Base Styling */
+    * {
+        box-sizing: border-box;
+    }
+
+    body, html {
+        font-family: 'Roboto', 'Titillium Web', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+        background-color: var(--secondary-color) !important;
+        color: var(--text-color) !important;
+        font-size: 14px !important;
+        line-height: 1.5 !important;
+    }
+
+    /* Content Wrapper */
+    .content-wrapper {
+        padding: 25px !important;
+        background-color: var(--secondary-color) !important;
+    }
+
+    /* Content Header Styling */
+    .content-header {
+        background: linear-gradient(135deg, var(--primary-green), var(--dark-green)) !important;
+        color: white !important;
+        padding: 25px 35px !important;
+        border-radius: 12px !important;
+        margin-bottom: 25px !important;
+        box-shadow: var(--shadow-medium) !important;
+        position: relative !important;
+        overflow: hidden !important;
+    }
+
+        .content-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .content-header h1 {
+            font-family: 'Roboto Condensed', 'Titillium Web', sans-serif !important;
+            margin: 0 0 20px 0 !important;
+            font-size: 1.8rem !important;
+            font-weight: 700 !important;
+            color: white !important;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1.2px !important;
+            position: relative !important;
+            z-index: 2 !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+        }
+
+            .content-header h1 .glyphicon {
+                font-size: 1.5rem !important;
+            }
+
+    /* Breadcrumb Section */
+    .breadcrumb {
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: none !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        gap: 20px !important;
+        position: relative !important;
+        z-index: 2 !important;
+    }
+
+    /* Search Box Styling */
+    .searchbox {
+        display: flex !important;
+        align-items: center !important;
+        background: rgba(255, 255, 255, 0.15) !important;
+        border-radius: 25px !important;
+        padding: 8px !important;
+        border: 1px solid rgba(255, 255, 255, 0.25) !important;
+        backdrop-filter: blur(10px) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+        transition: all 0.3s ease !important;
+    }
+
+        .searchbox:hover {
+            background: rgba(255, 255, 255, 0.2) !important;
+            border-color: rgba(255, 255, 255, 0.4) !important;
+        }
+
+        .searchbox input[type="text"] {
+            font-family: 'Roboto', 'Titillium Web', sans-serif !important;
+            background: transparent !important;
+            border: none !important;
+            padding: 8px 15px !important;
+            color: white !important;
+            font-size: 0.95rem !important;
+            width: 250px !important;
+            outline: none !important;
+        }
+
+            .searchbox input[type="text"]::placeholder {
+                color: rgba(255, 255, 255, 0.7) !important;
+                font-style: italic !important;
+            }
+
+        .searchbox button {
+            background: linear-gradient(135deg, var(--dark-green), var(--primary-green)) !important;
+            border: none !important;
+            padding: 8px 12px !important;
+            border-radius: 20px !important;
+            color: white !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            font-size: 0.9rem !important;
+        }
+
+            .searchbox button:hover {
+                background: linear-gradient(135deg, #085d52, var(--dark-green)) !important;
+                transform: scale(1.05) !important;
+            }
+
+    /* Add New Button */
+    .btn-primary {
+        font-family: 'Roboto', 'Titillium Web', sans-serif !important;
+        background: linear-gradient(135deg, var(--dark-green), var(--primary-green)) !important;
+        border: 2px solid rgba(255, 255, 255, 0.4) !important;
+        border-radius: 8px !important;
+        color: white !important;
+        padding: 10px 20px !important;
+        font-size: 0.9rem !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+        box-shadow: 0 4px 8px rgba(13, 142, 120, 0.4) !important;
+        transition: all 0.3s ease !important;
+        text-decoration: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+    }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #085d52, var(--dark-green)) !important;
+            transform: translateY(-2px) scale(1.05) !important;
+            box-shadow: 0 6px 15px rgba(13, 142, 120, 0.5) !important;
+            border-color: rgba(255, 255, 255, 0.6) !important;
+            color: white !important;
+            text-decoration: none !important;
+        }
+
+    /* Box Styling */
+    .box {
+        background: white !important;
+        border-radius: 12px !important;
+        box-shadow: var(--shadow-medium) !important;
+        border: 1px solid var(--border-color) !important;
+        overflow: hidden !important;
+    }
+
+    .box-header {
+        padding: 15px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .box-body {
+        padding: 0 !important;
+    }
+
+    /* Table Container */
+    .table-responsive {
+        border-radius: 12px !important;
+        overflow: hidden !important;
+        box-shadow: var(--shadow-light) !important;
+    }
+
+    /* Table Styling */
+    .table {
+        font-family: 'Roboto', 'Titillium Web', sans-serif !important;
+        margin: 0 !important;
+        border-collapse: separate !important;
+        border-spacing: 0 !important;
+        background: white !important;
+        width: 100% !important;
+        table-layout: fixed !important; /* Quan trọng: Fixed layout để control width */
+    }
+
+        .table th:nth-child(1),
+        .table td:nth-child(1) {
+            width: 60px !important;
+            min-width: 60px !important;
+            max-width: 60px !important;
+            text-align: left !important;
+            font-weight: 700 !important;
+            font-size: 0.95rem !important;
+            padding: 12px 8px !important;
+        }
+
+        .table th:nth-child(2),
+        .table td:nth-child(2) {
+            width: 150px !important;
+            min-width: 120px !important;
+            max-width: 120px !important;
+            text-align: left !important;
+            padding: 8px !important;
+        }
+
+        .table th:nth-child(3),
+        .table td:nth-child(3) {
+            width: 100px !important;
+            min-width: 100px !important;
+            max-width: 400px !important;
+            text-align: left !important;
+            font-weight: 600 !important;
+            padding: 12px 10px !important;
+            font-size: 0.85rem !important;
+        }
+
+        .table th:nth-child(4),
+        .table td:nth-child(4) {
+            width: 80px !important;
+            min-width: 50px !important;
+            max-width: 250px !important;
+            text-align: left !important;
+            padding: 12px 8px !important;
+        }
+
+        .table th:nth-child(5),
+        .table td:nth-child(5) {
+            width: 150px !important;
+            min-width: 130px !important;
+            max-width: 230px !important;
+            text-align: left !important;
+            padding: 12px 8px !important;
+        }
+
+        /* Thương hiệu Column */
+        .table th:nth-child(6),
+        .table td:nth-child(6) {
+            width: 150px !important;
+            min-width: 150px !important;
+            max-width: 120px !important;
+            text-align: left !important;
+            padding: 12px 8px !important;
+        }
+
+        /* Số lượng Column */
+        .table th:nth-child(7),
+        .table td:nth-child(7) {
+            width: 200px !important;
+            min-width: 80px !important;
+            max-width: 80px !important;
+            text-align: left !important;
+            font-weight: 600 !important;
+            padding: 12px 8px !important;
+        }
+
+        /* Trạng thái Column */
+        .table th:nth-child(8),
+        .table td:nth-child(8) {
+            width: 100px !important;
+            min-width: 100px !important;
+            max-width: 100px !important;
+            text-align: left !important;
+            padding: 12px 8px !important;
+        }
+
+        /* Thao tác Column */
+        .table th:nth-child(9),
+        .table td:nth-child(9) {
+            width: 150px !important;
+            min-width: 150px !important;
+            max-width: 200px !important;
+            text-align: left !important;
+            padding: 8px 4px !important;
+            vertical-align: middle !important;
+        }
+
+        /* Header Styling */
+        .table thead th {
+            font-family: 'Roboto Condensed', 'Titillium Web', sans-serif !important;
+            background: linear-gradient(135deg, var(--primary-green), var(--dark-green)) !important;
+            color: white !important;
+            font-weight: 700 !important;
+            font-size: 0.85rem !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.8px !important;
+            padding: 15px 10px !important;
+            border: none !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+            vertical-align: middle !important;
+            white-space: nowrap !important;
+        }
+
+        .table tbody tr {
+            transition: all 0.3s ease !important;
+            border-bottom: 1px solid var(--border-color) !important;
+        }
+
+            .table tbody tr:hover {
+                background-color: rgba(13, 142, 120, 0.05) !important;
+                transform: scale(1.002) !important;
+                box-shadow: 0 2px 8px rgba(13, 142, 120, 0.1) !important;
+            }
+
+        .table tbody td {
+            padding: 12px 10px !important;
+            vertical-align: middle !important;
+            border: none !important;
+            font-size: 0.85rem !important;
+            color: var(--text-color) !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+        }
+
+            /* Cho phép wrap text ở cột tên sản phẩm */
+            .table tbody td:nth-child(4) {
+                white-space: normal !important;
+                word-wrap: break-word !important;
+                overflow: visible !important;
+            }
+
+            /* IMAGE STYLING */
+            .table tbody td img {
+                width: 90px !important;
+                height: 60px !important;
+                object-fit: cover !important;
+                border-radius: 6px !important;
+                border: 2px solid var(--border-color) !important;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1) !important;
+                transition: all 0.3s ease !important;
+                display: block !important;
+                margin: 0 auto !important;
+                cursor: pointer !important;
+            }
+
+                .table tbody td img:hover {
+                    transform: scale(1.1) !important;
+                    border-color: var(--primary-green) !important;
+                    box-shadow: 0 4px 12px rgba(13, 142, 120, 0.3) !important;
+                    z-index: 5 !important;
+                    position: relative !important;
+                }
+
+    /* LABEL STYLING */
+    .label {
+        font-family: 'Roboto', sans-serif !important;
+        font-size: 0.75rem !important;
+        font-weight: 600 !important;
+        padding: 4px 8px !important;
+        border-radius: 4px !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.3px !important;
+        display: inline-block !important;
+        white-space: nowrap !important;
+    }
+
+    .label-info {
+        background-color: #17a2b8 !important;
+        color: white !important;
+    }
+
+    .label-primary {
+        background-color: #007bff !important;
+        color: white !important;
+    }
+
+    .label-success {
+        background-color: var(--success-green) !important;
+        color: white !important;
+    }
+
+    .label-warning {
+        background-color: #ffc107 !important;
+        color: #212529 !important;
+    }
+
+    .label-danger {
+        background-color: var(--danger-color) !important;
+        color: white !important;
+    }
+
+    /* Action Buttons */
+    .btn-success {
+        background: linear-gradient(135deg, var(--primary-green), var(--dark-green)) !important;
+        border: 1px solid var(--primary-green) !important;
+        color: white !important;
+        font-size: 0.7rem !important;
+        padding: 4px 8px !important;
+        border-radius: 4px !important;
+        font-weight: 600 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.3px !important;
+        transition: all 0.3s ease !important;
+        text-decoration: none !important;
+        display: inline-block !important;
+        margin: 2px !important;
+        white-space: nowrap !important;
+    }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, var(--dark-green), #085d52) !important;
+            transform: translateY(-1px) scale(1.05) !important;
+            box-shadow: 0 4px 8px rgba(13, 142, 120, 0.4) !important;
+            color: white !important;
+            text-decoration: none !important;
+        }
+
+    .btn-danger {
+        background: linear-gradient(135deg, var(--danger-color), #c82333) !important;
+        border: 1px solid var(--danger-color) !important;
+        color: white !important;
+        font-size: 0.7rem !important;
+        padding: 4px 8px !important;
+        border-radius: 4px !important;
+        font-weight: 600 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.3px !important;
+        transition: all 0.3s ease !important;
+        text-decoration: none !important;
+        display: inline-block !important;
+        margin: 2px !important;
+        white-space: nowrap !important;
+    }
+
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #c82333, #bd2130) !important;
+            transform: translateY(-1px) scale(1.05) !important;
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.4) !important;
+            color: white !important;
+            text-decoration: none !important;
+        }
+
+    /* Action buttons container */
+    .table tbody td:nth-child(9) div {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 3px !important;
+        align-items: center !important;
+    }
+
+    /* Pagination */
+    .pagination {
+        display: flex !important;
+        justify-content: center !important;
+        margin: 30px 0 !important;
+        padding: 0 !important;
+        list-style: none !important;
+    }
+
+        .pagination li {
+            margin: 0 3px !important;
+        }
+
+        .pagination a {
+            font-family: 'Roboto', 'Titillium Web', sans-serif !important;
+            padding: 8px 15px !important;
+            background: white !important;
+            border: 1px solid var(--border-color) !important;
+            color: var(--text-color) !important;
+            text-decoration: none !important;
+            border-radius: 6px !important;
+            transition: all 0.3s ease !important;
+            font-weight: 500 !important;
+        }
+
+            .pagination a:hover {
+                background: var(--primary-green) !important;
+                color: white !important;
+                border-color: var(--primary-green) !important;
+                transform: translateY(-1px) !important;
+            }
+
+
+
+    @@media (max-width: 1400px) {
+        .table th:nth-child(4), .table td:nth-child(4) {
+            min-width: 80px !important;
+        }
+
+        .table th:nth-child(5),
+        .table td:nth-child(5) {
+            width: 110px !important;
+            min-width: 110px !important;
+        }
+
+        .table th:nth-child(6),
+        .table td:nth-child(6) {
+            width: 100px !important;
+            min-width: 100px !important;
+        }
+    }
+
+    @@media (max-width: 1200px) {
+        .table th:nth-child(4), .table td:nth-child(4) {
+            min-width: 80px !important;
+        }
+
+        .table tbody td img {
+            width: 70px !important;
+            height: 50px !important;
+        }
+
+        .table th:nth-child(2),
+        .table td:nth-child(2) {
+            width: 100px !important;
+            min-width: 100px !important;
+        }
+    }
+
+    @@media (max-width: 992px) {
+        .content-header {
+            padding: 20px 25px !important;
+        }
+
+        .breadcrumb {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 15px !important;
+        }
+
+        .searchbox input[type="text"] {
+            width: 200px !important;
+        }
+
+        .table {
+            font-size: 0.8rem !important;
+        }
+
+            .table th, .table td {
+                padding: 8px 6px !important;
+            }
+
+                .table th:nth-child(5),
+                .table td:nth-child(5),
+                .table th:nth-child(6),
+                .table td:nth-child(6) {
+                    width: 50px !important;
+                    min-width: 50px !important;
+                }
+    }
+
+    @@media (max-width: 768px) {
+        .content-wrapper {
+            padding: 15px !important;
+        }
+
+        .content-header h1 {
+            font-size: 1.5rem !important;
+            text-align: center !important;
+        }
+
+        .searchbox input[type="text"] {
+            width: 180px !important;
+        }
+        /* Ẩn một số cột không quan trọng trên mobile */
+        .table th:nth-child(3),
+        .table td:nth-child(3),
+        .table th:nth-child(5),
+        .table td:nth-child(5),
+        .table th:nth-child(6),
+        .table td:nth-child(6) {
+            display: none !important;
+        }
+
+        .table th:nth-child(1),
+        .table td:nth-child(1) {
+            width: 50px !important;
+            min-width: 50px !important;
+        }
+
+        .table th:nth-child(2),
+        .table td:nth-child(2) {
+            width: 80px !important;
+            min-width: 80px !important;
+        }
+
+        .table tbody td img {
+            width: 60px !important;
+            height: 40px !important;
+        }
+
+        .table th:nth-child(9),
+        .table td:nth-child(9) {
+            width: 100px !important;
+            min-width: 100px !important;
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .searchbox {
+            flex-direction: column !important;
+            padding: 12px !important;
+            gap: 10px !important;
+        }
+
+            .searchbox input[type="text"] {
+                width: 100% !important;
+                text-align: center !important;
+            }
+
+        .btn-primary {
+            width: 100% !important;
+            justify-content: center !important;
+        }
+
+        .table th:nth-child(1),
+        .table td:nth-child(1) {
+            display: none !important;
+        }
+
+        .table th:nth-child(7),
+        .table td:nth-child(7) {
+            width: 60px !important;
+            min-width: 60px !important;
+        }
+
+        .table tbody td:nth-child(9) div {
+            flex-direction: row !important;
+            gap: 2px !important;
+        }
+
+        .btn-success, .btn-danger {
+            font-size: 0.6rem !important;
+            padding: 3px 6px !important;
+        }
+    }
+
+    /* Focus states */
+    input:focus,
+    button:focus,
+    .btn:focus {
+        outline: 2px solid var(--primary-green) !important;
+        outline-offset: 2px !important;
+    }
+
+    /* Table polish */
+    .table tbody tr:last-child td {
+        border-bottom: none !important;
+    }
+
+    .table thead th:first-child {
+        border-top-left-radius: 12px !important;
+    }
+
+    .table thead th:last-child {
+        border-top-right-radius: 12px !important;
+    }
+
+    /* Text alignment classes */
+    .text-center1 {
+        text-align: center !important;
+    }
+
+    .text-left {
+        text-align: left !important;
+    }
+
+    .text-right {
+        text-align: right !important;
+    }
+
+    /* Empty state styling */
+    .empty-state {
+        text-align: center !important;
+        padding: 40px 20px !important;
+        color: var(--light-text) !important;
+    }
+
+        .empty-state .glyphicon {
+            font-size: 3rem !important;
+            margin-bottom: 15px !important;
+            color: var(--border-color) !important;
+        }
+
+        .empty-state h4 {
+            color: var(--text-color) !important;
+            margin-bottom: 10px !important;
+        }
+
+        .empty-state p {
+            color: var(--light-text) !important;
+            font-size: 0.9rem !important;
+        }
+
+    /* Pagination Container */
+    .pagination-container {
+        background: white !important;
+        border-radius: 12px !important;
+        padding: 20px !important;
+        margin-top: 20px !important;
+        box-shadow: var(--shadow-light) !important;
+        border: 1px solid var(--border-color) !important;
+    }
+
+    .pagination-info {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        gap: 15px !important;
+    }
+
+        .pagination-info span {
+            font-family: 'Roboto', sans-serif !important;
+            color: var(--text-color) !important;
+            font-size: 0.9rem !important;
+            font-weight: 500 !important;
+        }
+
+    .pagination-form {
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+        background: var(--secondary-color) !important;
+        padding: 8px 15px !important;
+        border-radius: 8px !important;
+        border: 1px solid var(--border-color) !important;
+    }
+
+        .pagination-form span {
+            font-size: 0.85rem !important;
+            color: var(--text-color) !important;
+            font-weight: 600 !important;
+        }
+
+        .pagination-form input[type="number"] {
+            width: 60px !important;
+            padding: 6px 8px !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 4px !important;
+            text-align: center !important;
+            font-size: 0.85rem !important;
+            font-weight: 600 !important;
+            background: white !important;
+        }
+
+            .pagination-form input[type="number"]:focus {
+                border-color: var(--primary-green) !important;
+                outline: none !important;
+                box-shadow: 0 0 0 2px rgba(13, 142, 120, 0.2) !important;
+            }
+
+        .pagination-form .btn {
+            padding: 6px 12px !important;
+            font-size: 0.8rem !important;
+            font-weight: 600 !important;
+        }
+
+    .pagination-nav {
+        display: flex !important;
+        gap: 10px !important;
+        align-items: center !important;
+    }
+
+    .btn-default {
+        background: white !important;
+        border: 1px solid var(--border-color) !important;
+        color: var(--text-color) !important;
+        padding: 8px 15px !important;
+        border-radius: 6px !important;
+        font-size: 0.85rem !important;
+        font-weight: 600 !important;
+        text-decoration: none !important;
+        transition: all 0.3s ease !important;
+    }
+
+        .btn-default:hover {
+            background: var(--primary-green) !important;
+            border-color: var(--primary-green) !important;
+            color: white !important;
+            transform: translateY(-1px) !important;
+            text-decoration: none !important;
+        }
+
+    @@media (max-width: 768px) {
+        .pagination-info {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            text-align: center !important;
+        }
+
+        .pagination-nav {
+            justify-content: center !important;
+        }
+    }</style>
+<div class="content-wrapper" style="min-height: 639px;">
+    <form action="/Admin/NhapHang/UpdateNhapHang" method="post">
+        <section class="content-header">
+            <h1><i class="glyphicon glyphicon-ok-sign"></i> Thông tin phiếu nhập </h1>
+            <div class="breadcrumb">
+                @if (!isPaid)
+                {
+                    <a class="btn btn-primary btn-sm">
+                        Update
+                        <button type="submit" style="width: 50px; height: 25px; background-color: darkcyan; border-radius: 10px; color: white; border-color: white;">
+                            <i class="glyphicon glyphicon-floppy-save"></i>
+                        </button>
+                    </a>
+                }
+                <a class="btn btn-primary btn-sm" href="/Admin/NhapHang/LietKeNhapHang" role="button">
+                    <span class="glyphicon glyphicon-remove do_nos"></span> Thoát
+                </a>
+            </div>
+        </section>
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box" id="view">
+                        <div class="box-body">
+                            <div class="col-md-12">
+                                <div class="col-md-6" style="padding-left: 0px;">
+                                    <div class="form-group">
+                                        <label for="maPN">Mã phiếu nhập</label>
+                                        <input type="number" readonly class="form-control" name="MAPN" value="@Model.MAPN" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="padding-right: 0px;">
+                                    <div class="form-group">
+                                        <label for="tongtienTT">Tổng tiền thanh toán</label>
+                                        <input type="number" readonly class="form-control" name="TONGTIENTT" min="0" step="5000" style="width:100%" value="@Model.TONGTIENTT" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-6" style="padding-left: 0px;">
+                                    <div class="form-group">
+                                        <label for="ngaylapPN">Ngày lập phiếu</label>
+                                        <input type="date" class="form-control" name="NGAYLAPPN" value="@Model.NGAYLAPPN.Date.ToString("yyyy-MM-dd")" readonly disabled />
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="padding-right: 0px;">
+                                    <div class="form-group">
+                                        <label>Tình trạng thanh toán</label>
+                                        <select class="form-control" name="TINHTRANGTT" @(isPaid ? "disabled" : "")>
+                                            @{
+                                                if (Model.TINHTRANGTT == 0)
+                                                {
+                                                    <option value="0" selected>Chưa thanh toán</option>
+                                                    <option value="1">Đã thanh toán</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="0">Chưa thanh toán</option>
+                                                    <option value="1" selected>Đã thanh toán</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-6" style="padding-left: 0px;">
+                                    <div class="form-group">
+                                        <Label>Nhà cung cấp</Label>
+                                        <select name="MANCC" class="form-control" @(isUnpaid ? "" : "disabled")>
+                                            <option value="">[--Chọn nhà cung cấp--]</option>
+                                            @if (ViewBag.DanhSachNCC != null)
+                                            {
+                                                foreach (var ncc in ViewBag.DanhSachNCC)
+                                                {
+                                                    if (Model.MANCC == ncc.mancc)
+                                                    {
+                                                        <option value="@ncc.mancc" selected>@ncc.tenncc</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@ncc.mancc">@ncc.tenncc</option>
+                                                    }
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="padding-right: 0px;">
+                                    <div class="form-group">
+                                        <label>Nhân viên</label>
+                                        <select name="MANV" class="form-control" @(isUnpaid ? "" : "disabled")>
+                                            <option value="">[--Chọn nhân viên--]</option>
+                                            @if (ViewBag.DanhSachNV != null)
+                                            {
+                                                foreach (var nv in ViewBag.DanhSachNV)
+                                                {
+                                                    if (Model.MANV == nv.MaNV)
+                                                    {
+                                                        <option value="@nv.MaNV" selected>@nv.TenNV</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@nv.MaNV">@nv.TenNV</option>
+                                                    }
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </form>
+</div>
