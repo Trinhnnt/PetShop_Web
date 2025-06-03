@@ -1,4 +1,5 @@
 @{
+
     ViewData["Title"] = "Giỏ hàng";
     List<object> ListSP = ViewData["ListSP"] as List<object>;
     List<KhuyenMai> ListKM = ViewData["ListKM"] as List<KhuyenMai>;
@@ -6,254 +7,126 @@
     long Gia = 0;
     long ThanhTien = 0;
     long TongTien = 0;
+
 }
 
-    <style>
-        :root {
-            --primary-color: #1b7c55;
-            --secondary-color: #ffffff;
-            --border-color: #dee2e6;
-            --text-color: #212529;
-            --light-gray: #f5f7fa;
-            --hover-color: #f1f1f1;
-            --danger-color: #dc3545;
-            --success-color: #28a745;
-        }
+<style>
+    :root {
+        --primary-color: #0D8E78;
+        --primary-color-dark: #0A6B5A;
+        --secondary-color: #ffffff;
+        --border-color: #dee2e6;
+        --text-color: #212529;
+        --light-gray: #f5f7fa;
+        --hover-color: #f1f1f1;
+        --danger-color: #dc3545;
+        --success-color: #28a745;
+    }
 
-        body {
-            background: var(--light-gray);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
+    .product-big-title-area {
+        background: var(--secondary-color);
+        padding: 50px 0 30px;
+        border-bottom: 1px solid #e9ecef;
+        margin-bottom: 40px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
 
-        .mainmenu-area {
-            background-color: var(--primary-color) !important;
-            padding: 15px 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
+    .product-bit-title h2 {
+        font-size: 38px;
+        font-weight: 700;
+        color: var(--primary-color);
+        text-align: center;
+        text-transform: uppercase;
+        margin: 0;
+    }
 
-            .mainmenu-area .nav {
-                display: flex;
-                justify-content: center;
-                gap: 40px;
-                list-style: none;
-                padding-left: 0;
-            }
+    .shop_table {
+        width: 100%;
+        background: var(--secondary-color);
+        border-radius: 14px;
+        box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+        overflow: hidden;
+        margin-bottom: 40px;
+        border-collapse: collapse;
+    }
 
-                .mainmenu-area .nav > li > a {
-                    color: white !important;
-                    font-weight: 600;
-                    padding: 10px 0;
-                    display: inline-block;
-                    text-align: center;
-                    white-space: nowrap;
-                }
-
-                    .mainmenu-area .nav > li > a:hover {
-                        background-color: #166947 !important;
-                        color: #ffffff !important;
-                    }
-
-        .product-big-title-area {
-            background: var(--secondary-color);
-            padding: 50px 0 30px;
-            border-bottom: 1px solid #e9ecef;
-            margin-bottom: 40px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-        }
-
-        .product-bit-title h2 {
-            font-size: 38px;
-            font-weight: 700;
-            color: var(--primary-color);
+        .shop_table th, .shop_table td {
+            padding: 20px 15px;
             text-align: center;
+            font-size: 15px;
+            border-bottom: 1px solid #f0f1f3;
+            vertical-align: middle;
+        }
+
+        .shop_table th {
+            background: #f1fcf6;
+            color: var(--primary-color);
+            font-weight: 700;
             text-transform: uppercase;
-            margin: 0;
-        }
-
-        .shop_table {
-            width: 100%;
-            background: var(--secondary-color);
-            border-radius: 14px;
-            box-shadow: 0 6px 24px rgba(0,0,0,0.06);
-            overflow: hidden;
-            margin-bottom: 40px;
-            border-collapse: collapse;
-        }
-
-            .shop_table th, .shop_table td {
-                padding: 20px 15px;
-                text-align: center;
-                font-size: 15px;
-                border-bottom: 1px solid #f0f1f3;
-                vertical-align: middle;
-            }
-
-            .shop_table th {
-                background: #f1fcf6;
-                color: var(--primary-color);
-                font-weight: 700;
-                text-transform: uppercase;
-                font-size: 14px;
-                letter-spacing: 0.6px;
-                white-space: nowrap;
-            }
-
-        .product-thumbnail img {
-            width: 85px;
-            height: 85px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 1px solid #dcdcdc;
-        }
-
-        .product-name a {
-            font-weight: 600;
-            font-size: 16px;
-            color: var(--text-color);
-            text-decoration: none;
-            display: inline-block;
-            margin-bottom: 5px;
-        }
-
-        .product-name small {
-            font-size: 13px;
-            color: #888;
-            line-height: 1.3;
-        }
-
-        .amount {
-            font-weight: 700;
-            font-size: 16px;
-            color: var(--primary-color);
-        }
-
-        .product-quantity input {
-            width: 60px;
-            padding: 6px;
             font-size: 14px;
-            text-align: center;
-            border-radius: 6px;
-            border: 1px solid #ccc;
+            letter-spacing: 0.6px;
+            white-space: nowrap;
         }
 
-        .product-remove a {
-            color: var(--secondary-color);
-            background: var(--danger-color);
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            line-height: 30px;
-            display: inline-block;
-            text-align: center;
-            font-size: 16px;
-            transition: background 0.3s ease-in-out;
+    .product-thumbnail img {
+        width: 85px;
+        height: 85px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid #dcdcdc;
+    }
+
+    .product-name a {
+        font-weight: 600;
+        font-size: 16px;
+        color: var(--text-color);
+        text-decoration: none;
+        display: inline-block;
+        margin-bottom: 5px;
+    }
+
+    .product-name small {
+        font-size: 13px;
+        color: #888;
+        line-height: 1.3;
+    }
+
+    .amount {
+        font-weight: 700;
+        font-size: 16px;
+        color: var(--primary-color);
+    }
+
+    .product-quantity {
+        width: 60px;
+        padding: 6px;
+        font-size: 14px;
+        text-align: center;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+
+    .product-remove a {
+        color: var(--secondary-color);
+        background: var(--danger-color);
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        display: inline-block;
+        text-align: center;
+        font-size: 16px;
+        transition: background 0.3s ease-in-out;
+    }
+
+        .product-remove a:hover {
+            background-color: #c0392b;
         }
 
-            .product-remove a:hover {
-                background-color: #c0392b;
-            }
-
-        .cart-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            flex-wrap: wrap;
-            gap: 24px;
-            margin-top: 30px;
-        }
-
-        .cart-actions-wrapper {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 30px;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .coupon {
-            flex: 2;
-            min-width: 300px;
-        }
-
-            .coupon label {
-                font-weight: 600;
-                color: #333;
-                margin-bottom: 8px;
-                display: block;
-            }
-
-            .coupon select {
-                width: 100%;
-                padding: 10px;
-                border: 1px solid #ccc;
-                border-radius: 6px;
-                font-size: 14px;
-                background-color: var(--secondary-color);
-            }
-
-        .cart_totals {
-            flex: 1;
-            min-width: 320px;
-            background: var(--secondary-color);
-            border-radius: 14px;
-            border: 1px solid #d1e9dc;
-            padding: 20px 24px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            word-break: break-word;
-            width: 100%;
-        }
-
-            .cart_totals th, .cart_totals td {
-                font-size: 16px;
-                padding: 8px 0;
-                border: none;
-                color: #333;
-                white-space: nowrap;
-            }
-
-            .cart_totals th {
-                color: var(--primary-color);
-                font-weight: 600;
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-            }
-
-            .cart_totals .amount {
-                font-size: 22px;
-                font-weight: bold;
-                color: var(--primary-color);
-            }
-
-        .action-buttons {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 30px;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-
-
-   
-        .cart-collaterals {
-            flex: 1;
-            min-width: 320px;
-            background: var(--secondary-color);
-            border-radius: 14px;
-            border: 1px solid #d1e9dc;
-            padding: 20px 24px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-            word-break: break-word;
-            margin-top: 20px;
-        }
+    .actions {
+        background-color: var(--secondary-color) !important;
+        padding: 25px !important;
+    }
 
     /* Hàng chứa cả khuyến mãi và tổng tiền */
     .discount-total-row {
@@ -263,13 +136,14 @@
         flex-wrap: wrap;
         margin-top: 30px;
     }
+
     /* Khuyến mãi bên trái */
     .discount-box {
         flex: 1;
         min-width: 320px;
         background: var(--secondary-color);
         border-radius: 14px;
-        border: 1px solid #d1e9dc;
+        border: 1px solid #D1EDE9;
         padding: 20px 24px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
         display: flex;
@@ -292,13 +166,14 @@
             background-color: var(--secondary-color);
             min-width: 220px;
         }
-    /* Tổng tiền bên phải (gộp cùng style hiện có) */
+
+    /* Tổng tiền bên phải */
     .total-box {
         flex: 1;
         min-width: 320px;
         background: var(--secondary-color);
         border-radius: 14px;
-        border: 1px solid #d1e9dc;
+        border: 1px solid #D1EDE9;
         padding: 20px 24px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.04);
         display: flex;
@@ -319,84 +194,136 @@
             color: var(--primary-color);
             white-space: nowrap;
         }
-    /* Căn nút thành hàng ngang trái - phải */
+
     .cart-action-buttons {
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        margin-top: 30px;
-        flex-wrap: wrap;
         gap: 20px;
+        margin-top: 30px;
     }
 
-    /* Nút đồng bộ */
     .cart-button {
         flex: 1;
-        min-width: 240px;
-        padding: 16px 28px;
-        background-color: var(--primary-color);
-        color: #fff !important;
-        border: none;
+        height: 60px;
         border-radius: 30px;
-        font-weight: 600;
         font-size: 16px;
+        font-weight: 600;
         text-transform: uppercase;
         text-align: center;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         transition: all 0.3s ease-in-out;
     }
 
-        .cart-button:hover {
-           background-color: #14603c;
-    color: #fff;
+        .cart-button.primary {
+            background-color: var(--primary-color);
+            color: white;
         }
+
+            .cart-button.primary:hover {
+                background-color: var(--primary-color-dark);
+            }
+
+        .cart-button.secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+            .cart-button.secondary:hover {
+                background-color: var(--hover-color);
+            }
+
+
+
+    /* Áp dụng màu nền và hover riêng cho nút submit để tăng độ ưu tiên */
+    .woocommerce form.cart td.actions .cart-action-buttons input[type="submit"].cart-button {
+        background-color: var(--primary-color) !important;
+    }
+
+        .woocommerce form.cart td.actions .cart-action-buttons input[type="submit"].cart-button:hover {
+            background-color: var(--primary-color-dark) !important;
+        }
+
+    .cart-button:hover {
+        background-color: var(--primary-color-dark);
+        color: #fff;
+    }
 </style>
 
-<div class="mainmenu-area">
-    <div class="container">
-        <div class="row">
-            <div class="navbar-header">
-                <button type="button"
-                        class="navbar-toggle"
-                        data-toggle="collapse"
-                        data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a href="/Home/Index">Trang chủ</a></li>
-                    <li>
-                        <a href="/SanPham/Products">Sản phẩm</a>
-                    </li>
-                    <li>
-                        <a href="/TinTuc/DanhSachTinTuc">Tin tức</a>
-                    </li>
-                    <li>
-                        <a href="/DSSPMua/DSSPMua">Sản phẩm đã mua</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- End mainmenu area -->
-
-<div class="product-big-title-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="product-bit-title text-center">
-                    <h2>Giỏ hàng</h2>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- End Page title area -->
+
+<script>
+    function capNhatSoLuong(maKH, maTTSP, soLuong) {
+        // Nếu người dùng nhập số lượng <= 0, cảnh báo và reload lại trang
+          if (parseInt(soLuong) <= 0) {
+        alert("Số lượng phải lớn hơn 0!");
+        location.reload(); // hoặc reset lại trang
+        return;
+    } // Gửi POST lên server để cập nhật số lượng trong giỏ hàng (gửi theo mã khách hàng và mã sản phẩm)
+        $.post("/GioHang/UpdateSoLuong", {
+            maKH: maKH,
+            maTTSP: maTTSP,
+            soLuong: soLuong
+        }, function (data) {
+             // Nếu server trả về cập nhật thành công:
+            if (data.success) {
+                // Lấy giá sản phẩm từ HTML (được lưu sẵn trong thuộc tính data-gia)
+                var gia = parseInt($("#gia_" + maTTSP).data("gia"));
+                // Tính lại thành tiền = giá * số lượng mới
+                var thanhTien = gia * soLuong;
+                // Cập nhật lại dòng hiển thị thành tiền trong bảng
+                $("#thanhtien_" + maTTSP).text(thanhTien.toLocaleString() + " đ");
+                // Cập nhật lại input ẩn (để dùng khi submit form)
+                $("#thanhtien_input_" + maTTSP).val(thanhTien);
+                // Gọi lại hàm để cập nhật tổng tiền toàn bộ đơn hàng
+                tinhTongTien();
+            }
+        });
+    }
+       <script>
+    function kiemTraSoLuong(input, max) {
+        const value = parseInt(input.value); // Lấy giá trị số lượng người dùng vừa nhập
+          // Nếu vượt quá số lượng tồn kho
+        if (value > max) {
+            alert("Số lượng vượt quá số lượng tồn kho!");
+            input.value = max;
+
+             // Gắn class để đánh dấu ô input bị sai (dùng để chặn submit bên dưới)
+            input.classList.add("invalid-soluong");
+        } else {
+            input.classList.remove("invalid-soluong");
+        }
+    }
+
+    // Trước khi gửi form, kiểm tra có lỗi không
+    document.addEventListener("DOMContentLoaded", function () {
+          // Tìm tất cả các ô input đang bị gắn class 'invalid-soluong'
+        const form = document.querySelector("form");
+        form.addEventListener("submit", function (e) {
+             // Nếu có ít nhất 1 lỗi, hiển thị cảnh báo và chặn không cho submit form
+            const errors = document.querySelectorAll(".invalid-soluong");
+            if (errors.length > 0) {
+                alert("Vui lòng kiểm tra lại số lượng sản phẩm!");
+                e.preventDefault(); // chặn submit form
+            }
+        });
+    });
+</script>
+<script>
+    function tinhTongTien() {
+        var tong = 0;
+           // Lặp qua tất cả các input ẩn chứa giá trị thành tiền của từng dòng
+        $(".thanhtien_input").each(function () {
+            tong += parseInt($(this).val());// Cộng dồn thành tiền
+        });
+          // Cập nhật lại tổng tiền hiển thị ở giao diện
+        $("#tongtien_text").text(tong.toLocaleString() + " đ");
+    }
+</script>
 
 
 <div class="single-product-area">
@@ -431,11 +358,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var ctsp in ListSP)
+                                    @foreach (var ctsp in ListSP) // Lặp qua danh sách sản phẩm trong giỏ   
                                     {
                                         <tr class="cart_item">
+                                            <!-- Cột: Hình ảnh + mã sản phẩm -->
                                             <td class="product-thumbnail">
-                                                <input name="MaTTSP[]" style="display : none" value="@ctsp.GetType().GetProperty("MaTTSP").GetValue(ctsp, null).ToString()" />
+                                                <input name="MaTTSP" style="display : none" value="@ctsp.GetType().GetProperty("MaTTSP").GetValue(ctsp, null).ToString()" />
                                                 <a href="/SanPham/ChiTietSP?t=@ctsp.GetType().GetProperty("MaTTSP").GetValue(ctsp, null).ToString()&l=@ctsp.GetType().GetProperty("MaLoaiSP").GetValue(ctsp, null).ToString()">
                                                     <img width="145"
                                                          height="145"
@@ -444,7 +372,7 @@
                                                          src="@ctsp.GetType().GetProperty("HinhAnh").GetValue(ctsp, null).ToString()" />
                                                 </a>
                                             </td>
-
+                                            <!-- Cột: Tên sản phẩm + chi tiết -->
                                             <td class="product-name">
                                                 <a href="/SanPham/ChiTietSP?t=@ctsp.GetType().GetProperty("MaTTSP").GetValue(ctsp, null).ToString()&l=@ctsp.GetType().GetProperty("MaLoaiSP").GetValue(ctsp, null).ToString()">
                                                     @ctsp.GetType().GetProperty("TenSP").GetValue(ctsp, null).ToString()
@@ -452,16 +380,14 @@
                                                 <div class="product-specs">
                                                     <small>
                                                         Màu: @ctsp.GetType().GetProperty("MauSac").GetValue(ctsp, null).ToString() |
-                                                        RAM: @ctsp.GetType().GetProperty("Ram").GetValue(ctsp, null).ToString()GB |
-                                                        Bộ nhớ: @ctsp.GetType().GetProperty("BoNhoTrong").GetValue(ctsp, null).ToString()GB
+                                                        Độ tuổi: @ctsp.GetType().GetProperty("DoTuoi").GetValue(ctsp, null).ToString() |
+                                                        Xuất xứ: @ctsp.GetType().GetProperty("XuatXu").GetValue(ctsp, null).ToString()
                                                     </small>
                                                 </div>
-                                                <input name="TenSP[]" style="display : none"
-                                                       value="@ctsp.GetType().GetProperty("TenSP").GetValue(ctsp, null).ToString()-
-                                                       @ctsp.GetType().GetProperty("MauSac").GetValue(ctsp, null).ToString()-
-                                                       @ctsp.GetType().GetProperty("Ram").GetValue(ctsp, null).ToString()GB-
-                                                       @ctsp.GetType().GetProperty("BoNhoTrong").GetValue(ctsp, null).ToString()GB" />
+                                                <input name="TenSP" style="display : none"
+                                                       value="@ctsp.GetType().GetProperty("TenSP").GetValue(ctsp, null).ToString()" />
                                             </td>
+
                                             @*----Gia-----*@
                                             <td class="product-price">
                                                 @{
@@ -474,26 +400,38 @@
                                                         Gia = long.Parse(ctsp.GetType().GetProperty("Gia").GetValue(ctsp, null).ToString());
                                                     }
                                                 }
-                                                <span class="amount">
+                                                <span class="amount" id="gia_@ctsp.GetType().GetProperty("MaTTSP").GetValue(ctsp, null)" data-gia="@Gia">
                                                     @string.Format("{0:0,0 đ}", Gia)
                                                 </span>
-                                                <input name="Gia[]" style="display : none" value="@Gia" />
+
+                                                <input name="Gia" style="display : none" value="@Gia" />
                                             </td>
 
+                                            <!-- Cột: Số lượng -->
                                             <td class="product-quantity">
                                                 <div class="quantity buttons_added">
                                                     @{
                                                         SoLuong = long.Parse(ctsp.GetType().GetProperty("SoLuong").GetValue(ctsp, null).ToString());
                                                     }
+                                                    @{
+                                                        var soLuongTonKho = 0;
+                                                        if (ctsp.GetType().GetProperty("SoLuongTonKho") != null)
+                                                        {
+                                                            soLuongTonKho = int.Parse(ctsp.GetType().GetProperty("SoLuongTonKho").GetValue(ctsp, null).ToString());
+                                                        }
+                                                        SoLuong = long.Parse(ctsp.GetType().GetProperty("SoLuong").GetValue(ctsp, null).ToString());
+                                                    }
+                                                    <!-- Giới hạn không được vượt quá tồn kho -->
                                                     <input type="number"
-                                                           size="4"
-                                                           class="input-text qty text"
-                                                           title="Qty"
-                                                           value="@ctsp.GetType().GetProperty("SoLuong").GetValue(ctsp, null).ToString()"
-                                                           min="0"
-                                                           step="1" name="SoLuong[]" />
+                                                           min="1"
+                                                           max="@soLuongTonKho" 
+                                                           name="SoLuong[]"
+                                                           value="@SoLuong"
+                                                           class="form-control"
+                                                           onchange="kiemTraSoLuong(this, @soLuongTonKho); capNhatSoLuong(@ctsp.GetType().GetProperty("MaKH").GetValue(ctsp, null), @ctsp.GetType().GetProperty("MaTTSP").GetValue(ctsp, null), this.value)" />
                                                 </div>
                                             </td>
+                                            <!-- Cột: Thành tiền (giá x số lượng) -->
 
                                             <td class="product-subtotal">
                                                 @{
@@ -501,9 +439,12 @@
                                                     TongTien += ThanhTien;
                                                 }
 
-                                                <input name="ThanhTien[]" style="display : none" value="@ThanhTien" />
-                                                <span class="amount">@string.Format("{0:0,0 đ}", ThanhTien)</span>
+                                                <input name="ThanhTien" class="thanhtien_input" id="thanhtien_input_@ctsp.GetType().GetProperty("MaTTSP").GetValue(ctsp, null)" style="display : none" value="@ThanhTien" />
+                                                <span class="amount" id="thanhtien_@ctsp.GetType().GetProperty("MaTTSP").GetValue(ctsp, null)">
+                                                    @string.Format("{0:0,0 đ}", ThanhTien)
+                                                </span>
                                             </td>
+                                            <!-- Cột: Nút xóa sản phẩm khỏi giỏ -->
                                             <td class="product-remove">
                                                 <a title="Xóa sản phẩm này"
                                                    class="remove"
@@ -511,38 +452,37 @@
                                             </td>
                                         </tr>
                                     }
+
+                                     <!-- Hàng tổng tiền -->
                                     <tr>
                                         <td class="actions" colspan="6">
-
                                             <!-- Khuyến mãi và tổng tiền -->
                                             <div class="discount-total-row">
-                                                <div class="discount-box">
-                                                    <label for="MaKM">KHUYẾN MÃI:</label>
-                                                    <select name="MaKM" id="MaKM">
-                                                        @foreach (var km in ListKM)
-                                                        {
-                                                            <option value="@km.MaKM">
-                                                                Giảm @km.SoPTKM % - Từ @km.TuNgay.ToString("dd-MM-yyyy") - Đến @km.DenNgay.ToString("dd-MM-yyyy") - Đơn từ @string.Format("{0:0,0 đ}", km.TTienToiThieu)
-                                                            </option>
-                                                        }
-                                                    </select>
-                                                </div>
-
                                                 <div class="total-box">
                                                     <span>Tổng tiền sản phẩm</span>
-                                                    <span class="amount">@string.Format("{0:0,0 đ}", TongTien)</span>
-                                                </div>
-                                            </div>
+                                                    <span class="amount" id="tongtien_text">
+                                                        @string.Format("{0:0,0 đ}", TongTien)
+                                                    </span>
+               
 
+                                                </div>
+                                            </div
+
+                                              <!-- Nút hành động -->
                                             <div class="cart-action-buttons">
                                                 <a href="/Home/Index" class="cart-button">← Tiếp tục mua sắm</a>
-                                                <input type="submit" value="Xác nhận đơn hàng" name="proceed" class="cart-button" />
-                                            </div>
 
+                                                @if (((List<object>)ViewData["ListSP"]).Count == 0)
+                                                {
+                                                    <input type="submit" value="Xác nhận đơn hàng" name="proceed" class="cart-button" disabled style="background-color: gray !important; color: #fff !important; cursor: not-allowed;" />
+                                                }
+                                                else
+                                                {
+                                                    <input type="submit" value="Xác nhận đơn hàng" name="proceed" class="cart-button" style="background-color: var(--primary-color) !important; color: #fff !important;" />
+                                                }
+                                            </div>
                                         </td>
                                     </tr>
-
-
                                 </tbody>
                             </table>
                         </form>
@@ -552,5 +492,3 @@
         </div>
     </div>
 </div>
-
-
